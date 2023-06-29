@@ -8,18 +8,19 @@ UniTable currently extracts information copy-pasted from the [UofA Course Planne
 This is interpreted and visualized in a graphical way that allows timetables fot the entire semester to be planned.
 UniTable can be used to plan and check schedules, as well as generating compact timetables for use through the year.
 
+Currently, UniTable is not production ready. If you need instructions, contact me at <examathematics@gmail.com>.
 
 ## Future works
 UniTable is an active project and over time new features will be added.
 
-**Version 1.2** will add in much-requested features onto CUACV, including:
+**Version 1.2** will be released by the 22nd of July, 2023. Some much-requested features will be added, including:
 
 -	Day-of-the-month on each cell (rather than just the Sunday).
 -	Better summary of class times and locations when there is variation.
 -	Automatically load the last schedule when application restarts
 
-In the future, a complete overhaul of the application will be made.  
-**Version 2.x** will streamline the process with intuitive wizards and better loading and saving to a new xml-based .utts file Additional features planned to be included are:
+**Version 2.x** will be a complete overhaul potentially released by the end of 2023. This will streamline the process with intuitive wizards and better loading and saving to a new xml-based .utts file.
+Additional features planned to be included are:
 
 -	The ability to import directly from the URL of Access Adelaide, rather than a hand-made .caucv file.
 -	The ability to refresh Access Adelaide from the application to see if classes are still available.
@@ -31,4 +32,4 @@ In the future, a complete overhaul of the application will be made.
 There are no plans to support automatic timetable planning as MyAdelaide already supports this.
 
 ***
-This project is not associated with the University of Adelaide in any way
+This project is not associated with the University of Adelaide in any way.
