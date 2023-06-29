@@ -5,6 +5,8 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schedule", "Schedule\Schedule.csproj", "{0DA2E024-7290-49D3-A748-3FD1F002281D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniTable", "UniTable\UniTable.csproj", "{E08B6365-7F10-47B5-81CA-C5ED69D08976}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{0DA2E024-7290-49D3-A748-3FD1F002281D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DA2E024-7290-49D3-A748-3FD1F002281D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DA2E024-7290-49D3-A748-3FD1F002281D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E08B6365-7F10-47B5-81CA-C5ED69D08976}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E08B6365-7F10-47B5-81CA-C5ED69D08976}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E08B6365-7F10-47B5-81CA-C5ED69D08976}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E08B6365-7F10-47B5-81CA-C5ED69D08976}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
