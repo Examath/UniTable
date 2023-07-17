@@ -6,12 +6,12 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/ASOWPF;component/Parts/Base.xaml"/>
-                <ResourceDictionary Source="/ASOWPF;component/Parts/Inputs.xaml"/>
-                <ResourceDictionary Source="/ASOWPF;component/Parts/Menu.xaml"/>
-                <ResourceDictionary Source="/ASOWPF;component/Parts/Panels.xaml"/>
-                <ResourceDictionary Source="/ASOWPF;component/Parts/ListView.xaml"/>
-                <ResourceDictionary Source="/ASOWPF;component/Parts/Custom.xaml"/>
+                <ResourceDictionary Source="/Examath.Core;component/Parts/Base.xaml"/>
+                <ResourceDictionary Source="/Examath.Core;component/Parts/Inputs.xaml"/>
+                <ResourceDictionary Source="/Examath.Core;component/Parts/Menu.xaml"/>
+                <ResourceDictionary Source="/Examath.Core;component/Parts/Panels.xaml"/>
+                <ResourceDictionary Source="/Examath.Core;component/Parts/ListView.xaml"/>
+                <ResourceDictionary Source="/Examath.Core;component/Parts/Custom.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>

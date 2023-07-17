@@ -8,7 +8,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Splash.png" />
+    <None Remove="Resources\UniTable2.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Examath\Core\Examath.Core.csproj" />
+    <ProjectReference Include="..\Schedule\Schedule.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\UniTable2.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SplashScreen Include="Resources\Splash.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:UniTable" xmlns:system="clr-namespace:System;assembly=netstandard"
         mc:Ignorable="d"
         Title="CEC University of Adelaide Courses Visualiser" Height="780" Width="1200"
-        WindowState="Maximized" Icon="/CUACV.ico"
+        WindowState="Maximized" Icon="Resources/UniTable2.ico"
         Style="{StaticResource ContrastWindowStyle}"
         Loaded="Window_Loaded">
     <Window.DataContext>
