@@ -5,6 +5,8 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <Version>1.2.0</Version>
+    <ApplicationIcon>Resources\UniTable2.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,12 +15,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\UniTable2.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Examath\Core\Examath.Core.csproj" />
-    <ProjectReference Include="..\Schedule\Schedule.csproj" />
   </ItemGroup>
 
   <ItemGroup>

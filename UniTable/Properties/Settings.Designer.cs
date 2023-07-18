@@ -25,13 +25,73 @@ namespace UniTable.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("01:00:00")]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:50:00")]
         public global::System.TimeSpan CommuteTime {
             get {
                 return ((global::System.TimeSpan)(this["CommuteTime"]));
             }
             set {
                 this["CommuteTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public double FarePeak {
+            get {
+                return ((double)(this["FarePeak"]));
+            }
+            set {
+                this["FarePeak"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.4")]
+        public double FareOffPeak {
+            get {
+                return ((double)(this["FareOffPeak"]));
+            }
+            set {
+                this["FareOffPeak"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:07:00")]
+        public global::System.TimeSpan CommuteUniToBusTime {
+            get {
+                return ((global::System.TimeSpan)(this["CommuteUniToBusTime"]));
+            }
+            set {
+                this["CommuteUniToBusTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastSelection {
+            get {
+                return ((string)(this["LastSelection"]));
+            }
+            set {
+                this["LastSelection"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastFileName {
+            get {
+                return ((string)(this["LastFileName"]));
+            }
+            set {
+                this["LastFileName"] = value;
             }
         }
     }

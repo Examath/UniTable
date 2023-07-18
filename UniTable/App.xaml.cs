@@ -15,7 +15,7 @@ namespace UniTable
     {
         internal UniModel? ViewModel;
 
-        public string StartFile { get; private set; } = string.Empty;
+        public string? StartFile { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {

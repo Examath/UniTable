@@ -4,18 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UniTable" xmlns:system="clr-namespace:System;assembly=netstandard"
+        xmlns:properties="clr-namespace:UniTable.Properties"
         mc:Ignorable="d"
-        Title="CEC University of Adelaide Courses Visualiser" Height="780" Width="1200"
+        Title="UniTable" Height="780" Width="1200"
         WindowState="Maximized" Icon="Resources/UniTable2.ico"
         Style="{StaticResource ContrastWindowStyle}"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        >
     <Window.DataContext>
         <local:UniModel/>
     </Window.DataContext>
     <Window.Resources>
         <system:Double x:Key="HeaderHeight">60</system:Double>
+        <properties:Settings x:Key="Settings" />
     </Window.Resources>
-    <Grid Margin="6">
+    <Grid x:Name="Root" Margin="6" Opacity="0.5" d:Opacity="1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="8"/>
@@ -30,15 +33,17 @@
             <Button x:Name="ThemeButton" Content="White Theme" DockPanel.Dock="Right" Click="ThemeButton_Click"/>
             <TextBox Text="{Binding Selected}" ToolTip="Current selection data. Copy/Paste to save and load"/>
         </DockPanel>
-        <Expander Header="Options" Grid.Row="1" Margin="1">
+        <Expander x:Name="OptionsExpander" Header="Options" Grid.Row="1" Margin="1" IsExpanded="True">
             <ListBox Style="{StaticResource ControlPanelListBoxStyle}">
-                <TextBox Tag="Commute Time" Text="{Binding CommuteTime}" ToolTip="One-way commute time, including walking"/>
-                <TextBox Tag="Peak Fare" Text="$2.00" IsEnabled="False"/>
-                <TextBox Tag="Off-Peak Fare" Text="$1.10" IsEnabled="False"/>
+                <TextBox Tag="Commute Time" Text="{Binding Source={StaticResource Settings}, Path=Default.CommuteTime}" ToolTip="One-way commute time from home to university and back, including walking"/>
+                <TextBox Tag="Uni to Bus Time" Text="{Binding Source={StaticResource Settings}, Path=Default.CommuteUniToBusTime}" ToolTip="Mimimun time taken to get to bus stop at the end of the day. Used for calculating afternoon fares"/>
+                <TextBox Tag="Peak Fare" Text="{Binding Source={StaticResource Settings}, Path=Default.FarePeak, StringFormat={}{0:C}}" ToolTip="Peak fare (before 9am and after 3pm)"/>
+                <TextBox Tag="Off-Peak Fare" Text="{Binding Source={StaticResource Settings}, Path=Default.FareOffPeak, StringFormat={}{0:C}}" ToolTip="Off-Peak fare (from 9am to 3pm)"/>
+                <CheckBox x:Name="CompactModeCheckBox" Content="Make Subject-Classes list compact" Checked="CompactModeCheckBox_Checked" Unchecked="CompactModeCheckBox_Unchecked" />
             </ListBox>
         </Expander>
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="2">
-            <ItemsControl ItemsSource="{Binding SubjectHeaderList}" Grid.IsSharedSizeScope="True">
+            <ItemsControl ItemsSource="{Binding SubjectHeaderList}" d:ItemsSource="{d:SampleData ItemCount=3}" Grid.IsSharedSizeScope="True">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type local:SubjectHeader}">
                         <Border Background="{StaticResource PanelColourKey}" Margin="0 0 0 4">
@@ -57,7 +62,7 @@
                                                       IsDropDownOpen="{Binding IsFocused}">
                                                     <ComboBox.ItemTemplate>
                                                         <DataTemplate DataType="{x:Type local:UniClass}">
-                                                            <Grid HorizontalAlignment="Stretch">
+                                                            <Grid x:Name="UniClassRootGrid" HorizontalAlignment="Stretch" Background="Transparent" MouseEnter="UniClassRootGrid_MouseEnter" MouseLeave="UniClassRootGrid_MouseLeave">
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition SharedSizeGroup="Section" Width="Auto"/>
                                                                     <ColumnDefinition SharedSizeGroup="Number" Width="Auto"/>
@@ -92,7 +97,6 @@
                                 </ItemsControl>
                             </DockPanel>
                         </Border>
-
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
@@ -119,7 +123,7 @@
             <Rectangle Fill="{StaticResource Divider}" Height="4"/>
         </StackPanel>
         <ScrollViewer Grid.Row="1" Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible" Grid.RowSpan="2" Margin="2">
-            <ItemsControl ItemsSource="{Binding Buckets}">
+            <ItemsControl ItemsSource="{Binding Buckets}" d:ItemsSource="{d:SampleData}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal"/>
@@ -133,62 +137,74 @@
                                 <TextBlock Text="{Binding StartOfWeek, StringFormat={}{0:dd/MM}}" DockPanel.Dock="Top" TextElement.FontWeight="Bold" FontSize="14" TextAlignment="Center" Width="{Binding Sessions.Count}" MinWidth="60" Padding="2"/>
                                 <TextBlock Text="{Binding Statistics}" DockPanel.Dock="Top" TextAlignment="Center" Width="{Binding Sessions.Count}" MinWidth="60" Padding="2" ToolTip="Class Time | Minimum commute and time at uni"/>
                             </DockPanel>
-                            <ItemsControl ItemsSource="{Binding Sessions}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <Grid/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Canvas SnapsToDevicePixels="True">
-                                            <Rectangle x:Name="Marker" SnapsToDevicePixels="True" Canvas.Top="{Binding WeekOffset}"
+                            <Grid>
+                                <ItemsControl ItemsSource="{Binding Days}" d:ItemsSource="{d:SampleData}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type system:String}">
+                                            <TextBlock Text="{Binding}" d:Text="0" Foreground="#CCC" FontWeight="Bold" FontSize="20" Padding="4 0" Height="120"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <ItemsControl ItemsSource="{Binding Sessions}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Grid/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Canvas SnapsToDevicePixels="True">
+                                                <Rectangle x:Name="Marker" SnapsToDevicePixels="True" Canvas.Top="{Binding WeekOffset}"
                                                        Canvas.Left="{Binding InnerIndex}" Height="{Binding DurationOffset}" Width="1">
-                                                <Rectangle.Fill>
-                                                    <SolidColorBrush Color="{Binding SubjectHeader.Color}"/>
-                                                </Rectangle.Fill>
-                                            </Rectangle>
-                                            <Rectangle x:Name="Sel" Opacity="0.1" Canvas.Top="{Binding WeekOffset}" Height="{Binding DurationOffset}"
+                                                    <Rectangle.Fill>
+                                                        <SolidColorBrush Color="{Binding SubjectHeader.Color}"/>
+                                                    </Rectangle.Fill>
+                                                </Rectangle>
+                                                <Rectangle x:Name="Sel" Opacity="0.1" Canvas.Top="{Binding WeekOffset}" Height="{Binding DurationOffset}"
                                                        Visibility="{Binding UniClass.IsSelected,Converter={StaticResource BooleanToVisibilityConverter}}"
                                                        Width="60">
-                                                <Rectangle.Fill>
-                                                    <SolidColorBrush Color="{Binding SubjectHeader.Color}"/>
-                                                </Rectangle.Fill>
-                                            </Rectangle>
-                                            <TextBlock x:Name="SL" Text="{Binding UniClass.Section}" Canvas.Top="{Binding WeekOffset}"
+                                                    <Rectangle.Fill>
+                                                        <SolidColorBrush Color="{Binding SubjectHeader.Color}"/>
+                                                    </Rectangle.Fill>
+                                                </Rectangle>
+                                                <TextBlock x:Name="SL" Text="{Binding UniClass.Section}" Canvas.Top="{Binding WeekOffset}"
                                                        Visibility="Collapsed"
                                                        ToolTip="{Binding}">
-                                                <TextBlock.Background>
-                                                    <SolidColorBrush Color="{Binding SubjectHeader.Color}" Opacity="0.1"/>
-                                                </TextBlock.Background>
-                                                <TextBlock.Foreground>
-                                                    <SolidColorBrush Color="{Binding SubjectHeader.Color}"/>
-                                                </TextBlock.Foreground>
-                                            </TextBlock>
-                                        </Canvas>
-                                        <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding UniClass.IsSelected}" Value="True">
-                                                <DataTrigger.Setters>
-                                                    <Setter TargetName="SL" Property="Visibility" Value="Visible"/>
-                                                </DataTrigger.Setters>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding ClassType.IsFocused}" Value="True">
-                                                <DataTrigger.Setters>
-                                                    <Setter TargetName="SL" Property="Visibility" Value="Visible"/>
-                                                    <Setter TargetName="SL" Property="Margin" Value="2 0 0 0"/>
+                                                    <TextBlock.Background>
+                                                        <SolidColorBrush Color="{Binding SubjectHeader.Color}" Opacity="0.1"/>
+                                                    </TextBlock.Background>
+                                                    <TextBlock.Foreground>
+                                                        <SolidColorBrush Color="{Binding SubjectHeader.Color}"/>
+                                                    </TextBlock.Foreground>
+                                                </TextBlock>
+                                            </Canvas>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding UniClass.IsSelected}" Value="True">
+                                                    <DataTrigger.Setters>
+                                                        <Setter TargetName="SL" Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger.Setters>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ClassType.IsFocused}" Value="True">
+                                                    <DataTrigger.Setters>
+                                                        <Setter TargetName="SL" Property="Visibility" Value="Visible"/>
+                                                        <Setter TargetName="SL" Property="Margin" Value="2 0 0 0"/>
                                                     <Setter TargetName="Sel" Property="Opacity" Value="0.5"/>
-                                                    <Setter TargetName="Marker" Property="Width" Value="2"/>
-                                                </DataTrigger.Setters>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsOnline}" Value="True">
-                                                <DataTrigger.Setters>
-                                                    <Setter TargetName="SL" Property="FontStyle" Value="Italic"/>
-                                                </DataTrigger.Setters>
-                                            </DataTrigger>
-                                        </DataTemplate.Triggers>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                                                        <Setter TargetName="Marker" Property="Width" Value="2"/>
+                                                    </DataTrigger.Setters>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding UniClass.IsMouseOver}" Value="True">
+                                                    <Setter TargetName="Sel" Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsOnline}" Value="True">
+                                                    <DataTrigger.Setters>
+                                                        <Setter TargetName="SL" Property="FontStyle" Value="Italic"/>
+                                                    </DataTrigger.Setters>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Grid>
                         </DockPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

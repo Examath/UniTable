@@ -66,7 +66,7 @@ namespace UniTable
         #region LoadUniTable()
 
         //[RelayCommand(CanExecute = nameof(CanLoadUniTable))]
-        public async void LoadUniTable(string fileName)
+        public async Task LoadUniTable(string fileName)
         {
             SubjectHeaderList.Clear();
             SubjectHeader? subjectHeader = null;
@@ -300,34 +300,15 @@ namespace UniTable
         private string _Sum = " : ...";
 
         /// <summary>
-        /// Gets or sets the estimated time it takes to commute to uni
-        /// </summary>
-        public TimeSpan CommuteTime
-        {
-            get => Settings.Default.CommuteTime;
-            set
-            {
-                if (Settings.Default.CommuteTime != value)
-                {
-                    Settings.Default.CommuteTime = value;
-                    Settings.Default.Save();
-                    ComputeStatistics();
-                    OnPropertyChanged(nameof(CommuteTime));
-                }
-            }
-        }
-
-
-        /// <summary>
         /// Calls <see cref="WeekBucket.ComputeStatistics"/> on each
         /// weekbucket in <see cref="Buckets"/>
         /// </summary>
-        private void ComputeStatistics()
+        public void ComputeStatistics()
         {
             (double, double) sum = (0.0, 0);
             foreach (WeekBucket weekBucket in Buckets)
             {
-                (double,double) result = weekBucket.ComputeStatistics(CommuteTime.TotalHours);
+                (double,double) result = weekBucket.ComputeStatistics();
                 sum = (sum.Item1 + result.Item1, sum.Item2 + result.Item2);
             }
             _Sum = $" : Total Classtime: {sum.Item1}h | Total Commitment: {sum.Item2:#0.#}h";

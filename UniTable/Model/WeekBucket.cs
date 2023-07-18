@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UniTable.Properties;
 
 namespace UniTable
 {
@@ -13,6 +14,11 @@ namespace UniTable
         /// Gets or sets the list of all sessions for this week
         /// </summary>
         public List<Session> Sessions { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the list of labels for each day of this week from Monday to Friday
+        /// </summary>
+        public List<string> Days { get; private set; } = new();
 
         /// <summary>
         /// Gets the date of the sunday this week starts from
@@ -32,9 +38,22 @@ namespace UniTable
             private set => SetProperty(ref _Statistics, value);
         }
 
+        /// <summary>
+        /// Creates a new WeekBucket with the specified start date, and initialises <see cref="Days"/>
+        /// </summary>
+        /// <param name="startOfWeek"></param>
         public WeekBucket(DateTime startOfWeek)
         {
             StartOfWeek = startOfWeek;
+
+            // For Monday to Friday
+            for (int i = 1; i < 7; i++)
+            {
+                DateTime day = startOfWeek.AddDays(i);
+                string str = day.Day.ToString();
+                if(day.Day == 1) str += " " + day.ToString("MMM");
+                Days.Add(str);
+            }
         }
 
         public override string ToString()
@@ -49,11 +68,8 @@ namespace UniTable
         /// <remarks>
         /// 'Spanner' Algorithm Copyright (c) CEC 2023.
         /// </remarks>
-        internal (double, double) ComputeStatistics(double commuteTime = 0)
+        internal (double, double) ComputeStatistics()
         {
-            const double peakFare = 2.0;
-            const double offPeakFare = 1.1;
-            TimeSpan uniToBusTime = new(0, 7, 0);
             double totalClassHours = 0.0;
             double totalUniHours = 0.0;
             double totalFare = 0.0;
@@ -89,22 +105,22 @@ namespace UniTable
             {
                 totalUniHours += (
                     lastSessionOfDay.EndTime
-                    - firstSessionOfDay.StartTime).TotalHours
-                    + commuteTime * 2;
+                    - firstSessionOfDay.StartTime
+                    + Settings.Default.CommuteTime * 2).TotalHours;
 
-                totalFare += GetFare(firstSessionOfDay.StartTime.AddHours(-commuteTime));
-                totalFare += GetFare(lastSessionOfDay.EndTime + uniToBusTime);
+                totalFare += GetFare(firstSessionOfDay.StartTime - Settings.Default.CommuteTime);
+                totalFare += GetFare(lastSessionOfDay.EndTime + Settings.Default.CommuteUniToBusTime);
             }
 
             double GetFare(DateTime dateTime)
             {
                 if (dateTime.TimeOfDay > new TimeSpan(9,0,0) && dateTime.TimeOfDay < new TimeSpan(15,0,0))
                 {
-                    return offPeakFare;
+                    return Settings.Default.FareOffPeak;
                 }
                 else
                 {
-                    return peakFare;
+                    return Settings.Default.FarePeak;
                 }
             }
         }

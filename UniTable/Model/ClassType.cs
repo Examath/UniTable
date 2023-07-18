@@ -63,7 +63,7 @@ namespace UniTable
 
         private bool _IsFocused = false;
         /// <summary>
-        /// Gets or sets whether this class type is currently being selected by the user
+        /// Gets or sets whether this class type is currently being selected by the user through the Ui
         /// </summary>
         public bool IsFocused
         {

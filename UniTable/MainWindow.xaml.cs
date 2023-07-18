@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using UniTable.Properties;
 
 namespace UniTable
@@ -23,23 +23,37 @@ namespace UniTable
     /// </summary>
     public partial class MainWindow : Window
     {
-        private UniModel? uniModel;
+        private UniModel? _UniModel;
 
         public MainWindow()
         {
             InitializeComponent();
+            Settings.Default.PropertyChanged += Settings_PropertyChanged;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Settings_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            string fileName = ((App)App.Current).StartFile;
-            uniModel = (UniModel?)DataContext;
+            switch (e.PropertyName)
+            {
+                case nameof(Settings.Default.CommuteTime):
+                case nameof(Settings.Default.CommuteUniToBusTime):
+                case nameof(Settings.Default.FarePeak):
+                case nameof(Settings.Default.FareOffPeak):
+                    _UniModel?.ComputeStatistics();
+                    break;
+            }
+        }
 
-            while (!File.Exists(fileName))
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            string fileName = ((App)App.Current).StartFile ?? Settings.Default.LastFileName;
+            _UniModel = (UniModel)DataContext;
+
+            if (!File.Exists(fileName))
             {
                 OpenFileDialog openFileDialog = new()
                 {
-                    Title = "Select text file containing copy pasted university course tables",
+                    Title = "Select the text file containing copy pasted university course tables",
                 };
                 bool? result = openFileDialog.ShowDialog();
 
@@ -48,15 +62,33 @@ namespace UniTable
                 {
                     fileName = openFileDialog.FileName;
                 }
-
+                else
+                {
+                    Close();
+                }
             }
 
-            uniModel?.LoadUniTable(fileName);
+            await _UniModel.LoadUniTable(fileName);
+
+            // State memory
+            if (fileName == Settings.Default.LastFileName) _UniModel.Selected = Settings.Default.LastSelection;
+            else Settings.Default.LastFileName = fileName;
+
+            Root.Opacity = 1;
+            Title = $"{System.IO.Path.GetFileName(fileName)} | Unitable v{System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString()[0..^2]}";
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            Settings.Default.LastSelection = _UniModel?.Selected;
+            Settings.Default.Save();
+            base.OnClosing(e);
         }
 
         private void ThemeButton_Click(object sender, RoutedEventArgs e)
         {
             ThemeButton.IsEnabled = false;
+            OptionsExpander.IsExpanded = false;
 
             Resources["BackgroundColourKey"] = new SolidColorBrush(Color.FromArgb(60, 250, 250, 250));
             Resources["DialogBackgroundColourKey"] = new SolidColorBrush(Colors.White);
@@ -64,6 +96,32 @@ namespace UniTable
             Resources["PanelFaintColourKey"] = new SolidColorBrush(Color.FromArgb(30, 155, 155, 155));
             Resources["ForegroundColourKey"] = new SolidColorBrush(Colors.Black);
             Resources["ForegroundMinorColourKey"] = new SolidColorBrush(Color.FromArgb(127, 0, 0, 0));
+        }
+
+        private void CompactModeCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CompactModeCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UniClassRootGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (((Grid)sender).DataContext is UniClass uniClass)
+            {
+                uniClass.IsMouseOver = true;
+            }
+        }
+
+        private void UniClassRootGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (((Grid)sender).DataContext is UniClass uniClass)
+            {
+                uniClass.IsMouseOver = false;
+            }
         }
     }
 }

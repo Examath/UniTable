@@ -64,6 +64,15 @@ namespace UniTable
             internal set => SetProperty(ref _SessionCount, value);
         }
 
+        private bool _IsMouseOver = false;
+        /// <summary>
+        /// Gets or sets whether the user has their mosue over the UI for this class
+        /// </summary>
+        public bool IsMouseOver
+        {
+            get => _IsMouseOver;
+            set => SetProperty(ref _IsMouseOver, value);
+        }
 
         /// <summary>
         /// Creates a university class entry from relavent data
@@ -120,27 +129,51 @@ namespace UniTable
             }
             else
             {
-                SessionEntry firstEntry = SessionEntries.First();
-                bool Variant = false;
+                Dictionary<string, int> TimingsL = new Dictionary<string, int>();
+                Dictionary<string, int> LocationsL = new Dictionary<string, int>();
+
                 foreach (SessionEntry sessionEntry in SessionEntries)
                 {
-                    if (
-                        firstEntry.DayOfWeek != sessionEntry.DayOfWeek ||
-                        firstEntry.StartTime != sessionEntry.StartTime ||
-                        firstEntry.EndTime != sessionEntry.EndTime ||
-                        firstEntry.Location != sessionEntry.Location)
+                    //if (
+                    //    firstEntry.DayOfWeek != sessionEntry.DayOfWeek ||
+                    //    firstEntry.StartTime != sessionEntry.StartTime ||
+                    //    firstEntry.EndTime != sessionEntry.EndTime ||
+                    //    firstEntry.Location != sessionEntry.Location)
+                    //{
+                    //    break;
+                    //}
+
+                    string timing = $"{sessionEntry.DayOfWeek.ToString()[..2]} {sessionEntry.StartTime:HH}-{sessionEntry.EndTime:HH}";
+
+                    if (TimingsL.ContainsKey(timing))
                     {
-                        Variant = true;
-                        break;
+                        TimingsL[timing]++;
+                    }
+                    else
+                    {
+                        TimingsL.Add(timing, 1);
+                    }
+
+                    if (LocationsL.ContainsKey(sessionEntry.Location))
+                    {
+                        LocationsL[sessionEntry.Location]++;
+                    }
+                    else
+                    {
+                        LocationsL.Add(sessionEntry.Location, 1);
                     }
                 }
-                if (Variant)
+
+                IEnumerable<string> timings = TimingsL.OrderByDescending((d) => d.Value).Select(x => x.Key);
+                IEnumerable<string> locations = LocationsL.OrderByDescending((d) => d.Value).Select(x => x.Key);
+
+                if (LocationsL.Count > 1 && TimingsL.Count >= 1) // Super Variant
                 {
-                    Timings = "Variant";
+                    Timings = $"Various times @ {string.Join(" | ", locations)}";
                 }
                 else
                 {
-                    Timings = $"{firstEntry.DayOfWeek} {firstEntry.StartTime:htt} - {firstEntry.EndTime:htt} @ {firstEntry.Location}";
+                    Timings = $"{string.Join(" | ", timings)} @ {string.Join(" | ", locations)}";
                 }
             }
         }

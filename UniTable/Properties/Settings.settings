@@ -3,7 +3,22 @@
   <Profiles />
   <Settings>
     <Setting Name="CommuteTime" Type="System.TimeSpan" Scope="User">
-      <Value Profile="(Default)">01:00:00</Value>
+      <Value Profile="(Default)">00:50:00</Value>
+    </Setting>
+    <Setting Name="FarePeak" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="FareOffPeak" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1.4</Value>
+    </Setting>
+    <Setting Name="CommuteUniToBusTime" Type="System.TimeSpan" Scope="User">
+      <Value Profile="(Default)">00:07:00</Value>
+    </Setting>
+    <Setting Name="LastSelection" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="LastFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>
