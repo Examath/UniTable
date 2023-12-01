@@ -39,14 +39,14 @@ namespace UniTable
         /// </summary>
         public string Location { get; private set; }
 
-        public SessionEntry(string[] parts)
+        public SessionEntry(string[] parts, UniModel uniModel)
         {
             DayOfWeek = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), parts[1]);
             Location = parts[3];
 
             string[] dateParts = parts[0].Split(" - ");
-            StartDate = DateTime.ParseExact(dateParts[0], "d MMM", CultureInfo.InvariantCulture);
-            EndDate = DateTime.ParseExact(dateParts[1], "d MMM", CultureInfo.InvariantCulture);
+            StartDate = DateTime.ParseExact($"{dateParts[0]} {uniModel.Year}", "d MMM yyyy", CultureInfo.InvariantCulture);
+            EndDate = DateTime.ParseExact($"{dateParts[1]} {uniModel.Year}", "d MMM yyyy", CultureInfo.InvariantCulture);
 
             string[] timeParts = parts[2].Split(" - ");
             StartTime = TimeOnly.ParseExact(timeParts[0], "htt");

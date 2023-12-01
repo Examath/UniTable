@@ -30,6 +30,7 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.ColumnSpan="3">
+            <Button x:Name="OpenButton" Content="Open..." DockPanel.Dock="Right" Click="OpenButton_Click"/>
             <Button x:Name="ThemeButton" Content="White Theme" DockPanel.Dock="Right" Click="ThemeButton_Click"/>
             <TextBox Text="{Binding Selected}" ToolTip="Current selection data. Copy/Paste to save and load"/>
         </DockPanel>

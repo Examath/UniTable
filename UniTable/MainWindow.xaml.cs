@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Examath.Core.Environment;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -44,6 +45,15 @@ namespace UniTable
             }
         }
 
+        private OpenFileDialog CreateOpenFileDialog()
+        {
+            return new OpenFileDialog()
+            {
+                Title = "Select the text file containing copy pasted university course tables",
+                Filter = UniModel.FILTER,
+            };
+        }
+
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             string fileName = ((App)App.Current).StartFile ?? Settings.Default.LastFileName;
@@ -51,10 +61,7 @@ namespace UniTable
 
             if (!File.Exists(fileName))
             {
-                OpenFileDialog openFileDialog = new()
-                {
-                    Title = "Select the text file containing copy pasted university course tables",
-                };
+                OpenFileDialog openFileDialog = CreateOpenFileDialog();
                 bool? result = openFileDialog.ShowDialog();
 
                 // Process open file dialog box results
@@ -68,7 +75,16 @@ namespace UniTable
                 }
             }
 
-            await _UniModel.LoadUniTable(fileName);
+            try
+            {
+                await _UniModel.LoadUniTable(fileName);
+            }
+            catch (Exception ee)
+            {
+                Messager.Out($"Inner exception: {ee.Message}", "Loading .cuacv", ConsoleStyle.ErrorBlockStyle);
+                Close();
+                return;
+            }
 
             // State memory
             if (fileName == Settings.Default.LastFileName) _UniModel.Selected = Settings.Default.LastSelection;
@@ -121,6 +137,30 @@ namespace UniTable
             if (((Grid)sender).DataContext is UniClass uniClass)
             {
                 uniClass.IsMouseOver = false;
+            }
+        }
+
+        private async void OpenButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = CreateOpenFileDialog();
+            bool? result = openFileDialog.ShowDialog();
+
+            // Process open file dialog box results
+            if (result == true)
+            {
+                UniModel uniModel = new();
+
+                try
+                {
+                    await uniModel.LoadUniTable(openFileDialog.FileName);
+                }
+                catch (Exception ee)
+                {
+                    Messager.Out($"Inner exception: {ee.Message}", "Loading .cuacv", ConsoleStyle.ErrorBlockStyle);
+                    return;
+                }
+
+                _UniModel = uniModel;
             }
         }
     }

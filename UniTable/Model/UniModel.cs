@@ -12,6 +12,24 @@ namespace UniTable
 {
     internal partial class UniModel : ObservableObject
     {
+        #region Constants
+
+        /// <summary>
+        /// The filter to use for this version of UniTable
+        /// </summary>
+        public const string FILTER = "UniTable 1 pasted course data (*.cuacv)|*.caucv|All files|*.*";
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the year this semester is in
+        /// </summary>
+        public int Year { get; private set; } = DateTime.Now.Year;
+
+        #endregion
+
         #region Collections
 
         private ObservableCollection<SubjectHeader> _SubjectHeaderList = new();
@@ -75,6 +93,8 @@ namespace UniTable
 
             string[] lines = await File.ReadAllLinesAsync(fileName);
 
+            int lineNumber = 0;
+
             foreach (string lineRaw in lines)
             {
                 // Cut comments
@@ -94,48 +114,65 @@ namespace UniTable
                     continue;
                 }
 
-                // Subject Header
-                if (parts[0] == "#")
+                try
                 {
-                    subjectHeader = new(parts[1]);
-                    SubjectHeaderList.Add(subjectHeader);
-                }
 
-                // Class Type Description
-                else if (parts[0].Contains(" Class: ") && subjectHeader != null)
-                {
-                    classType = new(parts[0], this);
-                    subjectHeader.ClassTypes.Add(classType);
-                }
-
-                // Class Entry
-                else if (int.TryParse(parts[0], out int classNumber) && classType != null)
-                {
-                    string[] uniClassParts = new string[3];
-                    Array.Copy(parts, 1, uniClassParts, 0, 3);
-                    uniClass = new(classNumber, uniClassParts);
-
-                    if (parts.Length >= 8) // Then a session is provided as well
+                    // Header / Subject Header
+                    if (parts[0] == "#")
                     {
-                        string[] firstScheduleParts = new string[4];
-                        Array.Copy(parts, 4, firstScheduleParts, 0, 4);
-                        AddSession(firstScheduleParts);
+                        if (int.TryParse(parts[1], out int semCode)) // Semester Header
+                        {
+                            Year = semCode / 10 + 2000;
+                        }
+                        else // Subject Header
+                        {
+                            subjectHeader = new(parts[1]);
+                            SubjectHeaderList.Add(subjectHeader);
+                        }
                     }
 
-                    classType.Classes.Add(uniClass);
+                    // Class Type Description
+                    else if (parts[0].Contains(" Class: ") && subjectHeader != null)
+                    {
+                        classType = new(parts[0], this);
+                        subjectHeader.ClassTypes.Add(classType);
+                    }
+
+                    // Class Entry
+                    else if (int.TryParse(parts[0], out int classNumber) && classType != null)
+                    {
+                        string[] uniClassParts = new string[3];
+                        Array.Copy(parts, 1, uniClassParts, 0, 3);
+                        uniClass = new(classNumber, uniClassParts);
+
+                        if (parts.Length >= 8) // Then a session is provided as well
+                        {
+                            string[] firstScheduleParts = new string[4];
+                            Array.Copy(parts, 4, firstScheduleParts, 0, 4);
+                            AddSession(firstScheduleParts);
+                        }
+
+                        classType.Classes.Add(uniClass);
+                    }
+
+                    // Class Note
+                    else if (parts[0].StartsWith("Note: ") && uniClass != null)
+                    {
+                        uniClass.AddNote(parts[0]);
+                    }
+
+                    // Additional Session Entry
+                    else if (uniClass != null)
+                    {
+                        AddSession(parts);
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception($"Exception thrown when reading line #{lineNumber}", e);
                 }
 
-                // Class Note
-                else if (parts[0].StartsWith("Note: ") && uniClass != null)
-                {
-                    uniClass.AddNote(parts[0]);
-                }
-
-                // Additional Session Entry
-                else if (uniClass != null)
-                {
-                    AddSession(parts);
-                }
+                lineNumber++;
             }
 
             // Create week buckets
@@ -200,10 +237,10 @@ namespace UniTable
 
             void AddSession(string[] parts)
             {
-                SessionEntry sessionEntry = new(parts);
+                SessionEntry sessionEntry = new(parts, this);
                 if (sessionEntry.StartDate < SessionsStartDate) SessionsStartDate = sessionEntry.StartDate;
                 if (sessionEntry.EndDate > SessionsEndDate) SessionsEndDate = sessionEntry.EndDate;
-                if (uniClass != null) uniClass.SessionEntries.Add(sessionEntry);
+                uniClass?.SessionEntries.Add(sessionEntry);
             }
         }
 
