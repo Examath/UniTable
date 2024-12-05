@@ -9,7 +9,7 @@ namespace UniTable
     /// <summary>
     /// Represents the date, time, duration and location of a single session in university
     /// </summary>
-    internal class Session : IComparable<Session>
+    public class Session : IComparable<Session>
     {
         /// <summary>
         /// Gets the default scale for offsets
@@ -44,7 +44,7 @@ namespace UniTable
         /// <summary>
         /// Gets the subjet this session is held for
         /// </summary>
-        public SubjectHeader SubjectHeader { get; private set; }
+        public CourseHeader SubjectHeader { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="ClassType"/> this session is a part of
@@ -90,7 +90,7 @@ namespace UniTable
             TimeSpan duration,
             string location,
             bool isOnline,
-            SubjectHeader subjectHeader,
+            CourseHeader subjectHeader,
             ClassType classType,
             UniClass uniClass
             )

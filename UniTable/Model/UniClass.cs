@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace UniTable
 {
@@ -14,27 +15,27 @@ namespace UniTable
     /// <summary>
     /// Represents one of the timetabled classes that may be chosen when entering university
     /// </summary>
-    internal partial class UniClass : ObservableObject
+    public partial class UniClass : ObservableObject
     {
         /// <summary>
         /// Unique 5-digit class number
         /// </summary>
-        public int Number { get; private set; }
+        public int Number { get; set; }
 
         /// <summary>
-        /// Alphanumeric code for this class withing the Subject
+        /// Alphanumeric code for this class within the Subject
         /// </summary>
-        public string Section { get; private set; }
+        public string Section { get; set; } = string.Empty;
 
         /// <summary>
         /// Number of seats in this class
         /// </summary>
-        public int Size { get; private set; }
+        public int Size { get; set; }
 
         /// <summary>
         /// Number of seats available
         /// </summary>
-        public int Available { get; private set; }
+        public int Available { get; set; }
 
         public string Note { get; set; } = string.Empty;
 
@@ -47,6 +48,7 @@ namespace UniTable
         /// <summary>
         /// Gets or sets whether this class is chosen
         /// </summary>
+        [XmlIgnore]
         public bool IsSelected
         {
             get => _Selected;
@@ -58,6 +60,7 @@ namespace UniTable
         /// <summary>
         /// Gets the number of sessions associated with this class
         /// </summary>
+        [XmlIgnore]
         public int SessionCount
         {
             get => _SessionCount;
@@ -68,10 +71,16 @@ namespace UniTable
         /// <summary>
         /// Gets or sets whether the user has their mosue over the UI for this class
         /// </summary>
+        [XmlIgnore]
         public bool IsMouseOver
         {
             get => _IsMouseOver;
             set => SetProperty(ref _IsMouseOver, value);
+        }
+
+        public UniClass()
+        {
+
         }
 
         /// <summary>
@@ -112,6 +121,7 @@ namespace UniTable
         /// <summary>
         /// Gets the time and location the sessions of this class are held, if any
         /// </summary>
+        [XmlIgnore]
         public string Timings
         {
             get => _Timings;

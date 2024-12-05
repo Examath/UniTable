@@ -1,4 +1,5 @@
 ﻿using Examath.Core.Environment;
+using Examath.Core.Utils;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using UniTable.Model;
 using UniTable.Properties;
 
 namespace UniTable
@@ -24,15 +26,80 @@ namespace UniTable
     /// </summary>
     public partial class MainWindow : Window
     {
-        private UniModel? _UniModel;
+        private VM? _VM;
 
-        public MainWindow()
-        {
+		#region Constructor and Loading
+
+		public MainWindow()
+		{
+			// Crash Handler
+			AppDomain currentDomain = AppDomain.CurrentDomain;
+			currentDomain.UnhandledException += new UnhandledExceptionEventHandler(CrashHandler);
+
+			Settings.Default.PropertyChanged += Settings_PropertyChanged;
+			//Title = $"UniTable v{System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString(2)}";
+
             InitializeComponent();
-            Settings.Default.PropertyChanged += Settings_PropertyChanged;
+		}
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            _VM = (VM)DataContext;
+
+            if (((App)App.Current).StartFile is string fileLocation)
+            {
+                await _VM.Open(fileLocation);
+            }
+
+            if (_VM.Data == null) _VM.CreateFile();
+
+            Root.Opacity = 1;
+            //Title = $"{System.IO.Path.GetFileName(fileName)} | Unitable v{System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString(2)}";
         }
 
-        private void Settings_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+		private async void RecentButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (_VM != null)
+			{
+				await _VM.Open(Settings.Default.LastFileName);
+			}
+		}
+
+		#endregion
+
+		#region Closing
+
+		private bool _IsReadyToClose = false;
+
+		protected override async void OnClosing(CancelEventArgs e)
+		{
+			// Avoid Refire
+			if (_IsReadyToClose) return;
+			base.OnClosing(e);
+
+			// If dirty
+			if (_VM != null && _VM.IsModified)
+			{
+				// Temp cancel Closing
+				e.Cancel = true;
+
+				if (await _VM.IsUserReadyToPartWithCurrentFile())
+				{
+					// Restart closing
+					_IsReadyToClose = true;
+					Application.Current.Shutdown();
+				}
+			}
+
+			Settings.Default.LastFileName = _VM?.FileLocation;
+			Settings.Default.Save();
+		}
+
+		#endregion
+
+		#region Settings
+
+		private void Settings_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -40,68 +107,16 @@ namespace UniTable
                 case nameof(Settings.Default.CommuteUniToBusTime):
                 case nameof(Settings.Default.FarePeak):
                 case nameof(Settings.Default.FareOffPeak):
-                    _UniModel?.ComputeStatistics();
+                    _VM?.ComputeStatistics();
                     break;
             }
         }
 
-        private OpenFileDialog CreateOpenFileDialog()
-        {
-            return new OpenFileDialog()
-            {
-                Title = "Select the text file containing copy pasted university course tables",
-                Filter = UniModel.FILTER,
-            };
-        }
+		#endregion
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            string fileName = ((App)App.Current).StartFile ?? Settings.Default.LastFileName;
-            _UniModel = (UniModel)DataContext;
+		#region Theme And UX
 
-            if (!File.Exists(fileName))
-            {
-                OpenFileDialog openFileDialog = CreateOpenFileDialog();
-                bool? result = openFileDialog.ShowDialog();
-
-                // Process open file dialog box results
-                if (result == true)
-                {
-                    fileName = openFileDialog.FileName;
-                }
-                else
-                {
-                    Close();
-                }
-            }
-
-            try
-            {
-                await _UniModel.LoadUniTable(fileName);
-            }
-            catch (Exception ee)
-            {
-                Messager.Out($"Inner exception: {ee.Message}", "Loading .cuacv", ConsoleStyle.ErrorBlockStyle);
-                Close();
-                return;
-            }
-
-            // State memory
-            if (fileName == Settings.Default.LastFileName) _UniModel.Selected = Settings.Default.LastSelection;
-            else Settings.Default.LastFileName = fileName;
-
-            Root.Opacity = 1;
-            Title = $"{System.IO.Path.GetFileName(fileName)} | Unitable v{System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString()[0..^2]}";
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            Settings.Default.LastSelection = _UniModel?.Selected;
-            Settings.Default.Save();
-            base.OnClosing(e);
-        }
-
-        private void ThemeButton_Click(object sender, RoutedEventArgs e)
+		private void ThemeButton_Click(object sender, RoutedEventArgs e)
         {
             ThemeButton.IsEnabled = false;
             OptionsExpander.IsExpanded = false;
@@ -138,30 +153,45 @@ namespace UniTable
             {
                 uniClass.IsMouseOver = false;
             }
-        }
+        } 
 
-        private async void OpenButton_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = CreateOpenFileDialog();
-            bool? result = openFileDialog.ShowDialog();
+        #endregion
 
-            // Process open file dialog box results
-            if (result == true)
-            {
-                UniModel uniModel = new();
+        #region Crash Handler
 
-                try
-                {
-                    await uniModel.LoadUniTable(openFileDialog.FileName);
-                }
-                catch (Exception ee)
-                {
-                    Messager.Out($"Inner exception: {ee.Message}", "Loading .cuacv", ConsoleStyle.ErrorBlockStyle);
-                    return;
-                }
+        private void CrashHandler(object sender, UnhandledExceptionEventArgs args)
+		{
+#pragma warning disable CS0162 // Unreachable code detected when DEBUG config
+			try
+			{
+				if (_VM != null)
+				{
+                    _VM.SaveFile();
+#if DEBUG
+					return;
+#endif
 
-                _UniModel = uniModel;
-            }
-        }
-    }
+					Exception e = (Exception)args.ExceptionObject;
+					MessageBox.Show($"{e.GetType().Name}: {e.Message}\nThe timetable plan was saved. See crash-info.txt fore more info.", " An Unhandled Exception Occurred", MessageBoxButton.OK, MessageBoxImage.Error);
+					System.IO.File.AppendAllLines(System.IO.Path.GetDirectoryName(_VM.FileLocation) + "\\crash-info.txt",
+						new string[]
+						{
+							"______________________________________________________",
+							$"An unhandled exception occurred at {DateTime.Now:g}",
+							$"A backup of Scoresheet was saved at {_VM.FileLocation}.crashed",
+							$"Error Message:\t{e.Message}",
+							$"Stack Trace:\n{e.StackTrace}",
+						}
+					);
+				}
+
+			}
+			catch (Exception)
+			{
+				MessageBox.Show($"An exception occurred in the crash-handler. The timetable is unlikely to have been saved.", "Dual Unhandled Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+#pragma warning restore CS0162 // Unreachable code detected
+		}
+		#endregion
+	}
 }

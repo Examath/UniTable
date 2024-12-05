@@ -8,7 +8,7 @@ using UniTable.Properties;
 
 namespace UniTable
 {
-    internal partial class WeekBucket : ObservableObject
+    public partial class WeekBucket : ObservableObject
     {
         /// <summary>
         /// Gets or sets the list of all sessions for this week
@@ -73,8 +73,9 @@ namespace UniTable
             double totalClassHours = 0.0;
             double totalUniHours = 0.0;
             double totalFare = 0.0;
+			Sessions.Sort();
 
-            List<Session> ValidSessions = Sessions.FindAll(
+			List<Session> ValidSessions = Sessions.FindAll(
                 (session) => (session.UniClass.IsSelected && !session.IsOnline));
 
             if (ValidSessions.Count > 0)

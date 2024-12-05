@@ -14,9 +14,6 @@
     <Setting Name="CommuteUniToBusTime" Type="System.TimeSpan" Scope="User">
       <Value Profile="(Default)">00:07:00</Value>
     </Setting>
-    <Setting Name="LastSelection" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="LastFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
