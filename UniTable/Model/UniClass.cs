@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Xml.Serialization;
 
 namespace UniTable
@@ -37,7 +38,15 @@ namespace UniTable
         /// </summary>
         public int Available { get; set; }
 
-        public string Note { get; set; } = string.Empty;
+        private string _Note = "";
+        /// <summary>
+        /// Gets or sets the note for this class
+        /// </summary>
+        public string Note
+        {
+            get => _Note;
+            set => SetProperty(ref _Note, value);
+        }
 
         /// <summary>
         /// List of sessions this class has
@@ -97,11 +106,6 @@ namespace UniTable
             Section = parts[0];
             Size = int.Parse(parts[1]);
             Available = (parts[2] == "FULL") ? 0 : int.Parse(parts[2]);
-        }
-
-        internal void AddNote(string note)
-        {
-            Note = note;
         }
 
         public override string ToString()
@@ -187,5 +191,5 @@ namespace UniTable
                 }
             }
         }
-    }
+	}
 }

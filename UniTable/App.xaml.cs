@@ -13,8 +13,6 @@ namespace UniTable
     /// </summary>
     public partial class App : Application
     {
-        internal UniModel? ViewModel;
-
         public string? StartFile { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)

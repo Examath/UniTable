@@ -44,7 +44,7 @@ namespace UniTable
         /// <summary>
         /// Gets the subjet this session is held for
         /// </summary>
-        public CourseHeader SubjectHeader { get; private set; }
+        public CourseHeader CourseHeader { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="ClassType"/> this session is a part of
@@ -99,7 +99,7 @@ namespace UniTable
             Duration = duration;
             Location = location;
             IsOnline = isOnline;
-            SubjectHeader = subjectHeader;
+            CourseHeader = subjectHeader;
             ClassType = classType;
             UniClass = uniClass;
 

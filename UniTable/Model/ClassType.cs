@@ -28,8 +28,7 @@ namespace UniTable
 
         /// <summary>
         /// Sets the single selected <see cref="UniClass"/> for this object
-        /// then calls <see cref="UniModel.GetSelected"/> to allow
-        /// for updating the display
+        /// and invokes PropertyChanged
         /// </summary>
         [XmlIgnore]
         public UniClass? SelectedClass
@@ -76,11 +75,22 @@ namespace UniTable
             Description = description;
         }
 
+		internal void Initialize()
+		{
+            foreach (UniClass uniClass in Classes) uniClass.ComputeTimings();
+
+            // Only one option, then auto-enroll
+			if (Classes.Count == 1) 
+			{
+				SelectedClass = Classes[0];
+			}
+		}
+
 		#endregion
 
 		public override string ToString()
         {
             return Description;
         }
-    }
+	}
 }

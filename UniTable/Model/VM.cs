@@ -49,7 +49,6 @@ namespace UniTable.Model
 		}
 		public override void InitialiseData()
 		{
-			base.InitialiseData();
 			Data.Initialize();
 			UpdateBuckets();
 			ComputeStatistics();
@@ -69,15 +68,10 @@ namespace UniTable.Model
 		/// </summary>
 		public DateTime SessionsEndDate { get; private set; } = DateTime.MinValue;
 
-		private WeekBucket[] _Buckets;
 		/// <summary>
 		/// Gets or sets a list of weeks containing all sessions
 		/// </summary>
-		public WeekBucket[] Buckets
-		{
-			get => _Buckets;
-			set => SetProperty(ref _Buckets, value);
-		}
+		public WeekBucket[] Buckets { get; set; }
 
 		private void UpdateBuckets()
 		{
@@ -88,10 +82,11 @@ namespace UniTable.Model
 			SessionsEndDate = DateTime.MinValue;
 
 			// Generation Loop
-			List<Session> sessions = new();
+			List<Session> sessions = [];
 
 			foreach (CourseHeader courseHeader in Data.CourseHeaderList)
 			{
+				if (!courseHeader.IsEnabled) continue;
 				foreach (ClassType classType in courseHeader.ClassTypes)
 				{
 					foreach (UniClass uniClass in classType.Classes)
@@ -126,12 +121,6 @@ namespace UniTable.Model
 						//TODO: move to init
 						uniClass.ComputeTimings();
 					}
-
-					//TODO: move to init
-					if (classType.Classes.Count == 1) // Only one option, then select
-					{
-						classType.SelectedClass = classType.Classes[0];
-					}
 				}
 			}
 
@@ -161,8 +150,8 @@ namespace UniTable.Model
 				Buckets[weekIndex].Sessions.Add(session);
 			}
 
+			OnPropertyChanged(nameof(Buckets));
 			//UpdateSelected();
-			//isLoaded = true;
 		}
 
 		/// <summary>
@@ -184,6 +173,15 @@ namespace UniTable.Model
 		protected override void Data_PropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
 			base.Data_PropertyChanged(sender, e);
+			if (e.PropertyName == nameof(CourseHeader.ClassTypes))
+			{
+				UpdateBuckets();
+				Data?.SetSelectedFromQuery(Data.Selection);
+			}
+			else if (e.PropertyName == nameof(CourseHeader.IsEnabled))
+			{
+				UpdateBuckets();
+			}
 			ComputeStatistics();
 		}
 

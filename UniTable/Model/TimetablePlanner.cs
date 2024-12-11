@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,10 +11,11 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Xml;
 using System.Xml.Serialization;
+using UniTable.Editor;
 
 namespace UniTable.Model
 {
-	public class TimetablePlanner : ObservableObject
+	public partial class TimetablePlanner : ObservableObject
 	{
 		#region Data
 
@@ -24,10 +26,12 @@ namespace UniTable.Model
 		public int Year
 		{
 			get => _Year;
-			set => SetProperty(ref _Year, value);
+			set { if (SetProperty(ref _Year, value)) DefaultYear = value; }
 		}
 
-		private ObservableCollection<CourseHeader> _CourseHeaderList = new();
+		public static int DefaultYear { get; private set; } = DateTime.Now.Year;
+
+		private ObservableCollection<CourseHeader> _CourseHeaderList = [];
 		/// <summary>
 		/// Gets or sets the list of subjects listed
 		/// </summary>
@@ -42,7 +46,7 @@ namespace UniTable.Model
 			{
 				UpdateSelected();
 			}
-			OnPropertyChanged("Root");
+			OnPropertyChanged(e);
 		}
 
 		#endregion
@@ -114,7 +118,7 @@ namespace UniTable.Model
 			OnPropertyChanged(nameof(Selection));
 		}
 
-		private void SetSelectedFromQuery(string query)
+		internal void SetSelectedFromQuery(string query)
 		{
 			string[] queries = query.Split(':');
 			if (queries.Length >= 2)
@@ -229,7 +233,7 @@ namespace UniTable.Model
 					// Class Note
 					else if (parts[0].StartsWith("Note: ") && uniClass != null)
 					{
-						uniClass.AddNote(parts[0]);
+						uniClass.Note = parts[0];
 					}
 
 					// Additional Session Entry
@@ -252,6 +256,25 @@ namespace UniTable.Model
 				uniClass?.SessionEntries.Add(sessionEntry);
 			}
 		}
+
+		#endregion
+
+		#region Commands
+
+		[RelayCommand]
+		internal void AddCourseHeader()
+		{
+			CourseHeader courseHeader = new();
+			CourseHeaderEditor courseHeaderEditor = new(courseHeader);
+            if (courseHeaderEditor.ShowDialog() == true)
+			{
+				courseHeader.Initialize();
+				courseHeader.PropertyChanged += CourseHeader_PropertyChanged;
+				CourseHeaderList.Add(courseHeader);
+
+				OnPropertyChanged(nameof(CourseHeader.ClassTypes));
+            }
+        }
 
 		#endregion
 	}

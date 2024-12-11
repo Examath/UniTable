@@ -40,6 +40,8 @@ namespace UniTable
 			//Title = $"UniTable v{System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString(2)}";
 
             InitializeComponent();
+
+			if (!Path.Exists(Settings.Default.LastFileName)) Recent.Visibility = Visibility.Collapsed;
 		}
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
