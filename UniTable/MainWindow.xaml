@@ -4,15 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UniTable" xmlns:system="clr-namespace:System;assembly=netstandard"
-        xmlns:properties="clr-namespace:UniTable.Properties"
+        xmlns:properties="clr-namespace:UniTable.Properties" 
+        xmlns:model="clr-namespace:UniTable.Model"
         mc:Ignorable="d"
-        Title="UniTable" Height="780" Width="1200"
+        Title="{Binding FileName, StringFormat='UniTable v1.3 | {0}', FallbackValue='UniTable v1.3'}" Height="780" Width="1200"
         WindowState="Maximized" Icon="Resources/UniTable2.ico"
         Style="{StaticResource ContrastWindowStyle}"
         Loaded="Window_Loaded"
         >
     <Window.DataContext>
-        <local:UniModel/>
+        <model:VM/>
     </Window.DataContext>
     <Window.Resources>
         <system:Double x:Key="HeaderHeight">60</system:Double>
@@ -30,37 +31,61 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.ColumnSpan="3">
-            <Button x:Name="OpenButton" Content="Open..." DockPanel.Dock="Right" Click="OpenButton_Click"/>
-            <Button x:Name="ThemeButton" Content="White Theme" DockPanel.Dock="Right" Click="ThemeButton_Click"/>
-            <TextBox Text="{Binding Selected}" ToolTip="Current selection data. Copy/Paste to save and load"/>
+            <Button Content="Save As" DockPanel.Dock="Right" Command="{Binding SaveAsCommand}"/>
+            <Button Content="Save" DockPanel.Dock="Right" Command="{Binding SaveCommand}"/>
+            <Button x:Name="Recent" Content="Recent" DockPanel.Dock="Right" Click="RecentButton_Click" ToolTip="{Binding Source={StaticResource Settings}, Path=Default.LastFileName}" />
+            <Button Content="Open" DockPanel.Dock="Right" Command="{Binding OpenCommand}"/>
+            <Label Style="{StaticResource OutputLabel}" DockPanel.Dock="Right" Content="{Binding LastChangeDescription}"/>
+            <TextBox IsReadOnly="True" DockPanel.Dock="Right" Text="{Binding Data.Stats}"/>
+            <TextBox Text="{Binding Data.Selection}" ToolTip="Current selection data. Copy/Paste to save and load"/>
         </DockPanel>
         <Expander x:Name="OptionsExpander" Header="Options" Grid.Row="1" Margin="1" IsExpanded="True">
             <ListBox Style="{StaticResource ControlPanelListBoxStyle}">
+                <TextBox Tag="Year" Text="{Binding Data.Year}"/>
                 <TextBox Tag="Commute Time" Text="{Binding Source={StaticResource Settings}, Path=Default.CommuteTime}" ToolTip="One-way commute time from home to university and back, including walking"/>
                 <TextBox Tag="Uni to Bus Time" Text="{Binding Source={StaticResource Settings}, Path=Default.CommuteUniToBusTime}" ToolTip="Mimimun time taken to get to bus stop at the end of the day. Used for calculating afternoon fares"/>
                 <TextBox Tag="Peak Fare" Text="{Binding Source={StaticResource Settings}, Path=Default.FarePeak, StringFormat={}{0:C}}" ToolTip="Peak fare (before 9am and after 3pm)"/>
                 <TextBox Tag="Off-Peak Fare" Text="{Binding Source={StaticResource Settings}, Path=Default.FareOffPeak, StringFormat={}{0:C}}" ToolTip="Off-Peak fare (from 9am to 3pm)"/>
                 <CheckBox x:Name="CompactModeCheckBox" Content="Make Subject-Classes list compact" Checked="CompactModeCheckBox_Checked" Unchecked="CompactModeCheckBox_Unchecked" />
+                <Button x:Name="ThemeButton" HorizontalAlignment="Left" Content="Use Light Theme" Click="ThemeButton_Click"/>
+                <Button HorizontalAlignment="Left" Content="Add New Course" Command="{Binding Data.AddCourseHeaderCommand}"/>
             </ListBox>
         </Expander>
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="2">
-            <ItemsControl ItemsSource="{Binding SubjectHeaderList}" d:ItemsSource="{d:SampleData ItemCount=3}" Grid.IsSharedSizeScope="True">
+            <ItemsControl ItemsSource="{Binding Data.CourseHeaderList}" d:ItemsSource="{d:SampleData ItemCount=3}" Grid.IsSharedSizeScope="True">
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type local:SubjectHeader}">
+                    <DataTemplate DataType="{x:Type local:CourseHeader}">
                         <Border Background="{StaticResource PanelColourKey}" Margin="0 0 0 4">
+                            <Border.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Change Colour" Command="{Binding ChangeColourCommand}" />
+                                    <MenuItem Header="Update From Clipboard" Command="{Binding UpdateFromClipboardCommand}"/>
+                                    <MenuItem Header="Enabled" IsCheckable="True" IsChecked="{Binding IsEnabled}"/>
+                                    <MenuItem Header="Edit" Command="{Binding EditCommand}"/>
+                                </ContextMenu>
+                            </Border.ContextMenu>
                             <DockPanel Margin="2">
-                                <TextBlock Text="{Binding}" DockPanel.Dock="Top" Margin="2" TextElement.FontWeight="Bold" Foreground="White" Padding="2">
-                                    <TextBlock.Background>
-                                        <SolidColorBrush Color="{Binding Color}"/>
-                                    </TextBlock.Background>
-                                </TextBlock>
-                                <ItemsControl ItemsSource="{Binding ClassTypes}">
+                                <Button Command="{Binding EditCommand}"
+                                        DockPanel.Dock="Top" Margin="-2 -2 -2 2" Foreground="White" 
+                                        HorizontalContentAlignment="Left">
+                                    <Button.Background>
+                                        <SolidColorBrush Color="{Binding Color, FallbackValue=Blue}"/>
+                                    </Button.Background>
+                                    <Button.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Code}" TextElement.FontWeight="Bold" Margin="0 0 4 0"/>
+                                            <TextBlock Text="{Binding Number}" TextElement.FontWeight="Bold" Margin="0 0 8 0"/>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </StackPanel>
+                                    </Button.Content>
+                                </Button>
+                                <ItemsControl ItemsSource="{Binding ClassTypes}" Visibility="{Binding IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate DataType="{x:Type local:ClassType}">
                                             <DockPanel>
                                                 <TextBlock Text="{Binding}" DockPanel.Dock="Top" Margin="2 0"/>
                                                 <ComboBox x:Name="ClassSelectbox" ItemsSource="{Binding Classes}" SelectedItem="{Binding SelectedClass}"
-                                                      IsDropDownOpen="{Binding IsFocused}">
+              IsDropDownOpen="{Binding IsFocused}">
                                                     <ComboBox.ItemTemplate>
                                                         <DataTemplate DataType="{x:Type local:UniClass}">
                                                             <Grid x:Name="UniClassRootGrid" HorizontalAlignment="Stretch" Background="Transparent" MouseEnter="UniClassRootGrid_MouseEnter" MouseLeave="UniClassRootGrid_MouseLeave">
@@ -142,7 +167,7 @@
                                 <ItemsControl ItemsSource="{Binding Days}" d:ItemsSource="{d:SampleData}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate DataType="{x:Type system:String}">
-                                            <TextBlock Text="{Binding}" d:Text="0" Foreground="#CCC" FontWeight="Bold" FontSize="20" Padding="4 0" Height="120"/>
+                                            <TextBlock Text="{Binding}" d:Text="0" Foreground="#888" FontWeight="Bold" FontSize="20" Padding="4 0" Height="120"/>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
@@ -158,24 +183,25 @@
                                                 <Rectangle x:Name="Marker" SnapsToDevicePixels="True" Canvas.Top="{Binding WeekOffset}"
                                                        Canvas.Left="{Binding InnerIndex}" Height="{Binding DurationOffset}" Width="1">
                                                     <Rectangle.Fill>
-                                                        <SolidColorBrush Color="{Binding SubjectHeader.Color}"/>
+                                                        <SolidColorBrush Color="{Binding CourseHeader.Color}"/>
                                                     </Rectangle.Fill>
                                                 </Rectangle>
                                                 <Rectangle x:Name="Sel" Opacity="0.1" Canvas.Top="{Binding WeekOffset}" Height="{Binding DurationOffset}"
                                                        Visibility="{Binding UniClass.IsSelected,Converter={StaticResource BooleanToVisibilityConverter}}"
                                                        Width="60">
                                                     <Rectangle.Fill>
-                                                        <SolidColorBrush Color="{Binding SubjectHeader.Color}"/>
+                                                        <SolidColorBrush Color="{Binding CourseHeader.Color}"/>
                                                     </Rectangle.Fill>
                                                 </Rectangle>
                                                 <TextBlock x:Name="SL" Text="{Binding UniClass.Section}" Canvas.Top="{Binding WeekOffset}"
                                                        Visibility="Collapsed"
+                                                       ToolTipService.InitialShowDelay="0"
                                                        ToolTip="{Binding}">
                                                     <TextBlock.Background>
-                                                        <SolidColorBrush Color="{Binding SubjectHeader.Color}" Opacity="0.1"/>
+                                                        <SolidColorBrush Color="{Binding CourseHeader.Color}" Opacity="0.1"/>
                                                     </TextBlock.Background>
                                                     <TextBlock.Foreground>
-                                                        <SolidColorBrush Color="{Binding SubjectHeader.Color}"/>
+                                                        <SolidColorBrush Color="{Binding CourseHeader.Color}"/>
                                                     </TextBlock.Foreground>
                                                 </TextBlock>
                                             </Canvas>

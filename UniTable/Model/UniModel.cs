@@ -10,7 +10,7 @@ using UniTable.Properties;
 
 namespace UniTable
 {
-    internal partial class UniModel : ObservableObject
+    public partial class UniModel : ObservableObject
     {
         #region Constants
 
@@ -32,11 +32,11 @@ namespace UniTable
 
         #region Collections
 
-        private ObservableCollection<SubjectHeader> _SubjectHeaderList = new();
+        private ObservableCollection<CourseHeader> _SubjectHeaderList = new();
         /// <summary>
         /// Gets or sets the list of subjects listed
         /// </summary>
-        public ObservableCollection<SubjectHeader> SubjectHeaderList
+        public ObservableCollection<CourseHeader> SubjectHeaderList
         {
             get => _SubjectHeaderList;
             set => SetProperty(ref _SubjectHeaderList, value);
@@ -87,7 +87,7 @@ namespace UniTable
         public async Task LoadUniTable(string fileName)
         {
             SubjectHeaderList.Clear();
-            SubjectHeader? subjectHeader = null;
+            CourseHeader? subjectHeader = null;
             ClassType? classType = null;
             UniClass? uniClass = null;
 
@@ -134,7 +134,7 @@ namespace UniTable
                     // Class Type Description
                     else if (parts[0].Contains(" Class: ") && subjectHeader != null)
                     {
-                        classType = new(parts[0], this);
+                        classType = new(parts[0]);
                         subjectHeader.ClassTypes.Add(classType);
                     }
 
@@ -188,7 +188,7 @@ namespace UniTable
             }
 
             // Add each session to respective bucket
-            foreach (SubjectHeader sh in SubjectHeaderList)
+            foreach (CourseHeader sh in SubjectHeaderList)
             {
                 foreach (ClassType ct in sh.ClassTypes)
                 {
@@ -226,7 +226,7 @@ namespace UniTable
 
                     if (ct.Classes.Count == 1) // Only one option, then select
                     {
-                        ct.SelectClass(ct.Classes[0]);
+                        ct.SelectedClass = ct.Classes[0];
                     }
                 }
             }
@@ -237,7 +237,7 @@ namespace UniTable
 
             void AddSession(string[] parts)
             {
-                SessionEntry sessionEntry = new(parts, this);
+                SessionEntry sessionEntry = new(parts, Year);
                 if (sessionEntry.StartDate < SessionsStartDate) SessionsStartDate = sessionEntry.StartDate;
                 if (sessionEntry.EndDate > SessionsEndDate) SessionsEndDate = sessionEntry.EndDate;
                 uniClass?.SessionEntries.Add(sessionEntry);
@@ -251,7 +251,7 @@ namespace UniTable
         internal void GetSelected()
         {
             StringBuilder stringBuilder = new(": ");
-            foreach (SubjectHeader subjectHeader in SubjectHeaderList)
+            foreach (CourseHeader subjectHeader in SubjectHeaderList)
             {
                 int[] numbers = new int[subjectHeader.ClassTypes.Count];
                 for (int i = 0; i < numbers.Length; i++)
@@ -301,12 +301,12 @@ namespace UniTable
                                 UniClass? uniClass = classType.Classes.Find((uc) => uc.Number == classQuery);
                                 if (uniClass != null)
                                 {
-                                    classType.SelectClass(uniClass);
+                                    classType.SelectedClass = uniClass;
                                 }
                             }
                             else if (classType.Classes.Count >= 2) // && classQuery = 0
                             {
-                                classType.SelectClass(null);
+                                classType.SelectedClass = null;
                             }
                         }
                     }

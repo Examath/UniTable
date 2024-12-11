@@ -1,0 +1,1704 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TimetablePlanner xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Year>2023</Year>
+  <CourseHeaderList>
+    <CourseHeader>
+      <Code>CEME</Code>
+      <Number>1004</Number>
+      <Name>Engineering Mechanics Statics</Name>
+      <Color>
+        <A>255</A>
+        <R>2</R>
+        <G>189</G>
+        <B>14</B>
+        <ScA>1</ScA>
+        <ScR>0.000607054</ScR>
+        <ScG>0.50888133</ScG>
+        <ScB>0.004391442</ScB>
+      </Color>
+      <ClassTypes>
+        <ClassType>
+          <Description>Enrolment Class: Lecture</Description>
+          <Classes>
+            <UniClass>
+              <Number>19066</Number>
+              <Section>LEC0</Section>
+              <Size>400</Size>
+              <Available>343</Available>
+              <Note />
+              <SessionEntries />
+            </UniClass>
+          </Classes>
+        </ClassType>
+        <ClassType>
+          <Description>Related Class: Class Exercise</Description>
+          <Classes>
+            <UniClass>
+              <Number>12247</Number>
+              <Section>CE01</Section>
+              <Size>450</Size>
+              <Available>393</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-04-06T00:00:00</StartDate>
+                  <EndDate>2023-04-06T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-05-18T00:00:00</StartDate>
+                  <EndDate>2023-05-18T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+          </Classes>
+        </ClassType>
+        <ClassType>
+          <Description>Related Class: Workshop</Description>
+          <Classes>
+            <UniClass>
+              <Number>13727</Number>
+              <Section>WR01</Section>
+              <Size>385</Size>
+              <Available>347</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-02-28T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>Scott Theatre, 001, Scott Theatre</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-03-02T00:00:00</StartDate>
+                  <EndDate>2023-03-30T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>Scott Theatre, 001, Scott Theatre</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-03-03T00:00:00</StartDate>
+                  <EndDate>2023-04-07T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>The Braggs, G60, Bragg Lecture Theatre</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-25T00:00:00</StartDate>
+                  <EndDate>2023-06-06T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>Scott Theatre, 001, Scott Theatre</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-27T00:00:00</StartDate>
+                  <EndDate>2023-05-11T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>Scott Theatre, 001, Scott Theatre</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-28T00:00:00</StartDate>
+                  <EndDate>2023-06-09T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>The Braggs, G60, Bragg Lecture Theatre</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-05-25T00:00:00</StartDate>
+                  <EndDate>2023-06-08T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>Scott Theatre, 001, Scott Theatre</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>13730</Number>
+              <Section>WR02</Section>
+              <Size>185</Size>
+              <Available>166</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-02-28T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-03-02T00:00:00</StartDate>
+                  <EndDate>2023-03-30T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-03-03T00:00:00</StartDate>
+                  <EndDate>2023-04-07T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-25T00:00:00</StartDate>
+                  <EndDate>2023-06-06T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-27T00:00:00</StartDate>
+                  <EndDate>2023-05-11T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-28T00:00:00</StartDate>
+                  <EndDate>2023-06-09T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-05-25T00:00:00</StartDate>
+                  <EndDate>2023-06-08T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+          </Classes>
+        </ClassType>
+      </ClassTypes>
+      <IsEnabled>true</IsEnabled>
+    </CourseHeader>
+    <CourseHeader>
+      <Code>ELEC ENG</Code>
+      <Number>1101</Number>
+      <Name>Electronic Systems</Name>
+      <Color>
+        <A>255</A>
+        <R>0</R>
+        <G>128</G>
+        <B>128</B>
+        <ScA>1</ScA>
+        <ScR>0</ScR>
+        <ScG>0.21586053</ScG>
+        <ScB>0.21586053</ScB>
+      </Color>
+      <ClassTypes>
+        <ClassType>
+          <Description>Enrolment Class: Paper</Description>
+          <Classes>
+            <UniClass>
+              <Number>19009</Number>
+              <Section>PA01</Section>
+              <Size>370</Size>
+              <Available>329</Available>
+              <Note>Note: This class is compulsory. Students must attend.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-04-04T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>13-15</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-05-16T00:00:00</StartDate>
+                  <EndDate>2023-05-16T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>13-15</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-06-06T00:00:00</StartDate>
+                  <EndDate>2023-06-06T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>13-15</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+          </Classes>
+        </ClassType>
+        <ClassType>
+          <Description>Related Class: Workshop</Description>
+          <Classes>
+            <UniClass>
+              <Number>19022</Number>
+              <Section>WR05</Section>
+              <Size>0</Size>
+              <Available>0</Available>
+              <Note>Note: This class is for OFFSHORE students only. To request to enrol in this class please fill out this form: https:</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-02T00:00:00</StartDate>
+                  <EndDate>2023-04-06T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>11-13</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-27T00:00:00</StartDate>
+                  <EndDate>2023-06-08T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>11-13</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>19023</Number>
+              <Section>WR04</Section>
+              <Size>90</Size>
+              <Available>82</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-01T00:00:00</StartDate>
+                  <EndDate>2023-04-05T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>16-18</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM205, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-26T00:00:00</StartDate>
+                  <EndDate>2023-05-31T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>16-18</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM205, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>19024</Number>
+              <Section>WR03</Section>
+              <Size>90</Size>
+              <Available>77</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-01T00:00:00</StartDate>
+                  <EndDate>2023-04-05T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>14-16</Timestring>
+                  <Location>Barr Smith South, 2032, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-26T00:00:00</StartDate>
+                  <EndDate>2023-05-31T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>14-16</Timestring>
+                  <Location>Barr Smith South, 2032, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>19025</Number>
+              <Section>WR02</Section>
+              <Size>90</Size>
+              <Available>87</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-03T00:00:00</StartDate>
+                  <EndDate>2023-04-07T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>14-16</Timestring>
+                  <Location>Helen Mayo Sth, SG20, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-28T00:00:00</StartDate>
+                  <EndDate>2023-06-02T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>14-16</Timestring>
+                  <Location>Helen Mayo Sth, SG20, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>19026</Number>
+              <Section>WR01</Section>
+              <Size>70</Size>
+              <Available>53</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-02-27T00:00:00</StartDate>
+                  <EndDate>2023-04-03T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>16-18</Timestring>
+                  <Location>Helen Mayo Sth, SG20, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-24T00:00:00</StartDate>
+                  <EndDate>2023-06-05T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>16-18</Timestring>
+                  <Location>Helen Mayo Sth, SG20, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+          </Classes>
+        </ClassType>
+        <ClassType>
+          <Description>Related Class: Practical</Description>
+          <Classes>
+            <UniClass>
+              <Number>19031</Number>
+              <Section>PR05</Section>
+              <Size>70</Size>
+              <Available>66</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-07T00:00:00</StartDate>
+                  <EndDate>2023-03-07T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>15-18</Timestring>
+                  <Location>Engineering &amp; Mathematics, 305318&amp;319, Laboratory</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-03-28T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>15-18</Timestring>
+                  <Location>Engineering &amp; Mathematics, 305318&amp;319, Laboratory</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-25T00:00:00</StartDate>
+                  <EndDate>2023-05-23T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>15-18</Timestring>
+                  <Location>Engineering &amp; Mathematics, 305318&amp;319, Laboratory</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>19032</Number>
+              <Section>PR04</Section>
+              <Size>60</Size>
+              <Available>52</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-09T00:00:00</StartDate>
+                  <EndDate>2023-03-09T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>15-18</Timestring>
+                  <Location>Engineering &amp; Mathematics, 305318&amp;319, Laboratory</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-03-30T00:00:00</StartDate>
+                  <EndDate>2023-04-06T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>15-18</Timestring>
+                  <Location>Engineering &amp; Mathematics, 305318&amp;319, Laboratory</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-27T00:00:00</StartDate>
+                  <EndDate>2023-05-25T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>15-18</Timestring>
+                  <Location>Engineering &amp; Mathematics, 305318&amp;319, Laboratory</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>19033</Number>
+              <Section>PR03</Section>
+              <Size>70</Size>
+              <Available>57</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-06T00:00:00</StartDate>
+                  <EndDate>2023-03-06T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>9-12</Timestring>
+                  <Location>Engineering &amp; Mathematics, 305318&amp;319, Laboratory</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-03-27T00:00:00</StartDate>
+                  <EndDate>2023-04-03T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>9-12</Timestring>
+                  <Location>Engineering &amp; Mathematics, 305318&amp;319, Laboratory</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-24T00:00:00</StartDate>
+                  <EndDate>2023-05-22T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>9-12</Timestring>
+                  <Location>Engineering &amp; Mathematics, 305318&amp;319, Laboratory</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>19034</Number>
+              <Section>PR02</Section>
+              <Size>70</Size>
+              <Available>60</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-06T00:00:00</StartDate>
+                  <EndDate>2023-03-06T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>12-15</Timestring>
+                  <Location>Engineering &amp; Mathematics, 305318&amp;319, Laboratory</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-03-27T00:00:00</StartDate>
+                  <EndDate>2023-04-03T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>12-15</Timestring>
+                  <Location>Engineering &amp; Mathematics, 305318&amp;319, Laboratory</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-24T00:00:00</StartDate>
+                  <EndDate>2023-05-22T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>12-15</Timestring>
+                  <Location>Engineering &amp; Mathematics, 305318&amp;319, Laboratory</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>19035</Number>
+              <Section>PR01</Section>
+              <Size>50</Size>
+              <Available>44</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-07T00:00:00</StartDate>
+                  <EndDate>2023-03-07T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>9-12</Timestring>
+                  <Location>Engineering &amp; Mathematics, 305318&amp;319, Laboratory</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-03-28T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>9-12</Timestring>
+                  <Location>Engineering &amp; Mathematics, 305318&amp;319, Laboratory</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-25T00:00:00</StartDate>
+                  <EndDate>2023-05-23T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>9-12</Timestring>
+                  <Location>Engineering &amp; Mathematics, 305318&amp;319, Laboratory</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>19508</Number>
+              <Section>PRA0</Section>
+              <Size>55</Size>
+              <Available>55</Available>
+              <Note>Note: This is an Online class for all offshore/remote students only.</Note>
+              <SessionEntries />
+            </UniClass>
+          </Classes>
+        </ClassType>
+        <ClassType>
+          <Description>Automatic Enrolment Class: Lecture</Description>
+          <Classes>
+            <UniClass>
+              <Number>19150</Number>
+              <Section>LE01</Section>
+              <Size>320</Size>
+              <Available>279</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-02-27T00:00:00</StartDate>
+                  <EndDate>2023-03-13T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>Scott Theatre, 001, Scott Theatre</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-03-27T00:00:00</StartDate>
+                  <EndDate>2023-03-27T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>Scott Theatre, 001, Scott Theatre</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-24T00:00:00</StartDate>
+                  <EndDate>2023-04-24T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>Scott Theatre, 001, Scott Theatre</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-05-08T00:00:00</StartDate>
+                  <EndDate>2023-05-08T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>Scott Theatre, 001, Scott Theatre</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-05-22T00:00:00</StartDate>
+                  <EndDate>2023-05-22T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>Scott Theatre, 001, Scott Theatre</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+          </Classes>
+        </ClassType>
+      </ClassTypes>
+      <IsEnabled>true</IsEnabled>
+    </CourseHeader>
+    <CourseHeader>
+      <Code>ENG</Code>
+      <Number>1001</Number>
+      <Name>Introduction to Engineering</Name>
+      <Color>
+        <A>255</A>
+        <R>0</R>
+        <G>0</G>
+        <B>255</B>
+        <ScA>1</ScA>
+        <ScR>0</ScR>
+        <ScG>0</ScG>
+        <ScB>1</ScB>
+      </Color>
+      <ClassTypes>
+        <ClassType>
+          <Description>Enrolment Class: Computer Exercise</Description>
+          <Classes>
+            <UniClass>
+              <Number>10506</Number>
+              <Section>CO11</Section>
+              <Size>50</Size>
+              <Available>44</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-10T00:00:00</StartDate>
+                  <EndDate>2023-03-24T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>13-15</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM108, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>10507</Number>
+              <Section>CO10</Section>
+              <Size>50</Size>
+              <Available>47</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-10T00:00:00</StartDate>
+                  <EndDate>2023-03-24T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>9-11</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM108, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>10508</Number>
+              <Section>CO09</Section>
+              <Size>50</Size>
+              <Available>46</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-08T00:00:00</StartDate>
+                  <EndDate>2023-03-22T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>15-17</Timestring>
+                  <Location>Ingkarni Wardli, G22, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>10509</Number>
+              <Section>CO08</Section>
+              <Size>0</Size>
+              <Available>0</Available>
+              <Note>Note: This class is for OFFSHORE students only. To request to enrol in this class please fill out https:</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-09T00:00:00</StartDate>
+                  <EndDate>2023-03-23T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>9-11</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>10510</Number>
+              <Section>CO07</Section>
+              <Size>68</Size>
+              <Available>68</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-10T00:00:00</StartDate>
+                  <EndDate>2023-03-24T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>15-17</Timestring>
+                  <Location>Ingkarni Wardli, B23, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>10511</Number>
+              <Section>CO06</Section>
+              <Size>50</Size>
+              <Available>49</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-08T00:00:00</StartDate>
+                  <EndDate>2023-03-22T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>13-15</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG13, Computer Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>10512</Number>
+              <Section>CO05</Section>
+              <Size>50</Size>
+              <Available>44</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-10T00:00:00</StartDate>
+                  <EndDate>2023-03-24T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>11-13</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM108, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>10513</Number>
+              <Section>CO04</Section>
+              <Size>50</Size>
+              <Available>45</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-08T00:00:00</StartDate>
+                  <EndDate>2023-03-22T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>9-11</Timestring>
+                  <Location>Ingkarni Wardli, 234, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>10514</Number>
+              <Section>CO03</Section>
+              <Size>50</Size>
+              <Available>48</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-07T00:00:00</StartDate>
+                  <EndDate>2023-03-21T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>14-16</Timestring>
+                  <Location>Ingkarni Wardli, 234, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>10515</Number>
+              <Section>CO02</Section>
+              <Size>50</Size>
+              <Available>48</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-08T00:00:00</StartDate>
+                  <EndDate>2023-03-22T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>11-13</Timestring>
+                  <Location>Ingkarni Wardli, 234, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>10516</Number>
+              <Section>CO01</Section>
+              <Size>50</Size>
+              <Available>0</Available>
+              <Note>Note: This class is only available for face-to-face (on-campus) students.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-07T00:00:00</StartDate>
+                  <EndDate>2023-03-21T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>12-14</Timestring>
+                  <Location>Ingkarni Wardli, 234, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+          </Classes>
+        </ClassType>
+        <ClassType>
+          <Description>Related Class: Workshop</Description>
+          <Classes>
+            <UniClass>
+              <Number>10108</Number>
+              <Section>WR05</Section>
+              <Size>0</Size>
+              <Available>0</Available>
+              <Note>Note: This class is for OFFSHORE students only. To request to enrol in this class please fill out https:</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-01T00:00:00</StartDate>
+                  <EndDate>2023-04-05T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>14-16</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-26T00:00:00</StartDate>
+                  <EndDate>2023-05-31T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>14-16</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>10109</Number>
+              <Section>WR04</Section>
+              <Size>80</Size>
+              <Available>74</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-02-28T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>16-18</Timestring>
+                  <Location>Barr Smith South, 2032, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-25T00:00:00</StartDate>
+                  <EndDate>2023-05-30T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>16-18</Timestring>
+                  <Location>Barr Smith South, 2032, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>10110</Number>
+              <Section>WR03</Section>
+              <Size>100</Size>
+              <Available>86</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-02T00:00:00</StartDate>
+                  <EndDate>2023-04-06T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>11-13</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM205, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-27T00:00:00</StartDate>
+                  <EndDate>2023-06-01T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>11-13</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM205, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>10111</Number>
+              <Section>WR02</Section>
+              <Size>100</Size>
+              <Available>93</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-01T00:00:00</StartDate>
+                  <EndDate>2023-04-05T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>12-14</Timestring>
+                  <Location>Helen Mayo Sth, SG20, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-26T00:00:00</StartDate>
+                  <EndDate>2023-05-31T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>12-14</Timestring>
+                  <Location>Helen Mayo Sth, SG20, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>10112</Number>
+              <Section>WR01</Section>
+              <Size>100</Size>
+              <Available>95</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-02-27T00:00:00</StartDate>
+                  <EndDate>2023-04-03T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>16-18</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM205, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-24T00:00:00</StartDate>
+                  <EndDate>2023-05-29T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>16-18</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM205, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+          </Classes>
+        </ClassType>
+        <ClassType>
+          <Description>Automatic Enrolment Class: Lecture</Description>
+          <Classes>
+            <UniClass>
+              <Number>10503</Number>
+              <Section>LE01</Section>
+              <Size>430</Size>
+              <Available>19</Available>
+              <Note>Note: Note: This lecture is live-streamed and recorded. You have the option of participating during the live-streaming session, or viewing any time after publication in MyUni. Please check MyUni for details once enrolled.</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-02-28T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>12-13</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-25T00:00:00</StartDate>
+                  <EndDate>2023-06-06T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>12-13</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+          </Classes>
+        </ClassType>
+      </ClassTypes>
+      <IsEnabled>true</IsEnabled>
+    </CourseHeader>
+    <CourseHeader>
+      <Code>MATHS</Code>
+      <Number>1011</Number>
+      <Name>Mathematics IA</Name>
+      <Color>
+        <A>255</A>
+        <R>252</R>
+        <G>95</G>
+        <B>0</B>
+        <ScA>1</ScA>
+        <ScR>0.9734453</ScR>
+        <ScG>0.11443538</ScG>
+        <ScB>0</ScB>
+      </Color>
+      <ClassTypes>
+        <ClassType>
+          <Description>Enrolment Class: Tutorial</Description>
+          <Classes>
+            <UniClass>
+              <Number>12167</Number>
+              <Section>TU21</Section>
+              <Size>42</Size>
+              <Available>10</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-08T00:00:00</StartDate>
+                  <EndDate>2023-04-05T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>13-14</Timestring>
+                  <Location>Barr Smith South, 2032, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-26T00:00:00</StartDate>
+                  <EndDate>2023-05-31T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>13-14</Timestring>
+                  <Location>Barr Smith South, 2032, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>12168</Number>
+              <Section>TU20</Section>
+              <Size>42</Size>
+              <Available>28</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-09T00:00:00</StartDate>
+                  <EndDate>2023-04-06T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>16-17</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG07, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-27T00:00:00</StartDate>
+                  <EndDate>2023-06-01T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>16-17</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG07, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15176</Number>
+              <Section>TU17</Section>
+              <Size>42</Size>
+              <Available>35</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-09T00:00:00</StartDate>
+                  <EndDate>2023-04-06T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG07, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-27T00:00:00</StartDate>
+                  <EndDate>2023-06-01T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG07, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15177</Number>
+              <Section>TU16</Section>
+              <Size>42</Size>
+              <Available>31</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-07T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>14-15</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-25T00:00:00</StartDate>
+                  <EndDate>2023-05-30T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>14-15</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15178</Number>
+              <Section>TU15</Section>
+              <Size>42</Size>
+              <Available>24</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-07T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>11-12</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-25T00:00:00</StartDate>
+                  <EndDate>2023-05-30T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>11-12</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15179</Number>
+              <Section>TU14</Section>
+              <Size>42</Size>
+              <Available>36</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-08T00:00:00</StartDate>
+                  <EndDate>2023-04-05T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG07, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-26T00:00:00</StartDate>
+                  <EndDate>2023-05-31T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG07, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15180</Number>
+              <Section>TU13</Section>
+              <Size>42</Size>
+              <Available>37</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-10T00:00:00</StartDate>
+                  <EndDate>2023-04-07T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>13-14</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-28T00:00:00</StartDate>
+                  <EndDate>2023-06-02T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>13-14</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15181</Number>
+              <Section>TU12</Section>
+              <Size>42</Size>
+              <Available>38</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-08T00:00:00</StartDate>
+                  <EndDate>2023-04-05T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>16-17</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG07, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-26T00:00:00</StartDate>
+                  <EndDate>2023-05-31T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>16-17</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG07, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15182</Number>
+              <Section>TU11</Section>
+              <Size>42</Size>
+              <Available>39</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-07T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG07, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-25T00:00:00</StartDate>
+                  <EndDate>2023-05-30T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG07, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15183</Number>
+              <Section>TU10</Section>
+              <Size>42</Size>
+              <Available>40</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-10T00:00:00</StartDate>
+                  <EndDate>2023-04-07T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>16-17</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-28T00:00:00</StartDate>
+                  <EndDate>2023-06-02T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>16-17</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15184</Number>
+              <Section>TU09</Section>
+              <Size>42</Size>
+              <Available>40</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-07T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>16-17</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-25T00:00:00</StartDate>
+                  <EndDate>2023-05-30T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>16-17</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15185</Number>
+              <Section>TU08</Section>
+              <Size>42</Size>
+              <Available>42</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-10T00:00:00</StartDate>
+                  <EndDate>2023-04-07T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG07, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-28T00:00:00</StartDate>
+                  <EndDate>2023-06-02T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG07, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15186</Number>
+              <Section>TU07</Section>
+              <Size>42</Size>
+              <Available>40</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-08T00:00:00</StartDate>
+                  <EndDate>2023-04-05T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>14-15</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-26T00:00:00</StartDate>
+                  <EndDate>2023-05-31T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>14-15</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15187</Number>
+              <Section>TU06</Section>
+              <Size>42</Size>
+              <Available>41</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-10T00:00:00</StartDate>
+                  <EndDate>2023-04-07T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-28T00:00:00</StartDate>
+                  <EndDate>2023-06-02T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15188</Number>
+              <Section>TU05</Section>
+              <Size>30</Size>
+              <Available>25</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-10T00:00:00</StartDate>
+                  <EndDate>2023-04-07T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM218, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-28T00:00:00</StartDate>
+                  <EndDate>2023-06-02T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM218, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15189</Number>
+              <Section>TU04</Section>
+              <Size>30</Size>
+              <Available>28</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-10T00:00:00</StartDate>
+                  <EndDate>2023-04-07T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>12-13</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM218, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-28T00:00:00</StartDate>
+                  <EndDate>2023-06-02T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>12-13</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM218, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15190</Number>
+              <Section>TU03</Section>
+              <Size>42</Size>
+              <Available>35</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-10T00:00:00</StartDate>
+                  <EndDate>2023-04-07T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>10-11</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-28T00:00:00</StartDate>
+                  <EndDate>2023-06-02T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>10-11</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15191</Number>
+              <Section>TU02</Section>
+              <Size>42</Size>
+              <Available>38</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-08T00:00:00</StartDate>
+                  <EndDate>2023-04-05T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>13-14</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM105, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-26T00:00:00</StartDate>
+                  <EndDate>2023-05-31T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>13-14</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM105, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15192</Number>
+              <Section>TU01</Section>
+              <Size>42</Size>
+              <Available>38</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-07T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>16-17</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG07, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-25T00:00:00</StartDate>
+                  <EndDate>2023-05-30T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>16-17</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG07, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15193</Number>
+              <Section>TU18</Section>
+              <Size>42</Size>
+              <Available>40</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-09T00:00:00</StartDate>
+                  <EndDate>2023-04-06T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-27T00:00:00</StartDate>
+                  <EndDate>2023-06-01T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG06, Teaching Room</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15194</Number>
+              <Section>TU19</Section>
+              <Size>0</Size>
+              <Available>0</Available>
+              <Note>Note: This class is for remote students only. To request to enrol in this class please fill out: https:</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-03-08T00:00:00</StartDate>
+                  <EndDate>2023-04-05T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-26T00:00:00</StartDate>
+                  <EndDate>2023-05-31T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+          </Classes>
+        </ClassType>
+        <ClassType>
+          <Description>Related Class: Workshop</Description>
+          <Classes>
+            <UniClass>
+              <Number>10614</Number>
+              <Section>WR01</Section>
+              <Size>500</Size>
+              <Available>421</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-02-27T00:00:00</StartDate>
+                  <EndDate>2023-02-27T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>14-15</Timestring>
+                  <Location>Scott Theatre, 001, Scott Theatre</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-03-02T00:00:00</StartDate>
+                  <EndDate>2023-04-06T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>14-15</Timestring>
+                  <Location>Scott Theatre, 001, Scott Theatre</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-27T00:00:00</StartDate>
+                  <EndDate>2023-06-01T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>14-15</Timestring>
+                  <Location>Scott Theatre, 001, Scott Theatre</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15810</Number>
+              <Section>WR02</Section>
+              <Size>200</Size>
+              <Available>148</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-02-27T00:00:00</StartDate>
+                  <EndDate>2023-02-27T00:00:00</EndDate>
+                  <DayOfWeek>Monday</DayOfWeek>
+                  <Timestring>14-15</Timestring>
+                  <Location>Darling West, G14, Darling West Lecture Theatre</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-03-02T00:00:00</StartDate>
+                  <EndDate>2023-04-06T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>14-15</Timestring>
+                  <Location>Darling West, G14, Darling West Lecture Theatre</Location>
+                </SessionEntry>
+                <SessionEntry>
+                  <StartDate>2023-04-27T00:00:00</StartDate>
+                  <EndDate>2023-06-01T00:00:00</EndDate>
+                  <DayOfWeek>Thursday</DayOfWeek>
+                  <Timestring>14-15</Timestring>
+                  <Location>Darling West, G14, Darling West Lecture Theatre</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+          </Classes>
+        </ClassType>
+        <ClassType>
+          <Description>Related Class: Class Exercise</Description>
+          <Classes>
+            <UniClass>
+              <Number>15006</Number>
+              <Section>CE13</Section>
+              <Size>50</Size>
+              <Available>42</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-04-07T00:00:00</StartDate>
+                  <EndDate>2023-04-07T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>13-14</Timestring>
+                  <Location>Ingkarni Wardli, 234, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15007</Number>
+              <Section>CE12</Section>
+              <Size>48</Size>
+              <Available>36</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-04-07T00:00:00</StartDate>
+                  <EndDate>2023-04-07T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>13-14</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM108, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15008</Number>
+              <Section>CE11</Section>
+              <Size>56</Size>
+              <Available>48</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-04-05T00:00:00</StartDate>
+                  <EndDate>2023-04-05T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>10-11</Timestring>
+                  <Location>Engineering &amp; Mathematics, EMG13, Computer Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15009</Number>
+              <Section>CE10</Section>
+              <Size>80</Size>
+              <Available>71</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-04-07T00:00:00</StartDate>
+                  <EndDate>2023-04-07T00:00:00</EndDate>
+                  <DayOfWeek>Friday</DayOfWeek>
+                  <Timestring>14-15</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM108, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15011</Number>
+              <Section>CE08</Section>
+              <Size>80</Size>
+              <Available>63</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-04-04T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>15-16</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM108, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15012</Number>
+              <Section>CE07</Section>
+              <Size>63</Size>
+              <Available>59</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-04-05T00:00:00</StartDate>
+                  <EndDate>2023-04-05T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>Ingkarni Wardli, 234, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15013</Number>
+              <Section>CE06</Section>
+              <Size>48</Size>
+              <Available>29</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-04-05T00:00:00</StartDate>
+                  <EndDate>2023-04-05T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>10-11</Timestring>
+                  <Location>Ingkarni Wardli, 234, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15014</Number>
+              <Section>CE05</Section>
+              <Size>63</Size>
+              <Available>50</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-04-05T00:00:00</StartDate>
+                  <EndDate>2023-04-05T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>9-10</Timestring>
+                  <Location>Ingkarni Wardli, B23, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15015</Number>
+              <Section>CE04</Section>
+              <Size>80</Size>
+              <Available>77</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-04-04T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>14-15</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM108, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15016</Number>
+              <Section>CE03</Section>
+              <Size>63</Size>
+              <Available>55</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-04-04T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>13-14</Timestring>
+                  <Location>Ingkarni Wardli, 234, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15017</Number>
+              <Section>CE02</Section>
+              <Size>80</Size>
+              <Available>68</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-04-04T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>13-14</Timestring>
+                  <Location>Engineering &amp; Mathematics, EM108, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>15018</Number>
+              <Section>CE01</Section>
+              <Size>50</Size>
+              <Available>35</Available>
+              <Note />
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-04-04T00:00:00</StartDate>
+                  <EndDate>2023-04-04T00:00:00</EndDate>
+                  <DayOfWeek>Tuesday</DayOfWeek>
+                  <Timestring>14-15</Timestring>
+                  <Location>Ingkarni Wardli, 234, CAT Suite</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+            <UniClass>
+              <Number>19664</Number>
+              <Section>CE14</Section>
+              <Size>0</Size>
+              <Available>0</Available>
+              <Note>Note: This class is for remote students only. To request to enrol in this class please fill out: https:</Note>
+              <SessionEntries>
+                <SessionEntry>
+                  <StartDate>2023-04-05T00:00:00</StartDate>
+                  <EndDate>2023-04-05T00:00:00</EndDate>
+                  <DayOfWeek>Wednesday</DayOfWeek>
+                  <Timestring>16-18</Timestring>
+                  <Location>MyUni, OL, Online Class</Location>
+                </SessionEntry>
+              </SessionEntries>
+            </UniClass>
+          </Classes>
+        </ClassType>
+      </ClassTypes>
+      <IsEnabled>true</IsEnabled>
+    </CourseHeader>
+  </CourseHeaderList>
+  <Selection>Sample Selection: 19066, 12247, 13727; 19009, 19024, 19033, 19150; 10512, 10110, 10503; 15177, 10614, 15014; </Selection>
+  <Stats> : Total Classtime: 147h | Total Commitment: 336.7h</Stats>
+</TimetablePlanner>

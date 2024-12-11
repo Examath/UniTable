@@ -1,167 +1,187 @@
-﻿using Examath.Core.Environment;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
+using UniTable.Model;
 using UniTable.Properties;
 
 namespace UniTable
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
-    {
-        private UniModel? _UniModel;
+	/// <summary>
+	/// Interaction logic for MainWindow.xaml
+	/// </summary>
+	public partial class MainWindow : Window
+	{
+		private VM? _VM;
 
-        public MainWindow()
-        {
-            InitializeComponent();
-            Settings.Default.PropertyChanged += Settings_PropertyChanged;
-        }
+		#region Constructor and Loading
 
-        private void Settings_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case nameof(Settings.Default.CommuteTime):
-                case nameof(Settings.Default.CommuteUniToBusTime):
-                case nameof(Settings.Default.FarePeak):
-                case nameof(Settings.Default.FareOffPeak):
-                    _UniModel?.ComputeStatistics();
-                    break;
-            }
-        }
+		public MainWindow()
+		{
+			// Crash Handler
+			AppDomain currentDomain = AppDomain.CurrentDomain;
+			currentDomain.UnhandledException += new UnhandledExceptionEventHandler(CrashHandler);
 
-        private OpenFileDialog CreateOpenFileDialog()
-        {
-            return new OpenFileDialog()
-            {
-                Title = "Select the text file containing copy pasted university course tables",
-                Filter = UniModel.FILTER,
-            };
-        }
+			Settings.Default.PropertyChanged += Settings_PropertyChanged;
+			//Title = $"UniTable v{System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString(2)}";
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            string fileName = ((App)App.Current).StartFile ?? Settings.Default.LastFileName;
-            _UniModel = (UniModel)DataContext;
+			InitializeComponent();
 
-            if (!File.Exists(fileName))
-            {
-                OpenFileDialog openFileDialog = CreateOpenFileDialog();
-                bool? result = openFileDialog.ShowDialog();
+			if (!Path.Exists(Settings.Default.LastFileName)) Recent.Visibility = Visibility.Collapsed;
+		}
 
-                // Process open file dialog box results
-                if (result == true)
-                {
-                    fileName = openFileDialog.FileName;
-                }
-                else
-                {
-                    Close();
-                }
-            }
+		private async void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			_VM = (VM)DataContext;
 
-            try
-            {
-                await _UniModel.LoadUniTable(fileName);
-            }
-            catch (Exception ee)
-            {
-                Messager.Out($"Inner exception: {ee.Message}", "Loading .cuacv", ConsoleStyle.ErrorBlockStyle);
-                Close();
-                return;
-            }
+			if (((App)App.Current).StartFile is string fileLocation)
+			{
+				await _VM.Open(fileLocation);
+			}
 
-            // State memory
-            if (fileName == Settings.Default.LastFileName) _UniModel.Selected = Settings.Default.LastSelection;
-            else Settings.Default.LastFileName = fileName;
+			if (_VM.Data == null) _VM.CreateFile();
 
-            Root.Opacity = 1;
-            Title = $"{System.IO.Path.GetFileName(fileName)} | Unitable v{System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString()[0..^2]}";
-        }
+			Root.Opacity = 1;
+			//Title = $"{System.IO.Path.GetFileName(fileName)} | Unitable v{System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString(2)}";
+		}
 
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            Settings.Default.LastSelection = _UniModel?.Selected;
-            Settings.Default.Save();
-            base.OnClosing(e);
-        }
+		private async void RecentButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (_VM != null)
+			{
+				await _VM.Open(Settings.Default.LastFileName);
+			}
+		}
 
-        private void ThemeButton_Click(object sender, RoutedEventArgs e)
-        {
-            ThemeButton.IsEnabled = false;
-            OptionsExpander.IsExpanded = false;
+		#endregion
 
-            Resources["BackgroundColourKey"] = new SolidColorBrush(Color.FromArgb(60, 250, 250, 250));
-            Resources["DialogBackgroundColourKey"] = new SolidColorBrush(Colors.White);
-            Resources["PanelColourKey"] = new SolidColorBrush(Color.FromArgb(60, 155, 155, 155));
-            Resources["PanelFaintColourKey"] = new SolidColorBrush(Color.FromArgb(30, 155, 155, 155));
-            Resources["ForegroundColourKey"] = new SolidColorBrush(Colors.Black);
-            Resources["ForegroundMinorColourKey"] = new SolidColorBrush(Color.FromArgb(127, 0, 0, 0));
-        }
+		#region Closing
 
-        private void CompactModeCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
+		private bool _IsReadyToClose = false;
 
-        }
+		protected override async void OnClosing(CancelEventArgs e)
+		{
+			// Avoid Refire
+			if (_IsReadyToClose) return;
+			base.OnClosing(e);
 
-        private void CompactModeCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
+			// If dirty
+			if (_VM != null && _VM.IsModified)
+			{
+				// Temp cancel Closing
+				e.Cancel = true;
 
-        }
+				if (await _VM.IsUserReadyToPartWithCurrentFile())
+				{
+					// Restart closing
+					_IsReadyToClose = true;
+					Application.Current.Shutdown();
+				}
+			}
 
-        private void UniClassRootGrid_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (((Grid)sender).DataContext is UniClass uniClass)
-            {
-                uniClass.IsMouseOver = true;
-            }
-        }
+			Settings.Default.LastFileName = _VM?.FileLocation;
+			Settings.Default.Save();
+		}
 
-        private void UniClassRootGrid_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (((Grid)sender).DataContext is UniClass uniClass)
-            {
-                uniClass.IsMouseOver = false;
-            }
-        }
+		#endregion
 
-        private async void OpenButton_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = CreateOpenFileDialog();
-            bool? result = openFileDialog.ShowDialog();
+		#region Settings
 
-            // Process open file dialog box results
-            if (result == true)
-            {
-                UniModel uniModel = new();
+		private void Settings_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			switch (e.PropertyName)
+			{
+				case nameof(Settings.Default.CommuteTime):
+				case nameof(Settings.Default.CommuteUniToBusTime):
+				case nameof(Settings.Default.FarePeak):
+				case nameof(Settings.Default.FareOffPeak):
+					_VM?.ComputeStatistics();
+					break;
+			}
+		}
 
-                try
-                {
-                    await uniModel.LoadUniTable(openFileDialog.FileName);
-                }
-                catch (Exception ee)
-                {
-                    Messager.Out($"Inner exception: {ee.Message}", "Loading .cuacv", ConsoleStyle.ErrorBlockStyle);
-                    return;
-                }
+		#endregion
 
-                _UniModel = uniModel;
-            }
-        }
-    }
+		#region Theme And UX
+
+		private void ThemeButton_Click(object sender, RoutedEventArgs e)
+		{
+			ThemeButton.IsEnabled = false;
+			OptionsExpander.IsExpanded = false;
+
+			Resources["BackgroundColourKey"] = new SolidColorBrush(Color.FromArgb(60, 250, 250, 250));
+			Resources["DialogBackgroundColourKey"] = new SolidColorBrush(Colors.White);
+			Resources["PanelColourKey"] = new SolidColorBrush(Color.FromArgb(60, 155, 155, 155));
+			Resources["PanelFaintColourKey"] = new SolidColorBrush(Color.FromArgb(30, 155, 155, 155));
+			Resources["ForegroundColourKey"] = new SolidColorBrush(Colors.Black);
+			Resources["ForegroundMinorColourKey"] = new SolidColorBrush(Color.FromArgb(127, 0, 0, 0));
+		}
+
+		private void CompactModeCheckBox_Checked(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void CompactModeCheckBox_Unchecked(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void UniClassRootGrid_MouseEnter(object sender, MouseEventArgs e)
+		{
+			if (((Grid)sender).DataContext is UniClass uniClass)
+			{
+				uniClass.IsMouseOver = true;
+			}
+		}
+
+		private void UniClassRootGrid_MouseLeave(object sender, MouseEventArgs e)
+		{
+			if (((Grid)sender).DataContext is UniClass uniClass)
+			{
+				uniClass.IsMouseOver = false;
+			}
+		}
+
+		#endregion
+
+		#region Crash Handler
+
+		private void CrashHandler(object sender, UnhandledExceptionEventArgs args)
+		{
+#pragma warning disable CS0162 // Unreachable code detected when DEBUG config
+			try
+			{
+				if (_VM != null)
+				{
+					_VM.SaveFile();
+#if DEBUG
+					return;
+#endif
+
+					Exception e = (Exception)args.ExceptionObject;
+					MessageBox.Show($"{e.GetType().Name}: {e.Message}\nThe timetable plan was saved. See crash-info.txt fore more info.", " An Unhandled Exception Occurred", MessageBoxButton.OK, MessageBoxImage.Error);
+					System.IO.File.AppendAllLines(System.IO.Path.GetDirectoryName(_VM.FileLocation) + "\\crash-info.txt",
+						[
+							"______________________________________________________",
+							$"An unhandled exception occurred at {DateTime.Now:g}",
+							$"A backup of Scoresheet was saved at {_VM.FileLocation}.crashed",
+							$"Error Message:\t{e.Message}",
+							$"Stack Trace:\n{e.StackTrace}",
+						]
+					);
+				}
+
+			}
+			catch (Exception)
+			{
+				MessageBox.Show($"An exception occurred in the crash-handler. The timetable is unlikely to have been saved.", "Dual Unhandled Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+#pragma warning restore CS0162 // Unreachable code detected
+		}
+		#endregion
+	}
 }
