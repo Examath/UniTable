@@ -16,83 +16,83 @@ namespace UniTable
 	/// Represents information pretaining to the Subject of a <see cref="UniClass"/>
 	/// </summary>
 	public partial class CourseHeader : ObservableObject
-    {
-        #region Properties
+	{
+		#region Properties
 
-        private string _Code = "XYZ";
-        /// <summary>
-        /// Short code for the course
-        /// </summary>
-        public string Code
-        {
-            get => _Code;
-            set => SetProperty(ref _Code, value);
-        }
+		private string _Code = "XYZ";
+		/// <summary>
+		/// Short code for the course
+		/// </summary>
+		public string Code
+		{
+			get => _Code;
+			set => SetProperty(ref _Code, value);
+		}
 
-        private int _Number = 0;
+		private int _Number = 0;
 		/// <summary>
 		/// Unique 4-digit course number
 		/// </summary>
 		public int Number
-        {
-            get => _Number;
-            set => SetProperty(ref _Number, value);
-        }
+		{
+			get => _Number;
+			set => SetProperty(ref _Number, value);
+		}
 
-        private string _Name = "Untitled";
-        /// <summary>
-        /// Longform name of course
-        /// </summary>
-        public string Name
-        {
-            get => _Name;
-            set => SetProperty(ref _Name, value);
-        }
+		private string _Name = "Untitled";
+		/// <summary>
+		/// Longform name of course
+		/// </summary>
+		public string Name
+		{
+			get => _Name;
+			set => SetProperty(ref _Name, value);
+		}
 
 
-        private Color _Color = Examath.Core.Utils.HSV.GetRandomColor();
-        /// <summary>
-        /// Gets or sets the color of the course
-        /// </summary>
-        public Color Color
-        {
-            get => _Color;
-            set => SetProperty(ref _Color, value);
-        }
+		private Color _Color = Examath.Core.Utils.HSV.GetRandomColor();
+		/// <summary>
+		/// Gets or sets the color of the course
+		/// </summary>
+		public Color Color
+		{
+			get => _Color;
+			set => SetProperty(ref _Color, value);
+		}
 
-        private List<ClassType> _ClassTypes = new();
-        /// <summary>
-        /// List containing various types of classes
-        /// </summary>
-        public List<ClassType> ClassTypes
-        {
-            get => _ClassTypes;
-            set => SetProperty(ref _ClassTypes, value);
-        }
+		private List<ClassType> _ClassTypes = new();
+		/// <summary>
+		/// List containing various types of classes
+		/// </summary>
+		public List<ClassType> ClassTypes
+		{
+			get => _ClassTypes;
+			set => SetProperty(ref _ClassTypes, value);
+		}
 
-        private void ClassType_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName != nameof(ClassType.IsFocused)) OnPropertyChanged(e);
-        }
+		private void ClassType_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName != nameof(ClassType.IsFocused)) OnPropertyChanged(e);
+		}
 
-        private bool _IsEnabled = true;
-        /// <summary>
-        /// Gets or sets whether the course is enabled (and bucketed)
-        /// </summary>
-        public bool IsEnabled
-        {
-            get => _IsEnabled;
-            set => SetProperty(ref _IsEnabled, value);
-        }
+		private bool _IsEnabled = true;
+		/// <summary>
+		/// Gets or sets whether the course is enabled (and bucketed)
+		/// </summary>
+		public bool IsEnabled
+		{
+			get => _IsEnabled;
+			set => SetProperty(ref _IsEnabled, value);
+		}
 
-        #endregion
+		#endregion
 
-        #region Init
+		#region Init
 
-        /// <summary>
-        /// Creates a empty course header
-        /// </summary>
-        public CourseHeader()
+		/// <summary>
+		/// Creates a empty course header
+		/// </summary>
+		public CourseHeader()
 		{
 
 		}
@@ -104,64 +104,64 @@ namespace UniTable
 		/// In format<c>CODE WORD 1000 - Name Of Subject - #HEXCOLOR</c>
 		/// </param>
 		public CourseHeader(string param)
-        {
-            string[] subParams = param.Split(" - ");
-            string[] codeWords = subParams[0].Split(' ');
-            Number = int.Parse(codeWords[^1]);
-            Code = subParams[0][..(subParams[0].Length - 1 - codeWords[^1].Length)];
-            Name = subParams[1];
-            if (subParams.Length >= 3 && subParams[2].Contains('#'))
-            {
-                Color = (Color)ColorConverter.ConvertFromString(subParams[2]);
-            }
-        }
+		{
+			string[] subParams = param.Split(" - ");
+			string[] codeWords = subParams[0].Split(' ');
+			Number = int.Parse(codeWords[^1]);
+			Code = subParams[0][..(subParams[0].Length - 1 - codeWords[^1].Length)];
+			Name = subParams[1];
+			if (subParams.Length >= 3 && subParams[2].Contains('#'))
+			{
+				Color = (Color)ColorConverter.ConvertFromString(subParams[2]);
+			}
+		}
 
 		public void Initialize()
 		{
-            foreach (ClassType classType in ClassTypes)
-            {
-                classType.Initialize();
+			foreach (ClassType classType in ClassTypes)
+			{
+				classType.Initialize();
 				classType.PropertyChanged += ClassType_PropertyChanged;
-            }
+			}
 		}
 
-        #endregion
+		#endregion
 
-        #region Commands
+		#region Commands
 
-        [RelayCommand]
-        internal void ChangeColour()
-        {
-            Color color = Color;
-            bool ok = ColorPickerWindow.ShowDialog(out color);
-            if (ok)
-            {
-                Color = color;
-            }
-        }
+		[RelayCommand]
+		internal void ChangeColour()
+		{
+			Color color = Color;
+			bool ok = ColorPickerWindow.ShowDialog(out color);
+			if (ok)
+			{
+				Color = color;
+			}
+		}
 
-        [RelayCommand]
-        internal void UpdateFromClipboard()
-        {
+		[RelayCommand]
+		internal void UpdateFromClipboard()
+		{
 			ClassType? classType = null;
 			UniClass? uniClass = null;
 
 			string[] lines = [];
-            List<ClassType> newClassTypes = [];
+			List<ClassType> newClassTypes = [];
 
 			// Get text from clipboard
 			try
 			{
-                if (Clipboard.ContainsText())
-                {
+				if (Clipboard.ContainsText())
+				{
 					lines = SplitLines().Split(Clipboard.GetText());
-                }
+				}
 				else
 				{
 					Messager.Out("Copy the timetable data", "Nothing to paste",
 						messageStyle: ConsoleStyle.FormatBlockStyle);
 				}
-            }
+			}
 			catch (Exception e)
 			{
 #if DEBUG
@@ -173,7 +173,7 @@ namespace UniTable
 #pragma warning restore CS0162 // Unreachable code detected
 			}
 
-            // Interptet
+			// Interptet
 
 			int lineNumber = 0;
 
@@ -251,13 +251,13 @@ namespace UniTable
 				lineNumber++;
 			}
 
-            //Finally set changes
-            foreach (ClassType c in ClassTypes) c.PropertyChanged -= ClassType_PropertyChanged;
-            foreach (ClassType c in newClassTypes)
-            {
-                c.Initialize();
-                c.PropertyChanged += ClassType_PropertyChanged;
-            }
+			//Finally set changes
+			foreach (ClassType c in ClassTypes) c.PropertyChanged -= ClassType_PropertyChanged;
+			foreach (ClassType c in newClassTypes)
+			{
+				c.Initialize();
+				c.PropertyChanged += ClassType_PropertyChanged;
+			}
 			ClassTypes = newClassTypes;
 
 			void AddSession(string[] parts)
@@ -267,19 +267,19 @@ namespace UniTable
 			}
 		}
 
-        [RelayCommand]
-        internal void Edit()
-        {
-            CourseHeaderEditor courseHeaderEditor = new CourseHeaderEditor(this);
-            courseHeaderEditor.ShowDialog();
-        }
+		[RelayCommand]
+		internal void Edit()
+		{
+			CourseHeaderEditor courseHeaderEditor = new CourseHeaderEditor(this);
+			courseHeaderEditor.ShowDialog();
+		}
 
-        #endregion
+		#endregion
 
-        public override string ToString()
-        {
-            return $"{Code} / {Number} - {Name}";
-        }
+		public override string ToString()
+		{
+			return $"{Code} / {Number} - {Name}";
+		}
 
 		[GeneratedRegex("\r\n|\r|\n")]
 		private static partial Regex SplitLines();

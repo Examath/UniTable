@@ -1,32 +1,21 @@
-﻿using Examath.Core.Environment;
-using Examath.Core.Utils;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using UniTable.Model;
 using UniTable.Properties;
 
 namespace UniTable
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
-    {
-        private VM? _VM;
+	/// <summary>
+	/// Interaction logic for MainWindow.xaml
+	/// </summary>
+	public partial class MainWindow : Window
+	{
+		private VM? _VM;
 
 		#region Constructor and Loading
 
@@ -39,25 +28,25 @@ namespace UniTable
 			Settings.Default.PropertyChanged += Settings_PropertyChanged;
 			//Title = $"UniTable v{System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString(2)}";
 
-            InitializeComponent();
+			InitializeComponent();
 
 			if (!Path.Exists(Settings.Default.LastFileName)) Recent.Visibility = Visibility.Collapsed;
 		}
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            _VM = (VM)DataContext;
+		private async void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			_VM = (VM)DataContext;
 
-            if (((App)App.Current).StartFile is string fileLocation)
-            {
-                await _VM.Open(fileLocation);
-            }
+			if (((App)App.Current).StartFile is string fileLocation)
+			{
+				await _VM.Open(fileLocation);
+			}
 
-            if (_VM.Data == null) _VM.CreateFile();
+			if (_VM.Data == null) _VM.CreateFile();
 
-            Root.Opacity = 1;
-            //Title = $"{System.IO.Path.GetFileName(fileName)} | Unitable v{System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString(2)}";
-        }
+			Root.Opacity = 1;
+			//Title = $"{System.IO.Path.GetFileName(fileName)} | Unitable v{System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString(2)}";
+		}
 
 		private async void RecentButton_Click(object sender, RoutedEventArgs e)
 		{
@@ -102,73 +91,73 @@ namespace UniTable
 		#region Settings
 
 		private void Settings_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case nameof(Settings.Default.CommuteTime):
-                case nameof(Settings.Default.CommuteUniToBusTime):
-                case nameof(Settings.Default.FarePeak):
-                case nameof(Settings.Default.FareOffPeak):
-                    _VM?.ComputeStatistics();
-                    break;
-            }
-        }
+		{
+			switch (e.PropertyName)
+			{
+				case nameof(Settings.Default.CommuteTime):
+				case nameof(Settings.Default.CommuteUniToBusTime):
+				case nameof(Settings.Default.FarePeak):
+				case nameof(Settings.Default.FareOffPeak):
+					_VM?.ComputeStatistics();
+					break;
+			}
+		}
 
 		#endregion
 
 		#region Theme And UX
 
 		private void ThemeButton_Click(object sender, RoutedEventArgs e)
-        {
-            ThemeButton.IsEnabled = false;
-            OptionsExpander.IsExpanded = false;
+		{
+			ThemeButton.IsEnabled = false;
+			OptionsExpander.IsExpanded = false;
 
-            Resources["BackgroundColourKey"] = new SolidColorBrush(Color.FromArgb(60, 250, 250, 250));
-            Resources["DialogBackgroundColourKey"] = new SolidColorBrush(Colors.White);
-            Resources["PanelColourKey"] = new SolidColorBrush(Color.FromArgb(60, 155, 155, 155));
-            Resources["PanelFaintColourKey"] = new SolidColorBrush(Color.FromArgb(30, 155, 155, 155));
-            Resources["ForegroundColourKey"] = new SolidColorBrush(Colors.Black);
-            Resources["ForegroundMinorColourKey"] = new SolidColorBrush(Color.FromArgb(127, 0, 0, 0));
-        }
+			Resources["BackgroundColourKey"] = new SolidColorBrush(Color.FromArgb(60, 250, 250, 250));
+			Resources["DialogBackgroundColourKey"] = new SolidColorBrush(Colors.White);
+			Resources["PanelColourKey"] = new SolidColorBrush(Color.FromArgb(60, 155, 155, 155));
+			Resources["PanelFaintColourKey"] = new SolidColorBrush(Color.FromArgb(30, 155, 155, 155));
+			Resources["ForegroundColourKey"] = new SolidColorBrush(Colors.Black);
+			Resources["ForegroundMinorColourKey"] = new SolidColorBrush(Color.FromArgb(127, 0, 0, 0));
+		}
 
-        private void CompactModeCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
+		private void CompactModeCheckBox_Checked(object sender, RoutedEventArgs e)
+		{
 
-        }
+		}
 
-        private void CompactModeCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
+		private void CompactModeCheckBox_Unchecked(object sender, RoutedEventArgs e)
+		{
 
-        }
+		}
 
-        private void UniClassRootGrid_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (((Grid)sender).DataContext is UniClass uniClass)
-            {
-                uniClass.IsMouseOver = true;
-            }
-        }
+		private void UniClassRootGrid_MouseEnter(object sender, MouseEventArgs e)
+		{
+			if (((Grid)sender).DataContext is UniClass uniClass)
+			{
+				uniClass.IsMouseOver = true;
+			}
+		}
 
-        private void UniClassRootGrid_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (((Grid)sender).DataContext is UniClass uniClass)
-            {
-                uniClass.IsMouseOver = false;
-            }
-        } 
+		private void UniClassRootGrid_MouseLeave(object sender, MouseEventArgs e)
+		{
+			if (((Grid)sender).DataContext is UniClass uniClass)
+			{
+				uniClass.IsMouseOver = false;
+			}
+		}
 
-        #endregion
+		#endregion
 
-        #region Crash Handler
+		#region Crash Handler
 
-        private void CrashHandler(object sender, UnhandledExceptionEventArgs args)
+		private void CrashHandler(object sender, UnhandledExceptionEventArgs args)
 		{
 #pragma warning disable CS0162 // Unreachable code detected when DEBUG config
 			try
 			{
 				if (_VM != null)
 				{
-                    _VM.SaveFile();
+					_VM.SaveFile();
 #if DEBUG
 					return;
 #endif
@@ -176,14 +165,13 @@ namespace UniTable
 					Exception e = (Exception)args.ExceptionObject;
 					MessageBox.Show($"{e.GetType().Name}: {e.Message}\nThe timetable plan was saved. See crash-info.txt fore more info.", " An Unhandled Exception Occurred", MessageBoxButton.OK, MessageBoxImage.Error);
 					System.IO.File.AppendAllLines(System.IO.Path.GetDirectoryName(_VM.FileLocation) + "\\crash-info.txt",
-						new string[]
-						{
+						[
 							"______________________________________________________",
 							$"An unhandled exception occurred at {DateTime.Now:g}",
 							$"A backup of Scoresheet was saved at {_VM.FileLocation}.crashed",
 							$"Error Message:\t{e.Message}",
 							$"Stack Trace:\n{e.StackTrace}",
-						}
+						]
 					);
 				}
 

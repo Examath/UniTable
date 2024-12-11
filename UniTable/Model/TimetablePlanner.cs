@@ -1,16 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Xml;
-using System.Xml.Serialization;
 using UniTable.Editor;
 
 namespace UniTable.Model
@@ -77,7 +72,8 @@ namespace UniTable.Model
 		public string Selection
 		{
 			get => _SelectedComment + _Selection;
-			set { 
+			set
+			{
 				if (!value.StartsWith(_SelectedComment + _Selection))
 				{
 					SetSelectedFromQuery(value);
@@ -113,7 +109,7 @@ namespace UniTable.Model
 				stringBuilder.AppendJoin(", ", numbers);
 				stringBuilder.Append("; ");
 			}
-			
+
 			_Selection = stringBuilder.ToString();
 			OnPropertyChanged(nameof(Selection));
 		}
@@ -266,15 +262,15 @@ namespace UniTable.Model
 		{
 			CourseHeader courseHeader = new();
 			CourseHeaderEditor courseHeaderEditor = new(courseHeader);
-            if (courseHeaderEditor.ShowDialog() == true)
+			if (courseHeaderEditor.ShowDialog() == true)
 			{
 				courseHeader.Initialize();
 				courseHeader.PropertyChanged += CourseHeader_PropertyChanged;
 				CourseHeaderList.Add(courseHeader);
 
 				OnPropertyChanged(nameof(CourseHeader.ClassTypes));
-            }
-        }
+			}
+		}
 
 		#endregion
 	}

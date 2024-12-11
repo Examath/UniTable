@@ -1,14 +1,9 @@
 ﻿using Examath.Core.Model;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-using System.Xml;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace UniTable.Model
 {
@@ -34,13 +29,13 @@ namespace UniTable.Model
 		{
 			if (FileLocation != null)
 			{
-                if (Path.GetExtension(FileLocation) == ".cuacv")
-                {
+				if (Path.GetExtension(FileLocation) == ".cuacv")
+				{
 					TimetablePlanner timetablePlanner = new();
 					await timetablePlanner.LoadCuacv(FileLocation);
 					FileLocation = null;
 					Data = timetablePlanner;
-                }
+				}
 				else
 				{
 					await base.LoadFileAsync();
@@ -136,7 +131,7 @@ namespace UniTable.Model
 			Buckets = new WeekBucket[NumberOfWeeks];
 			for (int i = 0; i < NumberOfWeeks; i++)
 			{
-				Buckets[i]= (new(SessionsStartDate.AddDays(i * 7)));
+				Buckets[i] = (new(SessionsStartDate.AddDays(i * 7)));
 			}
 
 			// Add each session to respective bucket
