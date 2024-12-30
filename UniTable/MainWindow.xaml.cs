@@ -146,6 +146,14 @@ namespace UniTable
 			}
 		}
 
+		private void RemoveCourseMenuItem_Click(object sender, RoutedEventArgs e)
+		{
+			if (sender is MenuItem menuItem && menuItem.DataContext is CourseHeader courseHeader)
+			{
+				_VM?.Data?.RemoveCourseHeader(courseHeader);
+			}			
+        }
+
 		#endregion
 
 		#region Crash Handler
@@ -183,5 +191,5 @@ namespace UniTable
 #pragma warning restore CS0162 // Unreachable code detected
 		}
 		#endregion
-	}
+    }
 }

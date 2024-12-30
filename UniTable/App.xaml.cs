@@ -15,7 +15,7 @@ namespace UniTable
 			if (e.Args.Length > 0)
 			{
 				var filename = e.Args[0];
-				if (filename.EndsWith(".cuacv") || filename.EndsWith(".utt"))
+				if (filename.EndsWith(".cuacv") || filename.EndsWith(".uttp"))
 				{
 					StartFile = filename;
 				}

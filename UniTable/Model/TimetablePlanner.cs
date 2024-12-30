@@ -272,6 +272,24 @@ namespace UniTable.Model
 			}
 		}
 
+		/// <summary>
+		/// Removes a provided course header, after asking for comfirmation from user.
+		/// </summary>
+		/// <param name="courseHeader">The course header to remove</param>
+		[RelayCommand]
+		internal void RemoveCourseHeader(CourseHeader courseHeader)
+		{
+			if (Examath.Core.Environment.Messager.Out($"Are you sure you want to remove {courseHeader.Name}?",
+				"Remove Course",
+				isCancelButtonVisible: true,
+				yesButtonText: "Yes") == System.Windows.Forms.DialogResult.Yes)
+			{
+				courseHeader.PropertyChanged -= CourseHeader_PropertyChanged;
+				CourseHeaderList.Remove(courseHeader);
+				OnPropertyChanged(nameof(CourseHeader.ClassTypes));
+			}
+		}
+
 		#endregion
 	}
 }

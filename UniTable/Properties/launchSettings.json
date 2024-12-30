@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "UniTable": {
+      "commandName": "Project"
+    },
+    "UniTable Load Sample": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\paulj\\source\\WPF\\Utils\\UniTable\\Sample\\SampleTimetable.uttp"
+    }
+  }
+}

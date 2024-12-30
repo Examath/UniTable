@@ -7,7 +7,7 @@
         xmlns:properties="clr-namespace:UniTable.Properties" 
         xmlns:model="clr-namespace:UniTable.Model"
         mc:Ignorable="d"
-        Title="{Binding FileName, StringFormat='UniTable v1.3 | {0}', FallbackValue='UniTable v1.3'}" Height="780" Width="1200"
+        Title="{Binding FileName, StringFormat='UniTable v1.3.1 | {0}', FallbackValue='UniTable v1.3'}" Height="780" Width="1200"
         WindowState="Maximized" Icon="Resources/UniTable2.ico"
         Style="{StaticResource ContrastWindowStyle}"
         Loaded="Window_Loaded"
@@ -62,6 +62,7 @@
                                     <MenuItem Header="Update From Clipboard" Command="{Binding UpdateFromClipboardCommand}"/>
                                     <MenuItem Header="Enabled" IsCheckable="True" IsChecked="{Binding IsEnabled}"/>
                                     <MenuItem Header="Edit" Command="{Binding EditCommand}"/>
+                                    <MenuItem x:Name="RemoveCourseMenuItem" Header="Remove" Click="RemoveCourseMenuItem_Click"/>
                                 </ContextMenu>
                             </Border.ContextMenu>
                             <DockPanel Margin="2">
