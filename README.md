@@ -41,5 +41,5 @@ I developed UniTable (then **CUACV**) as a first year in January 2023, just befo
 
 
 **Version 1.3** (Dec 2024) was a significant overhaul of the internal workings of the application. This allowed for two significant improvements:
-- You can now save timetables to your local computer. Now you can create multiple versions of a timetable to compare and contrast, and open old timetables.
-- You can directly add, edit and update courses through the user interface. Programming in .cuacv is no longer required
+- You can now open and save timetables to your local computer. Now you can create multiple versions of a timetable to compare and contrast, and open old timetables.
+- You can directly add, edit, remove and update courses through the user interface. Programming in .cuacv is no longer required
