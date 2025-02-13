@@ -11,7 +11,7 @@ UniTable can be used to create a single, highly-compact timetable that's relevan
 
 I have been using UniTable to plan my semester for the last three years. However, as it is a personal project, it does have a bit of a learning curve. If you'd also like to use it, feel free to contact me at <examathematics@gmail.com>, and I'll get you started.
 
-The latest version is **v1.3**
+The latest version is **v1.4**
 
 _Disclaimer: This project is not associated with the University of Adelaide in any way._
 ## Future Work
@@ -25,7 +25,7 @@ Particular features that may be included are:
 -	The ability to take timetable data directly the URL of the relevant Access Adelaide page (or whatever the new university uses), and the ability to automatically refresh to update availability.
 -	The ability to work with multiple universities.
 -	Persisting multiple timetable selection combinations, and switching between them.
--	Analysing the bus fares, time between classes and time in class for each timetable option.
+-	Analyzing the bus fares, time between classes and time in class for each timetable option.
 -	Printing the timetable.
 -	Exporting a timetable (.utt) that can be imported into Line/ALPS, allowing you to, for example, set deadlines of tasks to the start of lessons.
 
@@ -41,7 +41,10 @@ I developed UniTable (then **CUACV**) as a first year in January 2023, just befo
 
 
 **Version 1.3** (Dec 2024) was a significant overhaul of the internal workings of the application. This allowed for two significant improvements:
-- You can now save timetables to your local computer. Now you can create multiple versions of a timetable to compare and contrast, and open old timetables.
-- You can directly add, edit and update courses through the user interface. Programming in .cuacv is no longer required
+- You can now open and save timetables to your local computer. Now you can create multiple versions of a timetable to compare and contrast, and open old timetables.
+- You can directly add, edit, remove and update courses through the user interface. Programming in .cuacv is no longer required
 
-**Version 1.4** (Feb 2025)
+
+**Version 1.4** (Feb 2025) some UI and bug fixes, including:
+- Adding days of the week and hourly gridlines to the timetable for readability, and the ability to resize the timetable.
+- The ability to hide class type headings and markers for compactness and clarity.
