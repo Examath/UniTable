@@ -6,7 +6,8 @@ namespace UniTable
 {
 	public class SessionEntry
 	{
-		private readonly string[] _TIME_FORMAT = { "htt", "h:mmtt" };
+		private readonly string[] _UTTP_TIME_FORMAT = { "%H", "H:mm" };
+		private readonly string[] _UNI_TIME_FORMAT = { "htt", "h:mmtt" };
 
 		/// <summary>
 		/// Gets when sessions of this session group start
@@ -37,12 +38,12 @@ namespace UniTable
 
 		public string Timestring
 		{
-			get => $"{StartTime.Hour}-{EndTime.Hour}";
+			get => $"{StartTime:H:mm}-{EndTime:H:mm}";
 			set
 			{
 				string[] timeParts = value.Split('-');
-				StartTime = TimeOnly.ParseExact(timeParts[0], "%H");
-				EndTime = TimeOnly.ParseExact(timeParts[1], "%H");
+				StartTime = TimeOnly.ParseExact(timeParts[0], _UTTP_TIME_FORMAT);
+				EndTime = TimeOnly.ParseExact(timeParts[1], _UTTP_TIME_FORMAT);
 			}
 		}
 
@@ -66,8 +67,8 @@ namespace UniTable
 			EndDate = DateTime.ParseExact($"{dateParts[1]} {year}", "d MMM yyyy", CultureInfo.InvariantCulture);
 
 			string[] timeParts = parts[2].Split(" - ");
-			StartTime = TimeOnly.ParseExact(timeParts[0], _TIME_FORMAT);
-			EndTime = TimeOnly.ParseExact(timeParts[1], _TIME_FORMAT);
+			StartTime = TimeOnly.ParseExact(timeParts[0], _UNI_TIME_FORMAT);
+			EndTime = TimeOnly.ParseExact(timeParts[1], _UNI_TIME_FORMAT);
 		}
 	}
 }

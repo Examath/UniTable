@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:UniTable" xmlns:system="clr-namespace:System;assembly=netstandard"
         xmlns:properties="clr-namespace:UniTable.Properties" 
         xmlns:model="clr-namespace:UniTable.Model"
+        xmlns:com="clr-namespace:UniTable.Components"
         mc:Ignorable="d"
-        Title="{Binding FileName, StringFormat='UniTable v1.3.1 | {0}', FallbackValue='UniTable v1.3'}" Height="780" Width="1200"
+        Title="{Binding FileName, StringFormat='UniTable v1.4 | {0}', FallbackValue='UniTable v1.3'}" Height="780" Width="1200"
         WindowState="Maximized" Icon="Resources/UniTable2.ico"
         Style="{StaticResource ContrastWindowStyle}"
         Loaded="Window_Loaded"
@@ -17,12 +18,13 @@
     </Window.DataContext>
     <Window.Resources>
         <system:Double x:Key="HeaderHeight">60</system:Double>
+        <SolidColorBrush x:Key="GridBrush" Color="#efefef"></SolidColorBrush>
         <properties:Settings x:Key="Settings" />
     </Window.Resources>
     <Grid x:Name="Root" Margin="6" Opacity="0.5" d:Opacity="1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -30,7 +32,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <DockPanel Grid.ColumnSpan="3">
+        <DockPanel Grid.ColumnSpan="4">
             <Button Content="Save As" DockPanel.Dock="Right" Command="{Binding SaveAsCommand}"/>
             <Button Content="Save" DockPanel.Dock="Right" Command="{Binding SaveCommand}"/>
             <Button x:Name="Recent" Content="Recent" DockPanel.Dock="Right" Click="RecentButton_Click" ToolTip="{Binding Source={StaticResource Settings}, Path=Default.LastFileName}" />
@@ -41,13 +43,15 @@
         </DockPanel>
         <Expander x:Name="OptionsExpander" Header="Options" Grid.Row="1" Margin="1" IsExpanded="True">
             <ListBox Style="{StaticResource ControlPanelListBoxStyle}">
+                <TextBox Tag="Scale" Text="{Binding Source={StaticResource Settings}, Path=Default.PixelsPerHour}" ToolTip="Horizontal Scale (in px per hour)" />
+                <CheckBox x:Name="CompactModeCheckBox" Content="Show class type header" IsChecked="True" />
+                <CheckBox x:Name="MarkerVisibilityCheckBox" Content="Show markers for unselected classes" IsChecked="True"/>
+                <Button x:Name="ThemeButton" HorizontalAlignment="Left" Content="Use Light Theme" Click="ThemeButton_Click"/>
                 <TextBox Tag="Year" Text="{Binding Data.Year}"/>
                 <TextBox Tag="Commute Time" Text="{Binding Source={StaticResource Settings}, Path=Default.CommuteTime}" ToolTip="One-way commute time from home to university and back, including walking"/>
                 <TextBox Tag="Uni to Bus Time" Text="{Binding Source={StaticResource Settings}, Path=Default.CommuteUniToBusTime}" ToolTip="Mimimun time taken to get to bus stop at the end of the day. Used for calculating afternoon fares"/>
                 <TextBox Tag="Peak Fare" Text="{Binding Source={StaticResource Settings}, Path=Default.FarePeak, StringFormat={}{0:C}}" ToolTip="Peak fare (before 9am and after 3pm)"/>
                 <TextBox Tag="Off-Peak Fare" Text="{Binding Source={StaticResource Settings}, Path=Default.FareOffPeak, StringFormat={}{0:C}}" ToolTip="Off-Peak fare (from 9am to 3pm)"/>
-                <CheckBox x:Name="CompactModeCheckBox" Content="Make Subject-Classes list compact" Checked="CompactModeCheckBox_Checked" Unchecked="CompactModeCheckBox_Unchecked" />
-                <Button x:Name="ThemeButton" HorizontalAlignment="Left" Content="Use Light Theme" Click="ThemeButton_Click"/>
                 <Button HorizontalAlignment="Left" Content="Add New Course" Command="{Binding Data.AddCourseHeaderCommand}"/>
             </ListBox>
         </Expander>
@@ -84,9 +88,9 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate DataType="{x:Type local:ClassType}">
                                             <DockPanel>
-                                                <TextBlock Text="{Binding}" DockPanel.Dock="Top" Margin="2 0"/>
+                                                <TextBlock Text="{Binding}" DockPanel.Dock="Top" Margin="2 0" Visibility="{Binding ElementName=CompactModeCheckBox, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                                 <ComboBox x:Name="ClassSelectbox" ItemsSource="{Binding Classes}" SelectedItem="{Binding SelectedClass}"
-              IsDropDownOpen="{Binding IsFocused}">
+                                                    IsDropDownOpen="{Binding IsFocused}">
                                                     <ComboBox.ItemTemplate>
                                                         <DataTemplate DataType="{x:Type local:UniClass}">
                                                             <Grid x:Name="UniClassRootGrid" HorizontalAlignment="Stretch" Background="Transparent" MouseEnter="UniClassRootGrid_MouseEnter" MouseLeave="UniClassRootGrid_MouseLeave">
@@ -128,29 +132,11 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-        <GridSplitter Grid.Row="1" Margin="2,2,2,2" Grid.Column="1" HorizontalAlignment="Stretch" Grid.RowSpan="2"/>
-        <Rectangle Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Margin="2 62 2 2" Fill="#efefef"/>
-        <StackPanel Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Margin="2">
-            <Rectangle Height="{StaticResource HeaderHeight}"/>
-            <Rectangle Fill="{StaticResource Divider}" Height="4"/>
-            <Rectangle Fill="White" Height="29" Margin="0,25,0,1"/>
-            <Rectangle Fill="White" Height="29" Margin="0,1,0,29"/>
-            <Rectangle Fill="{StaticResource Divider}" Height="2"/>
-            <Rectangle Fill="White" Height="29" Margin="0,29,0,1"/>
-            <Rectangle Fill="White" Height="29" Margin="0,1,0,29"/>
-            <Rectangle Fill="{StaticResource Divider}" Height="2"/>
-            <Rectangle Fill="White" Height="29" Margin="0,29,0,1"/>
-            <Rectangle Fill="White" Height="29" Margin="0,1,0,29"/>
-            <Rectangle Fill="{StaticResource Divider}" Height="2"/>
-            <Rectangle Fill="White" Height="29" Margin="0,29,0,1"/>
-            <Rectangle Fill="White" Height="29" Margin="0,1,0,29"/>
-            <Rectangle Fill="{StaticResource Divider}" Height="2"/>
-            <Rectangle Fill="White" Height="29" Margin="0,29,0,1"/>
-            <Rectangle Fill="White" Height="29" Margin="0,1,0,29"/>
-            <Rectangle Fill="{StaticResource Divider}" Height="4"/>
-        </StackPanel>
-        <ScrollViewer Grid.Row="1" Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible" Grid.RowSpan="2" Margin="2">
-            <ItemsControl ItemsSource="{Binding Buckets}" d:ItemsSource="{d:SampleData}">
+        <GridSplitter Grid.Row="1" Margin="2,2,2,2" Grid.Column="1" HorizontalAlignment="Left" Width="4" Grid.RowSpan="2" 
+                      ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" />
+        <com:HorizontalRules Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" PixelsPerHour="{Binding Source={StaticResource Settings}, Path=Default.PixelsPerHour}" Margin="9 2 2 2"/>
+        <ScrollViewer Grid.Row="1" Grid.Column="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible" Grid.RowSpan="2" Margin="2">
+            <ItemsControl x:Name="TimetableDisplayItemsControl" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding Buckets}" d:ItemsSource="{d:SampleData}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal"/>
@@ -158,8 +144,8 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type local:WeekBucket}">
-                        <DockPanel Height="700" VerticalAlignment="Top">
-                            <Rectangle DockPanel.Dock="Right" Width="8" Fill="#10808080"/>
+                        <DockPanel>
+                            <Rectangle DockPanel.Dock="left" Width="8" Fill="#10808080"/>
                             <DockPanel Height="{StaticResource HeaderHeight}" DockPanel.Dock="Top" LastChildFill="False">
                                 <TextBlock Text="{Binding StartOfWeek, StringFormat={}{0:dd/MM}}" DockPanel.Dock="Top" TextElement.FontWeight="Bold" FontSize="14" TextAlignment="Center" Width="{Binding Sessions.Count}" MinWidth="60" Padding="2"/>
                                 <TextBlock Text="{Binding Statistics}" DockPanel.Dock="Top" TextAlignment="Center" Width="{Binding Sessions.Count}" MinWidth="60" Padding="2" ToolTip="Class Time | Minimum commute and time at uni"/>
@@ -168,7 +154,16 @@
                                 <ItemsControl ItemsSource="{Binding Days}" d:ItemsSource="{d:SampleData}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate DataType="{x:Type system:String}">
-                                            <TextBlock Text="{Binding}" d:Text="0" Foreground="#888" FontWeight="Bold" FontSize="20" Padding="4 0" Height="120"/>
+                                            <TextBlock Text="{Binding}" d:Text="0" Foreground="#888" FontWeight="Bold" FontSize="20" Padding="4 0">
+                                                <TextBlock.Height>
+                                                    <MultiBinding Converter="{StaticResource MultiplyConverter}">
+                                                        <Binding Source="{StaticResource Settings}" Path="Default.PixelsPerHour"/>
+                                                        <MultiBinding.ConverterParameter>
+                                                            <system:Double>12</system:Double>
+                                                        </MultiBinding.ConverterParameter>
+                                                    </MultiBinding>
+                                                </TextBlock.Height>
+                                            </TextBlock>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
@@ -182,7 +177,8 @@
                                         <DataTemplate>
                                             <Canvas SnapsToDevicePixels="True">
                                                 <Rectangle x:Name="Marker" SnapsToDevicePixels="True" Canvas.Top="{Binding WeekOffset}"
-                                                       Canvas.Left="{Binding InnerIndex}" Height="{Binding DurationOffset}" Width="1">
+                                                       Canvas.Left="{Binding InnerIndex}" Height="{Binding DurationOffset}" Width="1"
+                                                           Visibility="{Binding IsChecked, ElementName=MarkerVisibilityCheckBox, Converter={StaticResource BooleanToVisibilityConverter}}">
                                                     <Rectangle.Fill>
                                                         <SolidColorBrush Color="{Binding CourseHeader.Color}"/>
                                                     </Rectangle.Fill>
@@ -216,7 +212,7 @@
                                                     <DataTrigger.Setters>
                                                         <Setter TargetName="SL" Property="Visibility" Value="Visible"/>
                                                         <Setter TargetName="SL" Property="Margin" Value="2 0 0 0"/>
-                                                    <Setter TargetName="Sel" Property="Opacity" Value="0.5"/>
+                                                        <Setter TargetName="Sel" Property="Opacity" Value="0.5"/>
                                                         <Setter TargetName="Marker" Property="Width" Value="2"/>
                                                     </DataTrigger.Setters>
                                                 </DataTrigger>

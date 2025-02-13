@@ -44,7 +44,7 @@ namespace UniTable.Model
 		}
 		public override void InitialiseData()
 		{
-			Data.Initialize();
+			Data?.Initialize();
 			UpdateBuckets();
 			ComputeStatistics();
 		}
@@ -68,7 +68,10 @@ namespace UniTable.Model
 		/// </summary>
 		public WeekBucket[] Buckets { get; set; }
 
-		private void UpdateBuckets()
+		/// <summary>
+		/// Updates the bucketing of the sessions (performance intensive)
+		/// </summary>
+		public void UpdateBuckets()
 		{
 			if (Data == null) return;
 

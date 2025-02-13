@@ -17,7 +17,7 @@ _Disclaimer: This project is not associated with the University of Adelaide in a
 ## Future Work
 UniTable is an active project and over time new features will be added.
 
-**Version 1.4** (Dec 2025) will support the new Adelaide University.
+**Version 1.5** (Dec 2025) will support the new Adelaide University.
 
 **Version 2.0** would be the production-ready version. This would improve the user experience using help guides and intuitive wizards and broaden the use cases.
 Particular features that may be included are:
@@ -43,3 +43,5 @@ I developed UniTable (then **CUACV**) as a first year in January 2023, just befo
 **Version 1.3** (Dec 2024) was a significant overhaul of the internal workings of the application. This allowed for two significant improvements:
 - You can now save timetables to your local computer. Now you can create multiple versions of a timetable to compare and contrast, and open old timetables.
 - You can directly add, edit and update courses through the user interface. Programming in .cuacv is no longer required
+
+**Version 1.4** (Feb 2025)

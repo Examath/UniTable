@@ -25,6 +25,7 @@ namespace UniTable
 			AppDomain currentDomain = AppDomain.CurrentDomain;
 			currentDomain.UnhandledException += new UnhandledExceptionEventHandler(CrashHandler);
 
+			Session.PixelsPerHour = Settings.Default.PixelsPerHour;
 			Settings.Default.PropertyChanged += Settings_PropertyChanged;
 			//Title = $"UniTable v{System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString(2)}";
 
@@ -45,7 +46,7 @@ namespace UniTable
 			if (_VM.Data == null) _VM.CreateFile();
 
 			Root.Opacity = 1;
-			//Title = $"{System.IO.Path.GetFileName(fileName)} | Unitable v{System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString(2)}";
+			//Title = $"{System.IO.Path.GetFileName(fileName)} | UniTable v{System.Reflection.Assembly.GetExecutingAssembly()?.GetName()?.Version?.ToString(2)}";
 		}
 
 		private async void RecentButton_Click(object sender, RoutedEventArgs e)
@@ -100,6 +101,11 @@ namespace UniTable
 				case nameof(Settings.Default.FareOffPeak):
 					_VM?.ComputeStatistics();
 					break;
+				case nameof(Settings.Default.PixelsPerHour):
+					Session.PixelsPerHour = Settings.Default.PixelsPerHour;
+					_VM?.UpdateBuckets();
+					_VM?.ComputeStatistics();
+					break;
 			}
 		}
 
@@ -118,16 +124,6 @@ namespace UniTable
 			Resources["PanelFaintColourKey"] = new SolidColorBrush(Color.FromArgb(30, 155, 155, 155));
 			Resources["ForegroundColourKey"] = new SolidColorBrush(Colors.Black);
 			Resources["ForegroundMinorColourKey"] = new SolidColorBrush(Color.FromArgb(127, 0, 0, 0));
-		}
-
-		private void CompactModeCheckBox_Checked(object sender, RoutedEventArgs e)
-		{
-
-		}
-
-		private void CompactModeCheckBox_Unchecked(object sender, RoutedEventArgs e)
-		{
-
 		}
 
 		private void UniClassRootGrid_MouseEnter(object sender, MouseEventArgs e)

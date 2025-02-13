@@ -273,7 +273,7 @@ namespace UniTable.Model
 		}
 
 		/// <summary>
-		/// Removes a provided course header, after asking for comfirmation from user.
+		/// Removes a provided course header, after asking for confirmation from user.
 		/// </summary>
 		/// <param name="courseHeader">The course header to remove</param>
 		[RelayCommand]

@@ -10,7 +10,7 @@ namespace UniTable
 		/// <summary>
 		/// Gets the default scale for offsets
 		/// </summary>
-		private const double PixelsPerHour = 10;
+		public static double PixelsPerHour { get; set; } = 10;
 
 		/// <summary>
 		/// Gets the time this session starts
@@ -38,7 +38,7 @@ namespace UniTable
 		public bool IsOnline { get; private set; }
 
 		/// <summary>
-		/// Gets the subjet this session is held for
+		/// Gets the course this session is held for
 		/// </summary>
 		public CourseHeader CourseHeader { get; private set; }
 
@@ -52,6 +52,7 @@ namespace UniTable
 		/// </summary>
 		public UniClass UniClass { get; private set; }
 
+		private double _WeekOffset;
 		/// <summary>
 		/// Gets the time from the start of 
 		/// the week (including time of day) represented in pixels
@@ -62,12 +63,13 @@ namespace UniTable
 		/// Monday to Friday, 6am to 6pm only.
 		/// Hence, only 60 of the 168 hours in a week are represented
 		/// </remarks>
-		public double WeekOffset { get; private set; }
+		public double WeekOffset => _WeekOffset * PixelsPerHour;
 
+		private double _DurationOffset;
 		/// <summary>
 		/// Gets the duration of this session represented as length in pixels
 		/// </summary>
-		public double DurationOffset { get; private set; }
+		public double DurationOffset => _DurationOffset * PixelsPerHour;
 
 		/// <summary>
 		/// Gets the index of this session inside the parent
@@ -100,8 +102,8 @@ namespace UniTable
 			UniClass = uniClass;
 
 			// 24/7: WeekOffset = ((double)startTime.DayOfWeek) * 24 * PixelsPerHour + startTime.TimeOfDay.TotalHours * PixelsPerHour;
-			WeekOffset = ((double)startTime.DayOfWeek - 1) * 12 * PixelsPerHour + (startTime.TimeOfDay.TotalHours - 6) * PixelsPerHour;
-			DurationOffset = duration.TotalHours * PixelsPerHour;
+			_WeekOffset = ((double)startTime.DayOfWeek - 1) * 12 + (startTime.TimeOfDay.TotalHours - 6);
+			_DurationOffset = duration.TotalHours;
 		}
 
 		public override string ToString()
