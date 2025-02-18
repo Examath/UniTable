@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace UniTable
@@ -176,16 +177,24 @@ namespace UniTable
 
 				IEnumerable<string> timings = TimingsL.OrderByDescending((d) => d.Value).Select(x => x.Key);
 				IEnumerable<string> locations = LocationsL.OrderByDescending((d) => d.Value).Select(x => x.Key);
-
-				if (LocationsL.Count > 1 && TimingsL.Count >= 1) // Super Variant
+				IEnumerable<string> compactLocations = locations.Select(location =>
 				{
-					Timings = $"Various times @ {string.Join(" | ", locations)}";
+					var match = LocationCodeRegex().Match(location);
+					return match.Success ? match.Value : location;
+				});
+
+				if (TimingsL.Count > 1 && LocationsL.Count > 1) // Super Variant
+				{
+					Timings = $"Various times @ {string.Join(", ", compactLocations)}    ({string.Join(" | ", locations)})";
 				}
 				else
 				{
-					Timings = $"{string.Join(" | ", timings)} @ {string.Join(" | ", locations)}";
+					Timings = $"{string.Join(", ", timings)} @ {string.Join(", ", compactLocations)}    ({string.Join(" | ", locations)})";
 				}
 			}
 		}
+
+		[GeneratedRegex(@"(?<=, )\w{2,5}(?=,)")]
+		private static partial Regex LocationCodeRegex();
 	}
 }

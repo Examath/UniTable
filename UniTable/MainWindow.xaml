@@ -135,7 +135,7 @@
         <GridSplitter Grid.Row="1" Margin="2,2,2,2" Grid.Column="1" HorizontalAlignment="Left" Width="4" Grid.RowSpan="2" 
                       ResizeDirection="Columns" ResizeBehavior="PreviousAndNext" />
         <com:HorizontalRules Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" PixelsPerHour="{Binding Source={StaticResource Settings}, Path=Default.PixelsPerHour}" Margin="9 2 2 2"/>
-        <ScrollViewer Grid.Row="1" Grid.Column="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible" Grid.RowSpan="2" Margin="2">
+        <ScrollViewer Grid.Row="1" Grid.Column="3" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible" Grid.RowSpan="2" Margin="2">
             <ItemsControl x:Name="TimetableDisplayItemsControl" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding Buckets}" d:ItemsSource="{d:SampleData}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
