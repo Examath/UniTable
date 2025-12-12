@@ -21,7 +21,7 @@
             </DockPanel>
             <Button Content="Load from File" Command="{Binding FetchFromFileCommand}"></Button>
             <Button Content="Update From Clipboard" Command="{Binding UpdateFromClipboardCommand}"></Button>
-            <Label Tag="Importer Status" Content="{Binding UpdateStatus}" />
+            <TextBlock Tag="Importer Status" Text="{Binding UpdateStatus}" TextWrapping="Wrap" Margin="2" />
             <TextBox Tag="Code" Text="{Binding Code}" ToolTip="The alphabetical code of the course"/>
             <TextBox Tag="Number" Text="{Binding Number}" ToolTip="The number of the course"/>
             <TextBox Tag="Name" Text="{Binding Name}" ToolTip="Long name of the course"/>

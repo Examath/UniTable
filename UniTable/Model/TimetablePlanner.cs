@@ -15,7 +15,7 @@ namespace UniTable.Model
 	{
 		#region Data
 
-		private int _Year = DateTime.Now.Year;
+		private int _Year = DateTime.Now.AddMonths(6).Year;
 		/// <summary>
 		/// Gets the year this semester is in
 		/// </summary>
@@ -26,7 +26,7 @@ namespace UniTable.Model
 			set { if (SetProperty(ref _Year, value)) DefaultYear = value; }
 		}
 
-		public static int DefaultYear { get; private set; } = DateTime.Now.Year;
+		public static int DefaultYear { get; private set; } = DateTime.Now.AddMonths(6).Year;
 
 		private string _Semester = "Semester 1";
 		/// <summary>

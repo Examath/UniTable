@@ -47,7 +47,13 @@
                 <CheckBox x:Name="CompactModeCheckBox" Content="Show class type header" IsChecked="True" />
                 <CheckBox x:Name="MarkerVisibilityCheckBox" Content="Show markers for unselected classes" IsChecked="True"/>
                 <Button x:Name="ThemeButton" HorizontalAlignment="Left" Content="Use Light Theme" Click="ThemeButton_Click"/>
-                <TextBox Tag="Year" Text="{Binding Data.Year}"/>
+                <DockPanel Tag="Semester">                    
+                    <TextBox Text="{Binding Data.Year}" DockPanel.Dock="Right" MinWidth="50"/>
+                    <ComboBox IsEditable="True" Text="{Binding Data.Semester}">
+                        <ComboBoxItem>Semester 1</ComboBoxItem>
+                        <ComboBoxItem>Semester 2</ComboBoxItem>
+                    </ComboBox>
+                </DockPanel>
                 <TextBox Tag="Commute Time" Text="{Binding Source={StaticResource Settings}, Path=Default.CommuteTime}" ToolTip="One-way commute time from home to university and back, including walking"/>
                 <TextBox Tag="Uni to Bus Time" Text="{Binding Source={StaticResource Settings}, Path=Default.CommuteUniToBusTime}" ToolTip="Mimimun time taken to get to bus stop at the end of the day. Used for calculating afternoon fares"/>
                 <TextBox Tag="Peak Fare" Text="{Binding Source={StaticResource Settings}, Path=Default.FarePeak, StringFormat={}{0:C}}" ToolTip="Peak fare (before 9am and after 3pm)"/>

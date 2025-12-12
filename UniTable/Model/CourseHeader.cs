@@ -325,7 +325,7 @@ namespace UniTable
 			HtmlNodeCollection? semesterNodes = availabilitySection.SelectNodes(".//div[contains(@class,'cmp-course-accordion--container')]")
 				?? throw new Exception("Could not find semester sections within");
 
-			HtmlNode semesterNode;
+			HtmlNode? semesterNode = null;
 
 			foreach (var semNode in semesterNodes)
 			{
@@ -339,14 +339,21 @@ namespace UniTable
 				}
 			}
 
-			if (semesterNodes.Count <= 0) throw new Exception("Semester nodes not found");
-
+			if (semesterNode == null)
+			{
+				Messager.Out(
+					$"This course does not appear to have a timetable for '{TimetablePlanner.DefaultSemester}'. Please check settings and course page.",
+					"Semester Not Found",
+					messageStyle: ConsoleStyle.FormatBlockStyle
+				);
+				return;
+			}
 
 			// TODO Campus selection TODO
 			string campus = "Adelaide City Campus East";
 
 			// Status
-			UpdateStatus += $"\nLoading {def}, {campus}";
+			UpdateStatus += $"\nLoading {TimetablePlanner.DefaultSemester}, {TimetablePlanner.DefaultYear}, {campus}";
 
 			//// Class Loading
 
@@ -453,6 +460,16 @@ namespace UniTable
 				}
 
 				if (isClassTypeValid) newClassTypes.Add(classType);
+			}
+
+			if (newClassTypes.Count <= 0)
+			{
+				Messager.Out(
+					$"This course does not appear to have any classes at '{campus}'. Please check settings and course page.",
+					"Empty Class Types",
+					messageStyle: ConsoleStyle.FormatBlockStyle
+				);
+				return;
 			}
 
 			//// Final change set
