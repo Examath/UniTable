@@ -11,12 +11,12 @@ namespace UniTable
 		/// <summary>
 		/// Gets or sets the list of all sessions for this week
 		/// </summary>
-		public List<Session> Sessions { get; set; } = new();
+		public List<Session> Sessions { get; set; } = [];
 
 		/// <summary>
 		/// Gets or sets the list of labels for each day of this week from Monday to Friday
 		/// </summary>
-		public List<string> Days { get; private set; } = new();
+		public List<string> Days { get; private set; } = [];
 
 		/// <summary>
 		/// Gets the date of the sunday this week starts from

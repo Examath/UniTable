@@ -48,7 +48,7 @@ namespace UniTable
 		/// <summary>
 		/// List of sessions this class has
 		/// </summary>
-		public List<SessionEntry> SessionEntries { get; set; } = new();
+		public List<SessionEntry> SessionEntries { get; set; } = [];
 
 		private bool _Selected = false;
 		/// <summary>
@@ -140,8 +140,8 @@ namespace UniTable
 			}
 			else
 			{
-				Dictionary<string, int> TimingsL = new Dictionary<string, int>();
-				Dictionary<string, int> LocationsL = new Dictionary<string, int>();
+				Dictionary<string, int> TimingsL = [];
+				Dictionary<string, int> LocationsL = [];
 
 				foreach (SessionEntry sessionEntry in SessionEntries)
 				{

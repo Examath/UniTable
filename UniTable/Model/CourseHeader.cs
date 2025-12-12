@@ -83,7 +83,7 @@ namespace UniTable
 			set => SetProperty(ref _Color, value);
 		}
 
-		private List<ClassType> _ClassTypes = new();
+		private List<ClassType> _ClassTypes = [];
 		/// <summary>
 		/// List containing various types of classes
 		/// </summary>
@@ -179,7 +179,6 @@ namespace UniTable
 		/// <remarks>
 		/// This method fetches the webpage at tpe provided location, 
 		/// and interprets the webpage to see if timetable information is available.
-		/// The user is prompted to confirm semester and campus location.
 		/// Then the <see cref="ClassTypes"/>, <see cref="UniClass"/>s and <see cref="Session"/>s
 		/// are added as required.
 		/// </remarks>
@@ -190,7 +189,7 @@ namespace UniTable
 
 			UpdateStatus = $"Fetching {Url}...";
 
-			HtmlDocument document = new HtmlDocument();
+			HtmlDocument document = new();
 			try
 			{
 				using HttpClient client = new();
@@ -243,19 +242,33 @@ namespace UniTable
 		/// <remarks>
 		/// This loads a html document from the provided location
 		/// and interprets the webpage to see if timetable information is available.
-		/// The user is prompted to confirm semester and campus location.
 		/// Then the <see cref="ClassTypes"/>, <see cref="UniClass"/>s and <see cref="Session"/>s
 		/// are added as required.
 		/// </remarks>
 		[RelayCommand]
 		internal void FetchFromFile()
 		{
-			//// HTTP fetch
-			string filePath = @"C:\Users\paulj\Downloads\sample.txt";
+			//// File fetch
+			string filePath;
+
+			System.Windows.Forms.OpenFileDialog openFileDialog = new()
+			{
+				Title = "Select HTML file to interpret",
+
+			};
+
+			if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			{
+				filePath = openFileDialog.FileName;
+			}
+			else
+			{
+				return;
+			}
 
 			UpdateStatus = $"Loading {filePath}...";
 
-			HtmlDocument document = new HtmlDocument();
+			HtmlDocument document = new();
 			try
 			{
 				if (!System.IO.Path.Exists(filePath))
@@ -299,8 +312,80 @@ namespace UniTable
 			}
 		}
 
+
+		/// <summary>
+		/// Updates the timetable data by importing and parsing class information from the clipboard.
+		/// </summary>
+		/// <remarks>This loads html from the clipboard
+		/// and interprets the webpage to see if timetable information is available.
+		/// Then the <see cref="ClassTypes"/>, <see cref="UniClass"/>s and <see cref="Session"/>s
+		/// are added as required.</remarks>
+		[RelayCommand]
+		internal void UpdateFromClipboard()
+		{
+			UpdateStatus = $"Loading from clipboard...";
+
+			string doc = "";
+			// Get text from clipboard
+			try
+			{
+				if (Clipboard.ContainsText())
+				{
+					doc = Clipboard.GetText();
+				}
+				else
+				{
+					Messager.Out("Copy the timetable data", "Nothing to paste",
+						messageStyle: ConsoleStyle.FormatBlockStyle);
+				}
+			}
+			catch (Exception e)
+			{
+#if DEBUG
+				throw;
+#endif
+#pragma warning disable CS0162 // Unreachable code detected
+				Messager.OutException(e, "Pasting Data");
+				return;
+#pragma warning restore CS0162 // Unreachable code detected
+			}
+
+			HtmlDocument document = new();
+
+			try
+			{
+				document.LoadHtml(doc);
+			}
+			catch (Exception e)
+			{
+#if DEBUG
+				throw;
+#endif
+#pragma warning disable CS0162 // Unreachable code detected
+				Messager.OutException(e, $"Parsing HTML");
+				return;
+#pragma warning restore CS0162 // Unreachable code detected
+			}
+
+			try
+			{
+				LoadFromHtml(document);
+			}
+			catch (Exception e)
+			{
+#if DEBUG
+				throw;
+#endif
+#pragma warning disable CS0162 // Unreachable code detected
+				Messager.OutException(e, $"Interpreting HTML");
+				return;
+#pragma warning restore CS0162 // Unreachable code detected
+			}
+		}
+
+
 		private readonly string _UNI_DATE_FORMAT = "d MMM yyyy";
-		private readonly string[] _UNI_TIME_FORMAT = { "htt", "h:mmtt" };
+		private readonly string[] _UNI_TIME_FORMAT = ["htt", "h:mmtt"];
 
 		private void LoadFromHtml(HtmlDocument document)
 		{
@@ -472,6 +557,33 @@ namespace UniTable
 				return;
 			}
 
+			//// Additional Course Properties
+			if (document.DocumentNode.SelectSingleNode(".//h1[contains(@class,'cmp-herobanner__title')]") is HtmlNode nameNode
+				&& !string.IsNullOrWhiteSpace(nameNode.InnerText))
+			{
+				Name = nameNode.InnerText.Trim();
+				UpdateStatus += $"\nFinished loading {Name} with {newClassTypes.Count} class types";
+			}
+
+			if (document.DocumentNode.SelectSingleNode(".//p[contains(@class,'cmp-herobanner__description--title')]") is HtmlNode yearNode
+				&& !string.IsNullOrWhiteSpace(yearNode.InnerText))
+			{
+				string year = yearNode.InnerText.Split(' ').Last().Trim();
+				if (!year.Equals(TimetablePlanner.DefaultYear.ToString()) && Messager.Out(
+					$"This webpage indicates it is for the year {year}, " +
+					$"whilst this timetable planner is set for the year {TimetablePlanner.DefaultYear}. " +
+					$"If this was not intended please change the year in Options." +
+					$"\n\nAre you sure you want to continue loading?",
+					"Mismatched year",
+					messageStyle: ConsoleStyle.WarningBlockStyle,
+					isCancelButtonVisible: true,
+					yesButtonText: "Continue"
+				) == System.Windows.Forms.DialogResult.Cancel)
+				{
+					return;
+				}
+			}
+
 			//// Final change set
 
 			foreach (ClassType c in ClassTypes) c.PropertyChanged -= ClassType_PropertyChanged;
@@ -483,145 +595,10 @@ namespace UniTable
 			ClassTypes = newClassTypes;
 		}
 
-		/// <summary>
-		/// Updates the timetable data by importing and parsing class information from the clipboard.
-		/// </summary>
-		/// <remarks>This method reads CAUCV text data from the clipboard, interprets it as timetable information, and
-		/// updates the collection of class types accordingly. Existing class type event handlers are detached before the
-		/// update, and new event handlers are attached to the imported class types. If the clipboard does not contain valid
-		/// timetable data, a message is displayed to the user.</remarks>
-		/// <exception cref="Exception">Error pharsing CAUCV</exception>
-		[RelayCommand]
-		internal void UpdateFromClipboard()
-		{
-			ClassType? classType = null;
-			UniClass? uniClass = null;
-
-			string[] lines = [];
-			List<ClassType> newClassTypes = [];
-
-			// Get text from clipboard
-			try
-			{
-				if (Clipboard.ContainsText())
-				{
-					lines = SplitLines().Split(Clipboard.GetText());
-				}
-				else
-				{
-					Messager.Out("Copy the timetable data", "Nothing to paste",
-						messageStyle: ConsoleStyle.FormatBlockStyle);
-				}
-			}
-			catch (Exception e)
-			{
-#if DEBUG
-				throw;
-#endif
-#pragma warning disable CS0162 // Unreachable code detected
-				Messager.OutException(e, "Pasting Data");
-				return;
-#pragma warning restore CS0162 // Unreachable code detected
-			}
-
-			// Interptet
-
-			int lineNumber = 0;
-
-			foreach (string lineRaw in lines)
-			{
-				// Cut comments
-				string line = lineRaw.Split("//")[0];
-
-				// Skip empty lines
-				if (string.IsNullOrWhiteSpace(line))
-				{
-					continue;
-				}
-
-				string[] parts = line.Split('\t');
-
-				// Skip Table Headers
-				if (parts[0] == "Class Nbr")
-				{
-					continue;
-				}
-
-				try
-				{
-					// Header / Subject Header
-					// Removed
-
-					// Class Type Description
-					if (parts[0].Contains(" Class: "))
-					{
-						classType = new(parts[0]);
-						newClassTypes.Add(classType);
-					}
-
-					// Class Entry
-					else if (int.TryParse(parts[0], out int classNumber) && classType != null)
-					{
-						string[] uniClassParts = new string[3];
-						Array.Copy(parts, 1, uniClassParts, 0, 3);
-						uniClass = new(classNumber, uniClassParts);
-
-						if (parts.Length >= 8) // Then a session is provided as well
-						{
-							string[] firstScheduleParts = new string[4];
-							Array.Copy(parts, 4, firstScheduleParts, 0, 4);
-							AddSession(firstScheduleParts);
-						}
-
-						classType.Classes.Add(uniClass);
-					}
-
-					// Class Note
-					else if (parts[0].StartsWith("Note: ") && uniClass != null)
-					{
-						uniClass.Note = parts[0];
-					}
-
-					// Additional Session Entry
-					else if (uniClass != null)
-					{
-						AddSession(parts);
-					}
-				}
-				catch (Exception e)
-				{
-#if DEBUG
-					throw new Exception($"Exception thrown when reading line #{lineNumber}", e);
-#endif
-#pragma warning disable CS0162 // Unreachable code detected
-					Messager.OutException(e, $"Interpreting line #{lineNumber}");
-					return;
-#pragma warning restore CS0162 // Unreachable code detected
-				}
-
-				lineNumber++;
-			}
-
-			//Finally set changes
-			foreach (ClassType c in ClassTypes) c.PropertyChanged -= ClassType_PropertyChanged;
-			foreach (ClassType c in newClassTypes)
-			{
-				c.Initialize();
-				c.PropertyChanged += ClassType_PropertyChanged;
-			}
-			ClassTypes = newClassTypes;
-
-			void AddSession(string[] parts)
-			{
-				SessionEntry sessionEntry = new(parts, TimetablePlanner.DefaultYear);
-				uniClass?.SessionEntries.Add(sessionEntry);
-			}
-		}
-
 		[RelayCommand]
 		internal void Edit()
 		{
-			CourseHeaderEditor courseHeaderEditor = new CourseHeaderEditor(this);
+			CourseHeaderEditor courseHeaderEditor = new(this);
 			courseHeaderEditor.ShowDialog();
 		}
 

@@ -8,7 +8,7 @@
         xmlns:model="clr-namespace:UniTable.Model"
         xmlns:com="clr-namespace:UniTable.Components"
         mc:Ignorable="d"
-        Title="{Binding FileName, StringFormat='UniTable v1.4 | {0}', FallbackValue='UniTable v1.3'}" Height="780" Width="1200"
+        Title="{Binding FileName, StringFormat='UniTable v1.5 (A) | {0}', FallbackValue='UniTable v1.3'}" Height="780" Width="1200"
         WindowState="Maximized" Icon="Resources/UniTable2.ico"
         Style="{StaticResource ContrastWindowStyle}"
         Loaded="Window_Loaded"
@@ -33,11 +33,12 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.ColumnSpan="4">
-            <Button Content="Save As" DockPanel.Dock="Right" Command="{Binding SaveAsCommand}"/>
-            <Button Content="Save" DockPanel.Dock="Right" Command="{Binding SaveCommand}"/>
-            <Button x:Name="Recent" Content="Recent" DockPanel.Dock="Right" Click="RecentButton_Click" ToolTip="{Binding Source={StaticResource Settings}, Path=Default.LastFileName}" />
-            <Button Content="Open" DockPanel.Dock="Right" Command="{Binding OpenCommand}"/>
-            <Label Style="{StaticResource OutputLabel}" DockPanel.Dock="Right" Content="{Binding LastChangeDescription}"/>
+            <Button Content="Open" Command="{Binding OpenCommand}"/>
+            <Button x:Name="Recent" Content="Recent" Click="RecentButton_Click"
+                    ToolTip="{Binding Source={StaticResource Settings}, Path=Default.LastFileName}" />
+            <Button Content="Save" Command="{Binding SaveCommand}"/>
+            <Button Content="Save As" Command="{Binding SaveAsCommand}"/>
+            <Label Style="{StaticResource OutputLabel}" Content="{Binding LastChangeDescription}"/>
             <TextBox IsReadOnly="True" DockPanel.Dock="Right" Text="{Binding Data.Stats}"/>
             <TextBox Text="{Binding Data.Selection}" ToolTip="Current selection data. Copy/Paste to save and load"/>
         </DockPanel>

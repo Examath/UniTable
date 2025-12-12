@@ -9,7 +9,7 @@ namespace UniTable.Components
 {	
 	public class HorizontalRules : FrameworkElement
 	{
-		private readonly List<string> Days = new List<string> { "MON", "TUE", "WED", "THU", "FRI" };
+		private readonly List<string> Days = ["MON", "TUE", "WED", "THU", "FRI"];
 		private const double TOP_DIVIDER_HEIGHT = 4;
 
 		public double PixelsPerHour
