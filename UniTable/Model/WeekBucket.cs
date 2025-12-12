@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using UniTable.Properties;
 
@@ -36,15 +37,27 @@ namespace UniTable
 			private set => SetProperty(ref _Statistics, value);
 		}
 
+		private double _MonthArmX = 0;
 		/// <summary>
-		/// Creates a new WeekBucket with the specified start date, and initialises <see cref="Days"/>
+		/// Gets the number of pixels down the month arm must be
+		/// </summary>
+		public double MonthArmY => _MonthArmX * Session.PixelsPerHour;
+
+		private double _MonthArmHeight = 0;
+		/// <summary>
+		/// Gets the number of pixels high the month arm should be
+		/// </summary>
+		public double MonthArmHeight => _MonthArmHeight * Session.PixelsPerHour;
+
+		/// <summary>
+		/// Creates a new WeekBucket with the specified start date, and initializes <see cref="Days"/>
 		/// </summary>
 		/// <param name="startOfWeek"></param>
 		public WeekBucket(DateTime startOfWeek)
 		{
 			StartOfWeek = startOfWeek;
 
-			// For Monday to Friday
+			// For Monday to Saturday
 			for (int i = 1; i < 7; i++)
 			{
 				DateTime day = startOfWeek.AddDays(i);
@@ -52,11 +65,35 @@ namespace UniTable
 				if (day.Day == 1) str += " " + day.ToString("MMM");
 				Days.Add(str);
 			}
+
+			int endOfWeek = startOfWeek.AddDays(6).Day;
+
+			// Month arm
+			if (endOfWeek <= 7)
+			{
+				_MonthArmHeight = int.Min(endOfWeek,6) * Session.HoursPerDay;
+				_MonthArmX = int.Max(6 - endOfWeek, 0) * Session.HoursPerDay;
+			}
+			else if (startOfWeek.Day < 7)
+			{
+				_MonthArmHeight = (7 - startOfWeek.Day) * Session.HoursPerDay;
+				_MonthArmX = 0;
+			}
 		}
 
 		public override string ToString()
 		{
 			return $"{StartOfWeek:dd/MM}";
+		}
+
+		/// <summary>
+		/// Calls property changed notifications on offset variables
+		/// </summary>
+		internal void InvalidateOffset()
+		{
+			OnPropertyChanged(nameof(MonthArmY));
+			OnPropertyChanged(nameof(MonthArmHeight));
+			foreach (Session session in Sessions) session.InvalidateOffset();
 		}
 
 		/// <summary>
