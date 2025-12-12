@@ -28,13 +28,13 @@ namespace UniTable
 		/// Gets when these sessions start
 		/// </summary>
 		[XmlIgnore]
-		public TimeOnly StartTime { get; private set; }
+		public TimeOnly StartTime { get; internal set; }
 
 		/// <summary>
 		/// Gets when these sessions end
 		/// </summary>
 		[XmlIgnore]
-		public TimeOnly EndTime { get; private set; }
+		public TimeOnly EndTime { get; internal set; }
 
 		public string Timestring
 		{

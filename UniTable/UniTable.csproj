@@ -5,11 +5,12 @@
     <TargetFramework>net8.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <Version>1.4</Version>
+    <Version>1.5</Version>
     <ApplicationIcon>Resources\UniTable2.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Model\Importer.cs" />
     <Compile Remove="Model\UniModel.cs" />
   </ItemGroup>
 
@@ -26,6 +27,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
     <PackageReference Include="WPF.ColorPicker" Version="5.0.0.1" />
   </ItemGroup>
 

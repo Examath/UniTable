@@ -11,22 +11,27 @@
         <unitable:CourseHeader/>
     </d:Window.DataContext>
     <DockPanel>
-        <Button x:Name="OkButton" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="6 16 6 6" Width="50" 
+        <Button x:Name="OkButton" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="6 16 6 6" Width="100" 
                 Foreground="{StaticResource NewColourKey}" IsDefault="True" Click="OkButton_Click">Ok</Button>
-        <ListBox Style="{StaticResource ControlPanelListBoxStyle}" Margin="6">
-            <TextBox Tag="Code" Text="{Binding Code}"/>
-            <TextBox Tag="Number" Text="{Binding Number}"/>
-            <TextBox Tag="Name" Text="{Binding Name}"/>
-            <Border Tag="Colour" Margin="2">
+        <ListBox Style="{StaticResource ControlPanelListBoxStyle}" Margin="6" SelectionChanged="ListBox_SelectionChanged">
+            <Label Tag="Importer Type">Adelaide University</Label>
+            <DockPanel Tag="Timetable Url" ToolTip="Url to fetch timetable from">
+                <Button Content="Fetch" Command="{Binding FetchFromUrlCommand}" DockPanel.Dock="Right" Margin="0,2,2,2" Width="50"/>
+                <TextBox Text="{Binding Url}" Foreground="{StaticResource FileColourKey}" Margin="2,2,0,2"/>
+            </DockPanel>
+            <Button Content="Load from File" Command="{Binding FetchFromFileCommand}"></Button>
+            <Button Content="Update From Clipboard" Command="{Binding UpdateFromClipboardCommand}"></Button>
+            <Label Tag="Importer Status" Content="{Binding UpdateStatus}" />
+            <TextBox Tag="Code" Text="{Binding Code}" ToolTip="The alphabetical code of the course"/>
+            <TextBox Tag="Number" Text="{Binding Number}" ToolTip="The number of the course"/>
+            <TextBox Tag="Name" Text="{Binding Name}" ToolTip="Long name of the course"/>
+            <Border Tag="Colour" Margin="2" ToolTip="Colour of the course as shown on this timetable">
                 <Border.Background>
                     <SolidColorBrush Color="{Binding Color}"/>
                 </Border.Background>
-                <Button Content="Change" Margin="0" HorizontalAlignment="Right" Command="{Binding ChangeColourCommand}"></Button>
+                <Button Content="Change" Margin="0" HorizontalAlignment="Right" Command="{Binding ChangeColourCommand}" Width="50"></Button>
             </Border>
-            <Button Content="Update From Clipboard" Command="{Binding UpdateFromClipboardCommand}"></Button>
-            <Label Tag="Status" Content="" ContentStringFormat=""/>
             <GroupBox Header="{Binding ClassTypes.Count}" HeaderStringFormat="{}Preview: {0} class types loaded" Margin="2">
-
                 <ItemsControl ItemsSource="{Binding ClassTypes}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type unitable:ClassType}">
@@ -70,7 +75,7 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </GroupBox>
-            <CheckBox Content="Is Enabled" IsChecked="{Binding IsEnabled}"/>
+            <CheckBox Content="Is Visible" IsChecked="{Binding IsEnabled}"/>
         </ListBox>
     </DockPanel>
 </Window>

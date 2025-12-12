@@ -64,9 +64,9 @@
                                 <ContextMenu>
                                     <MenuItem Header="Change Colour" Command="{Binding ChangeColourCommand}" />
                                     <MenuItem Header="Update From Clipboard" Command="{Binding UpdateFromClipboardCommand}"/>
-                                    <MenuItem Header="Enabled" IsCheckable="True" IsChecked="{Binding IsEnabled}"/>
                                     <MenuItem Header="Edit" Command="{Binding EditCommand}"/>
                                     <MenuItem x:Name="RemoveCourseMenuItem" Header="Remove" Click="RemoveCourseMenuItem_Click"/>
+                                    <MenuItem Header="Visible" IsCheckable="True" IsChecked="{Binding IsEnabled}"/>
                                 </ContextMenu>
                             </Border.ContextMenu>
                             <DockPanel Margin="2">
