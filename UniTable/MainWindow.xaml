@@ -33,20 +33,25 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.ColumnSpan="4">
-            <Button Content="Open" Command="{Binding OpenCommand}"/>
+            <Button Content="Open" Command="{Binding OpenCommand}" Foreground="{StaticResource FileColourKey}"/>
             <Button x:Name="Recent" Content="Recent" Click="RecentButton_Click"
                     ToolTip="{Binding Source={StaticResource Settings}, Path=Default.LastFileName}" />
-            <Button Content="Save" Command="{Binding SaveCommand}"/>
-            <Button Content="Save As" Command="{Binding SaveAsCommand}"/>
+            <Button Content="Save" Command="{Binding SaveCommand}" Foreground="{StaticResource FileColourKey}"/>
+            <Button Content="Save As" Command="{Binding SaveAsCommand}" Foreground="{StaticResource FileColourKey}"/>
             <Label Style="{StaticResource OutputLabel}" Content="{Binding LastChangeDescription}"/>
-            <TextBox IsReadOnly="True" DockPanel.Dock="Right" Text="{Binding Data.Stats}"/>
-            <TextBox Text="{Binding Data.Selection}" ToolTip="Current selection data. Copy/Paste to save and load"/>
+            <TextBox IsReadOnly="True" DockPanel.Dock="Right" Text="{Binding Data.Stats}" 
+                     ToolTip="Statistics: Total class time is the sum of the duration of all classes. Total commitment is the time spent on campus and in transit to attend every on-campus class."/>
+            <TextBox Text="{Binding Data.Selection}" ToolTip="Current class selection data. Each subject and class is separated by a semicolon (;) and comma (,) respectivley. You may edit the comment. Copy/Paste to save and load."/>
         </DockPanel>
-        <Expander x:Name="OptionsExpander" Header="Options" Grid.Row="1" Margin="1" IsExpanded="True">
+        <Expander x:Name="OptionsExpander" Header="Settings &amp; Course Properties" Grid.Row="1" Margin="1" IsExpanded="True">
             <ListBox Style="{StaticResource ControlPanelListBoxStyle}">
                 <TextBox Tag="Scale" Text="{Binding Source={StaticResource Settings}, Path=Default.PixelsPerHour}" ToolTip="Horizontal Scale (in px per hour)" />
                 <CheckBox x:Name="CompactModeCheckBox" Content="Show class type header" IsChecked="True" />
                 <CheckBox x:Name="MarkerVisibilityCheckBox" Content="Show markers for unselected classes" IsChecked="True"/>
+                <TextBox Tag="Commute Time" Text="{Binding Source={StaticResource Settings}, Path=Default.CommuteTime}" ToolTip="One-way commute time from home to university and back, including walking"/>
+                <TextBox Tag="Uni to Bus Time" Text="{Binding Source={StaticResource Settings}, Path=Default.CommuteUniToBusTime}" ToolTip="Mimimun time taken to get to bus stop at the end of the day. Used for calculating afternoon fares"/>
+                <TextBox Tag="Peak Fare" Text="{Binding Source={StaticResource Settings}, Path=Default.FarePeak, StringFormat={}{0:C}}" ToolTip="Peak fare (before 9am and after 3pm)"/>
+                <TextBox Tag="Off-Peak Fare" Text="{Binding Source={StaticResource Settings}, Path=Default.FareOffPeak, StringFormat={}{0:C}}" ToolTip="Off-Peak fare (from 9am to 3pm)"/>
                 <Button x:Name="ThemeButton" HorizontalAlignment="Left" Content="Use Light Theme" Click="ThemeButton_Click"/>
                 <DockPanel Tag="Semester">                    
                     <TextBox Text="{Binding Data.Year}" DockPanel.Dock="Right" MinWidth="50"/>
@@ -55,11 +60,7 @@
                         <ComboBoxItem>Semester 2</ComboBoxItem>
                     </ComboBox>
                 </DockPanel>
-                <TextBox Tag="Commute Time" Text="{Binding Source={StaticResource Settings}, Path=Default.CommuteTime}" ToolTip="One-way commute time from home to university and back, including walking"/>
-                <TextBox Tag="Uni to Bus Time" Text="{Binding Source={StaticResource Settings}, Path=Default.CommuteUniToBusTime}" ToolTip="Mimimun time taken to get to bus stop at the end of the day. Used for calculating afternoon fares"/>
-                <TextBox Tag="Peak Fare" Text="{Binding Source={StaticResource Settings}, Path=Default.FarePeak, StringFormat={}{0:C}}" ToolTip="Peak fare (before 9am and after 3pm)"/>
-                <TextBox Tag="Off-Peak Fare" Text="{Binding Source={StaticResource Settings}, Path=Default.FareOffPeak, StringFormat={}{0:C}}" ToolTip="Off-Peak fare (from 9am to 3pm)"/>
-                <Button HorizontalAlignment="Left" Content="Add New Course" Command="{Binding Data.AddCourseHeaderCommand}"/>
+                <Button HorizontalAlignment="Left" Content="+ Add New Course" Command="{Binding Data.AddCourseHeaderCommand}" Foreground="{StaticResource NewColourKey}"/>
             </ListBox>
         </Expander>
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="2">
@@ -69,15 +70,39 @@
                         <Border Background="{StaticResource PanelColourKey}" Margin="0 0 0 4">
                             <Border.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Header="Change Colour" Command="{Binding ChangeColourCommand}" />
-                                    <MenuItem Header="Update From Clipboard" Command="{Binding UpdateFromClipboardCommand}"/>
-                                    <MenuItem Header="Edit" Command="{Binding EditCommand}"/>
-                                    <MenuItem x:Name="RemoveCourseMenuItem" Header="Remove" Click="RemoveCourseMenuItem_Click"/>
-                                    <MenuItem Header="Visible" IsCheckable="True" IsChecked="{Binding IsEnabled}"/>
+                                    <MenuItem Header="Change Colour" Command="{Binding ChangeColourCommand}" >
+                                        <MenuItem.Icon>
+                                            <TextBlock>
+                                                &#xE790;                                                
+                                                <TextBlock.Foreground>
+                                                    <SolidColorBrush Color="{Binding Color, FallbackValue=Blue}"/>
+                                                </TextBlock.Foreground>
+                                            </TextBlock>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Update">
+                                        <MenuItem.Icon>
+                                            <TextBlock>&#xE72C;</TextBlock>
+                                        </MenuItem.Icon>
+                                        <MenuItem Header="From URL" Command="{Binding FetchFromUrlCommand}"/>
+                                        <MenuItem Header="From File on Disk" Command="{Binding FetchFromFileCommand}"/>
+                                        <MenuItem Header="From Clipboard" Command="{Binding UpdateFromClipboardCommand}"/>                                        
+                                    </MenuItem>
+                                    <MenuItem Header="Edit" Command="{Binding EditCommand}">
+                                        <MenuItem.Icon>
+                                            <TextBlock>&#xE70F;</TextBlock>                                            
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem x:Name="RemoveCourseMenuItem" Header="Remove" Click="RemoveCourseMenuItem_Click">
+                                        <MenuItem.Icon>
+                                            <TextBlock Foreground="{StaticResource ErrorColourKey}">&#xE74D;</TextBlock>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Visibility" IsCheckable="True" IsChecked="{Binding IsEnabled}"/>
                                 </ContextMenu>
                             </Border.ContextMenu>
                             <DockPanel Margin="2">
-                                <Button Command="{Binding EditCommand}"
+                                <Button x:Name="EditButton" Command="{Binding EditCommand}"
                                         DockPanel.Dock="Top" Margin="-2 -2 -2 2" Foreground="White" 
                                         HorizontalContentAlignment="Left">
                                     <Button.Background>
@@ -88,6 +113,7 @@
                                             <TextBlock Text="{Binding Code}" TextElement.FontWeight="Bold" Margin="0 0 4 0"/>
                                             <TextBlock Text="{Binding Number}" TextElement.FontWeight="Bold" Margin="0 0 8 0"/>
                                             <TextBlock Text="{Binding Name}"/>
+                                            <TextBlock x:Name="EditIcon" Visibility="Hidden" Margin="8 2 0 0" FontFamily="Segoe MDL2 Assets">&#xE70F;</TextBlock>
                                         </StackPanel>
                                     </Button.Content>
                                 </Button>
@@ -135,6 +161,11 @@
                                 </ItemsControl>
                             </DockPanel>
                         </Border>
+                        <DataTemplate.Triggers>
+                            <Trigger SourceName="EditButton" Property="IsMouseOver" Value="True">
+                                <Setter TargetName="EditIcon" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </DataTemplate.Triggers>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

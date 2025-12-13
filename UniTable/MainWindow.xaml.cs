@@ -103,7 +103,7 @@ namespace UniTable
 					break;
 				case nameof(Settings.Default.PixelsPerHour):
 					Session.PixelsPerHour = Settings.Default.PixelsPerHour;
-					if (_VM != null) foreach (WeekBucket bucket in _VM.Buckets) bucket.InvalidateOffset();
+					if (_VM != null && _VM.Buckets != null) foreach (WeekBucket bucket in _VM.Buckets) bucket.InvalidateOffset();
 					TimetableDisplayItemsControl.InvalidateVisual();
 					break;
 			}

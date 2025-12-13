@@ -64,13 +64,24 @@ namespace UniTable.Components
 				drawLine(dividerBrush, 12, 2);
 
 				// Draw Day Label
-				FormattedText formattedText = new(day, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, 16, dividerBrush, VisualTreeHelper.GetDpi(this).PixelsPerDip);
+				FormattedText dayOfWeekText = new(day, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, 
+					typeface, 16, dividerBrush, VisualTreeHelper.GetDpi(this).PixelsPerDip);
 				dc.PushTransform(new RotateTransform(-90, 0, y + 6 * PixelsPerHour));
-				dc.DrawText(formattedText, new(-formattedText.Width / 2, y + 6 * PixelsPerHour - 2));
+				dc.DrawText(dayOfWeekText, new(-dayOfWeekText.Width / 2, y + 6 * PixelsPerHour - 2));
+				dc.Pop();
+				dc.PushTransform(new RotateTransform(90, ActualWidth, y + 6 * PixelsPerHour));
+				dc.DrawText(dayOfWeekText, new(ActualWidth - dayOfWeekText.Width / 2, y + 6 * PixelsPerHour - 2 + 0.7 * PixelsPerHour));
 				dc.Pop();
 
-				y += 12 * PixelsPerHour;
+				// Draw hour labels
+				for (int i = 0; i < 12; i++)
+				{
+					FormattedText dayText = new((i + 6).ToString(), System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight, 
+						typeface, 0.7 * PixelsPerHour, dividerBrush, VisualTreeHelper.GetDpi(this).PixelsPerDip);
+					dc.DrawText(dayText, new(ActualWidth - dayText.Width, y + i * PixelsPerHour - 2));
+				}
 
+				y += 12 * PixelsPerHour;
 			}
 
 			void drawLine(Brush b, double h, double t = 1)
