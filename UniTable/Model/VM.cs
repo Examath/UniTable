@@ -180,7 +180,12 @@ namespace UniTable.Model
 			{
 				UpdateBuckets();
 			}
-			ComputeStatistics();
+
+			// Check that stat property update does not trigger recursion
+			if (e.PropertyName != nameof(TimetablePlanner.Stats))
+			{
+				ComputeStatistics();
+			}
 		}
 
 		#endregion
