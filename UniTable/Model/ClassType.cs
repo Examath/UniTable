@@ -18,7 +18,7 @@ namespace UniTable
 		/// Gets or sets the list of possible classes the student may enrol in
 		/// to fulfill the requirements of this <see cref="ClassType"/>
 		/// </summary>
-		public List<UniClass> Classes { get; set; } = new();
+		public List<UniClass> Classes { get; set; } = [];
 
 		private UniClass? _SelectedClass;
 

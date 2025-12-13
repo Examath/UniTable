@@ -48,7 +48,7 @@ namespace UniTable
 		/// <summary>
 		/// List of sessions this class has
 		/// </summary>
-		public List<SessionEntry> SessionEntries { get; set; } = new();
+		public List<SessionEntry> SessionEntries { get; set; } = [];
 
 		private bool _Selected = false;
 		/// <summary>
@@ -140,8 +140,8 @@ namespace UniTable
 			}
 			else
 			{
-				Dictionary<string, int> TimingsL = new Dictionary<string, int>();
-				Dictionary<string, int> LocationsL = new Dictionary<string, int>();
+				Dictionary<string, int> TimingsL = [];
+				Dictionary<string, int> LocationsL = [];
 
 				foreach (SessionEntry sessionEntry in SessionEntries)
 				{
@@ -177,24 +177,20 @@ namespace UniTable
 
 				IEnumerable<string> timings = TimingsL.OrderByDescending((d) => d.Value).Select(x => x.Key);
 				IEnumerable<string> locations = LocationsL.OrderByDescending((d) => d.Value).Select(x => x.Key);
-				IEnumerable<string> compactLocations = locations.Select(location =>
-				{
-					var match = LocationCodeRegex().Match(location);
-					return match.Success ? match.Value : location;
-				});
+				IEnumerable<string> compactLocations = locations.Select(location => LocationCodeRegex().Replace(location, ""));
 
 				if (TimingsL.Count > 1 && LocationsL.Count > 1) // Super Variant
 				{
-					Timings = $"Various times @ {string.Join(", ", compactLocations)}    ({string.Join(" | ", locations)})";
+					Timings = $"Various times @ {string.Join(" | ", compactLocations)}    ({string.Join(" | ", locations)})";
 				}
 				else
 				{
-					Timings = $"{string.Join(", ", timings)} @ {string.Join(", ", compactLocations)}    ({string.Join(" | ", locations)})";
+					Timings = $"{string.Join(", ", timings)} @ {string.Join(" | ", compactLocations)}    ({string.Join(" | ", locations)})";
 				}
 			}
 		}
 
-		[GeneratedRegex(@"(?<=, )\w{2,5}(?=,)")]
+		[GeneratedRegex(@"[a-z]+ ?")]
 		private static partial Regex LocationCodeRegex();
 	}
 }

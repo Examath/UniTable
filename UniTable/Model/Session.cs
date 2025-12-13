@@ -1,16 +1,35 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace UniTable
 {
 	/// <summary>
 	/// Represents the date, time, duration and location of a single session in university
 	/// </summary>
-	public class Session : IComparable<Session>
+	public class Session : IComparable<Session>, INotifyPropertyChanged
 	{
 		/// <summary>
 		/// Gets the default scale for offsets
 		/// </summary>
 		public static double PixelsPerHour { get; set; } = 10;
+
+		/// <summary>
+		/// Gets the numbers of displayed hours per day
+		/// </summary>
+		public static readonly double HoursPerDay = 12;
+
+		/// <summary>
+		/// Gets the day first displayed
+		/// </summary>
+		/// <remarks>
+		/// Sunday is 0, Monday is 1, and so on
+		/// </remarks>
+		public static readonly double StartOfWeek = 1;
+
+		/// <summary>
+		/// Gets the time of the day from when the display starts
+		/// </summary>
+		public static readonly double StartOfDay = 6;
 
 		/// <summary>
 		/// Gets the time this session starts
@@ -66,10 +85,22 @@ namespace UniTable
 		public double WeekOffset => _WeekOffset * PixelsPerHour;
 
 		private double _DurationOffset;
+
 		/// <summary>
 		/// Gets the duration of this session represented as length in pixels
 		/// </summary>
 		public double DurationOffset => _DurationOffset * PixelsPerHour;
+
+		public event PropertyChangedEventHandler? PropertyChanged;
+
+		/// <summary>
+		/// Calls property changed notifications on offset variables
+		/// </summary>
+		internal void InvalidateOffset()
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WeekOffset)));
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DurationOffset)));
+		}
 
 		/// <summary>
 		/// Gets the index of this session inside the parent
@@ -102,7 +133,7 @@ namespace UniTable
 			UniClass = uniClass;
 
 			// 24/7: WeekOffset = ((double)startTime.DayOfWeek) * 24 * PixelsPerHour + startTime.TimeOfDay.TotalHours * PixelsPerHour;
-			_WeekOffset = ((double)startTime.DayOfWeek - 1) * 12 + (startTime.TimeOfDay.TotalHours - 6);
+			_WeekOffset = ((double)startTime.DayOfWeek - StartOfWeek) * HoursPerDay + (startTime.TimeOfDay.TotalHours - StartOfDay);
 			_DurationOffset = duration.TotalHours;
 		}
 

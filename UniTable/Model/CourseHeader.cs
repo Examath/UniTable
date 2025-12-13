@@ -1,9 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Examath.Core.Environment;
+using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
+using System.Linq;
+using System.Net.Http;
+using System.Reflection.Metadata;
+using System.Security.Policy;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using UniTable.Editor;
@@ -13,7 +21,7 @@ using WPF.ColorPicker;
 namespace UniTable
 {
 	/// <summary>
-	/// Represents information pretaining to the Subject of a <see cref="UniClass"/>
+	/// Represents information pertaining to the Subject of a <see cref="UniClass"/>
 	/// </summary>
 	public partial class CourseHeader : ObservableObject
 	{
@@ -36,7 +44,13 @@ namespace UniTable
 		public int Number
 		{
 			get => _Number;
-			set => SetProperty(ref _Number, value);
+			set
+			{
+				if (SetProperty(ref _Number, value) && string.IsNullOrWhiteSpace(_Url) && value > 1 && !string.IsNullOrWhiteSpace(_Code))
+				{
+					Url = $"https://adelaideuni.edu.au/study/courses/{Code.ToLowerInvariant()}-{Number}/";
+				}
+			}
 		}
 
 		private string _Name = "Untitled";
@@ -49,6 +63,15 @@ namespace UniTable
 			set => SetProperty(ref _Name, value);
 		}
 
+		private string _Url = "";
+		/// <summary>
+		/// Gets or sets the Url to the webpage with timetabling information
+		/// </summary>
+		public string Url
+		{
+			get => _Url;
+			set { if (SetProperty(ref _Url, value)) return; }
+		}
 
 		private Color _Color = Examath.Core.Utils.HSV.GetRandomColor();
 		/// <summary>
@@ -60,7 +83,7 @@ namespace UniTable
 			set => SetProperty(ref _Color, value);
 		}
 
-		private List<ClassType> _ClassTypes = new();
+		private List<ClassType> _ClassTypes = [];
 		/// <summary>
 		/// List containing various types of classes
 		/// </summary>
@@ -83,6 +106,16 @@ namespace UniTable
 		{
 			get => _IsEnabled;
 			set => SetProperty(ref _IsEnabled, value);
+		}
+
+		private string _UpdateStatus = "";
+		/// <summary>
+		/// Gets or sets the status text used for reporting loading
+		/// </summary>
+		public string UpdateStatus
+		{
+			get => _UpdateStatus;
+			set => SetProperty(ref _UpdateStatus, value);
 		}
 
 		#endregion
@@ -140,21 +173,165 @@ namespace UniTable
 			}
 		}
 
+		/// <summary>
+		/// Loads or updates timetable information for a course from <see cref="Url"/>.
+		/// </summary>
+		/// <remarks>
+		/// This method fetches the webpage at tpe provided location, 
+		/// and interprets the webpage to see if timetable information is available.
+		/// Then the <see cref="ClassTypes"/>, <see cref="UniClass"/>s and <see cref="Session"/>s
+		/// are added as required.
+		/// </remarks>
+		[RelayCommand]
+		internal async Task FetchFromUrl()
+		{
+			//// HTTP fetch
+
+			UpdateStatus = $"Fetching {Url}...";
+
+			HtmlDocument document = new();
+			try
+			{
+				using HttpClient client = new();
+				if (string.IsNullOrWhiteSpace(Url))
+				{
+					Messager.Out("Provide a course URL before trying to import.", "No URL provided", messageStyle: ConsoleStyle.FormatBlockStyle);
+					return;
+				}
+
+				client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 Edg/143.0.3650.80");
+				client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+
+				using var stream = await client.GetStreamAsync(Url);
+
+				document = new HtmlDocument();
+				document.Load(stream);
+
+				UpdateStatus = $"Fetched from {Url} at {DateTime.Now:g}";
+			}
+			catch (Exception e)
+			{
+#if DEBUG
+				throw;
+#endif
+#pragma warning disable CS0162 // Unreachable code detected
+				Messager.OutException(e, "Fetching course webpage");
+#pragma warning restore CS0162 // Unreachable code detected
+				return;
+			}
+
+			try
+			{
+				LoadFromHtml(document);
+			}
+			catch (Exception e)
+			{
+#if DEBUG
+				throw;
+#endif
+#pragma warning disable CS0162 // Unreachable code detected
+				Messager.OutException(e, $"Interpreting HTML");
+				return;
+#pragma warning restore CS0162 // Unreachable code detected
+			}
+		}
+
+		/// <summary>
+		/// Loads or updates timetable information for a course from a file.
+		/// </summary>
+		/// <remarks>
+		/// This loads a html document from the provided location
+		/// and interprets the webpage to see if timetable information is available.
+		/// Then the <see cref="ClassTypes"/>, <see cref="UniClass"/>s and <see cref="Session"/>s
+		/// are added as required.
+		/// </remarks>
+		[RelayCommand]
+		internal void FetchFromFile()
+		{
+			//// File fetch
+			string filePath;
+
+			System.Windows.Forms.OpenFileDialog openFileDialog = new()
+			{
+				Title = "Select HTML file to interpret",
+
+			};
+
+			if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			{
+				filePath = openFileDialog.FileName;
+			}
+			else
+			{
+				return;
+			}
+
+			UpdateStatus = $"Loading {filePath}...";
+
+			HtmlDocument document = new();
+			try
+			{
+				if (!System.IO.Path.Exists(filePath))
+				{
+					Messager.Out("Please provide a file that exists", "File does not exist", messageStyle: ConsoleStyle.FormatBlockStyle);
+					return;
+				}
+
+				using var stream = new System.IO.FileStream(filePath,
+					System.IO.FileMode.Open, System.IO.FileAccess.Read);
+
+				document = new HtmlDocument();
+				document.Load(stream);
+
+				UpdateStatus = $"Loaded from {filePath} at {DateTime.Now:g}";
+			}
+			catch (Exception e)
+			{
+#if DEBUG
+				throw;
+#endif
+#pragma warning disable CS0162 // Unreachable code detected
+				Messager.OutException(e, "Loading course html");
+#pragma warning restore CS0162 // Unreachable code detected
+				return;
+			}
+
+			try
+			{
+				LoadFromHtml(document);
+			}
+			catch (Exception e)
+			{
+#if DEBUG
+				throw;
+#endif
+#pragma warning disable CS0162 // Unreachable code detected
+				Messager.OutException(e, $"Interpreting HTML");
+				return;
+#pragma warning restore CS0162 // Unreachable code detected
+			}
+		}
+
+
+		/// <summary>
+		/// Updates the timetable data by importing and parsing class information from the clipboard.
+		/// </summary>
+		/// <remarks>This loads html from the clipboard
+		/// and interprets the webpage to see if timetable information is available.
+		/// Then the <see cref="ClassTypes"/>, <see cref="UniClass"/>s and <see cref="Session"/>s
+		/// are added as required.</remarks>
 		[RelayCommand]
 		internal void UpdateFromClipboard()
 		{
-			ClassType? classType = null;
-			UniClass? uniClass = null;
+			UpdateStatus = $"Loading from clipboard...";
 
-			string[] lines = [];
-			List<ClassType> newClassTypes = [];
-
+			string doc = "";
 			// Get text from clipboard
 			try
 			{
 				if (Clipboard.ContainsText())
 				{
-					lines = SplitLines().Split(Clipboard.GetText());
+					doc = Clipboard.GetText();
 				}
 				else
 				{
@@ -173,85 +350,242 @@ namespace UniTable
 #pragma warning restore CS0162 // Unreachable code detected
 			}
 
-			// Interptet
+			HtmlDocument document = new();
 
-			int lineNumber = 0;
-
-			foreach (string lineRaw in lines)
+			try
 			{
-				// Cut comments
-				string line = lineRaw.Split("//")[0];
-
-				// Skip empty lines
-				if (string.IsNullOrWhiteSpace(line))
-				{
-					continue;
-				}
-
-				string[] parts = line.Split('\t');
-
-				// Skip Table Headers
-				if (parts[0] == "Class Nbr")
-				{
-					continue;
-				}
-
-				try
-				{
-					// Header / Subject Header
-					// Removed
-
-					// Class Type Description
-					if (parts[0].Contains(" Class: "))
-					{
-						classType = new(parts[0]);
-						newClassTypes.Add(classType);
-					}
-
-					// Class Entry
-					else if (int.TryParse(parts[0], out int classNumber) && classType != null)
-					{
-						string[] uniClassParts = new string[3];
-						Array.Copy(parts, 1, uniClassParts, 0, 3);
-						uniClass = new(classNumber, uniClassParts);
-
-						if (parts.Length >= 8) // Then a session is provided as well
-						{
-							string[] firstScheduleParts = new string[4];
-							Array.Copy(parts, 4, firstScheduleParts, 0, 4);
-							AddSession(firstScheduleParts);
-						}
-
-						classType.Classes.Add(uniClass);
-					}
-
-					// Class Note
-					else if (parts[0].StartsWith("Note: ") && uniClass != null)
-					{
-						uniClass.Note = parts[0];
-					}
-
-					// Additional Session Entry
-					else if (uniClass != null)
-					{
-						AddSession(parts);
-					}
-				}
-				catch (Exception e)
-				{
+				document.LoadHtml(doc);
+			}
+			catch (Exception e)
+			{
 #if DEBUG
-                    throw new Exception($"Exception thrown when reading line #{lineNumber}", e);
+				throw;
 #endif
 #pragma warning disable CS0162 // Unreachable code detected
-					Messager.OutException(e, $"Interpreting line #{lineNumber}");
-					return;
+				Messager.OutException(e, $"Parsing HTML");
+				return;
 #pragma warning restore CS0162 // Unreachable code detected
-				}
-
-				lineNumber++;
 			}
 
-			//Finally set changes
+			try
+			{
+				LoadFromHtml(document);
+			}
+			catch (Exception e)
+			{
+#if DEBUG
+				throw;
+#endif
+#pragma warning disable CS0162 // Unreachable code detected
+				Messager.OutException(e, $"Interpreting HTML");
+				return;
+#pragma warning restore CS0162 // Unreachable code detected
+			}
+		}
+
+
+		private readonly string _UNI_DATE_FORMAT = "d MMM yyyy";
+		private readonly string[] _UNI_TIME_FORMAT = ["htt", "h:mmtt"];
+
+		private void LoadFromHtml(HtmlDocument document)
+		{
+			//// Availability Identification
+
+			// Find the Availability section
+			HtmlNode? availabilitySection = document.DocumentNode
+				.SelectSingleNode("//section[@id='availability']");
+
+			if (availabilitySection == null)
+			{
+				Messager.Out(
+					"The page does not contain an Availability section.",
+					"No Availability Found",
+					messageStyle: ConsoleStyle.FormatBlockStyle
+				);
+				return;
+			}
+
+			//// Select semester
+
+			HtmlNodeCollection? semesterNodes = availabilitySection.SelectNodes(".//div[contains(@class,'cmp-course-accordion--container')]")
+				?? throw new Exception("Could not find semester sections within");
+
+			HtmlNode? semesterNode = null;
+
+			foreach (var semNode in semesterNodes)
+			{
+				// Find the semester title node: <span class="cmp-course-accordion__title">
+				HtmlNode semTitleNode = semNode.SelectSingleNode(".//span[contains(@class,'cmp-course-accordion__title')]");
+				if (semTitleNode != null
+					&& HtmlEntity.DeEntitize(semTitleNode.InnerText.Trim())
+					.Equals(TimetablePlanner.DefaultSemester, StringComparison.CurrentCultureIgnoreCase)) 
+				{
+					semesterNode = semNode;
+				}
+			}
+
+			if (semesterNode == null)
+			{
+				Messager.Out(
+					$"This course does not appear to have a timetable for '{TimetablePlanner.DefaultSemester}'. Please check settings and course page.",
+					"Semester Not Found",
+					messageStyle: ConsoleStyle.FormatBlockStyle
+				);
+				return;
+			}
+
+			// TODO Campus selection TODO
+			string campus = "Adelaide City Campus East";
+
+			// Status
+			UpdateStatus += $"\nLoading {TimetablePlanner.DefaultSemester}, {TimetablePlanner.DefaultYear}, {campus}";
+
+			//// Class Loading
+
+			List<ClassType> newClassTypes = [];
+
+			// Load class types
+			HtmlNodeCollection classTypeNodes = semesterNode.SelectNodes("./div/div/div/div[contains(@class,'cmp-course-accordion--container')]")
+				?? throw new Exception("Class type nodes not found");
+			foreach (HtmlNode classTypeNode in classTypeNodes)
+			{
+				ClassType classType = new();
+				bool isClassTypeValid = true;
+
+				// Get class type description
+				var classTypeTitleNode = classTypeNode.SelectSingleNode(".//span[contains(@class,'cmp-course-accordion__title')]")
+					?? throw new Exception("Class type description node not found");
+				classType.Description = HtmlEntity.DeEntitize(classTypeTitleNode.InnerText.Trim());
+
+				// Load classes
+				HtmlNodeCollection classNodes = classTypeNode.SelectNodes(".//div[contains(@class,'cmp-course-accordion--container-session')]")
+					?? throw new Exception("Class nodes not found");
+				foreach (HtmlNode classNode in classNodes)
+				{
+					UniClass uniClass = new();
+
+					// Get properties
+					HtmlNodeCollection? propertyNodes = classNode.SelectNodes(".//h6[contains(@class,'cmp-course-accordion--card-text')]")
+						?? throw new Exception("Class property nodes not found");
+					foreach (HtmlNode propertyNode in propertyNodes)
+					{
+						string[] property = HtmlEntity.DeEntitize(propertyNode.InnerText.Trim()).Split(' ');
+
+						string propertyValue = property.Last();
+
+						switch (string.Join(" ", property[..^1]).Trim().ToLower())
+						{
+							case "class number":
+								if (int.TryParse(propertyValue, out int classNbr))
+									uniClass.Number = classNbr;
+								break;
+
+							case "section":
+								uniClass.Section = propertyValue;
+								break;
+
+							case "size":
+								if (int.TryParse(propertyValue, out int size))
+									uniClass.Size = size;
+								break;
+
+							case "available":
+								if (int.TryParse(propertyValue, out int avail))
+									uniClass.Available = avail;
+								break;
+						}
+					}
+
+					// Get sessions
+					HtmlNodeCollection? sessionNodes = classNode.SelectNodes(".//tr[not(contains(@class,'cmp-data-table__heading'))]")
+						?? throw new Exception("Session nodes not found");
+					foreach (HtmlNode sessionNode in sessionNodes)
+					{
+						// Filter campus
+						if (!sessionNode.SelectSingleNode("./td[4]").InnerText.Trim().Equals(campus, StringComparison.CurrentCultureIgnoreCase))
+						{
+							isClassTypeValid = false;
+							break;
+						}
+
+						SessionEntry sessionEntry = new();
+
+						// Read properties
+						//HtmlNodeCollection sessionPropertyNodes = sessionNode.SelectNodes("./td");
+						//foreach (HtmlNode sessionPropertyNode in sessionPropertyNodes)
+						//{
+						// Property name & value
+						//string propertyName = sessionNode.SelectSingleNode("./div[contains(@class,'table-header-content')]").InnerText.Trim()
+						//	?? throw new Exception("Session property name node not found");
+						//string propertyValue = sessionNode.SelectSingleNode("./div[contains(@class,'table-content')]").InnerText.Trim()
+						//	?? throw new Exception("Session property name node not found");
+
+						// Date
+						string[] dateParts = sessionNode.SelectSingleNode("./td[1]").InnerText.Split(" - ");
+						sessionEntry.StartDate = DateTime.ParseExact($"{dateParts[0]} {TimetablePlanner.DefaultYear}", _UNI_DATE_FORMAT, CultureInfo.InvariantCulture);
+						sessionEntry.EndDate = DateTime.ParseExact($"{dateParts[1]} {TimetablePlanner.DefaultYear}", _UNI_DATE_FORMAT, CultureInfo.InvariantCulture);
+
+						// Day
+						sessionEntry.DayOfWeek = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), sessionNode.SelectSingleNode("./td[2]").InnerText);
+
+						// Time
+						string[] timeParts = sessionNode.SelectSingleNode("./td[3]").InnerText.Split(" - ");
+						sessionEntry.StartTime = TimeOnly.ParseExact(timeParts[0], _UNI_TIME_FORMAT);
+						sessionEntry.EndTime = TimeOnly.ParseExact(timeParts[1], _UNI_TIME_FORMAT);
+
+						// Location
+						sessionEntry.Location = sessionNode.SelectSingleNode("./td[5]").InnerText;
+
+						// Load
+						uniClass.SessionEntries.Add(sessionEntry);
+					}
+
+					// Load 
+					classType.Classes.Add(uniClass);
+				}
+
+				if (isClassTypeValid) newClassTypes.Add(classType);
+			}
+
+			if (newClassTypes.Count <= 0)
+			{
+				Messager.Out(
+					$"This course does not appear to have any classes at '{campus}'. Please check settings and course page.",
+					"Empty Class Types",
+					messageStyle: ConsoleStyle.FormatBlockStyle
+				);
+				return;
+			}
+
+			//// Additional Course Properties
+			if (document.DocumentNode.SelectSingleNode(".//h1[contains(@class,'cmp-herobanner__title')]") is HtmlNode nameNode
+				&& !string.IsNullOrWhiteSpace(nameNode.InnerText))
+			{
+				Name = nameNode.InnerText.Trim();
+				UpdateStatus += $"\nFinished loading {Name} with {newClassTypes.Count} class types";
+			}
+
+			if (document.DocumentNode.SelectSingleNode(".//p[contains(@class,'cmp-herobanner__description--title')]") is HtmlNode yearNode
+				&& !string.IsNullOrWhiteSpace(yearNode.InnerText))
+			{
+				string year = yearNode.InnerText.Split(' ').Last().Trim();
+				if (!year.Equals(TimetablePlanner.DefaultYear.ToString()) && Messager.Out(
+					$"This webpage indicates it is for the year {year}, " +
+					$"whilst this timetable planner is set for the year {TimetablePlanner.DefaultYear}. " +
+					$"If this was not intended please change the year in Options." +
+					$"\n\nAre you sure you want to continue loading?",
+					"Mismatched year",
+					messageStyle: ConsoleStyle.WarningBlockStyle,
+					isCancelButtonVisible: true,
+					yesButtonText: "Continue"
+				) == System.Windows.Forms.DialogResult.Cancel)
+				{
+					return;
+				}
+			}
+
+			//// Final change set
+
 			foreach (ClassType c in ClassTypes) c.PropertyChanged -= ClassType_PropertyChanged;
 			foreach (ClassType c in newClassTypes)
 			{
@@ -259,18 +593,12 @@ namespace UniTable
 				c.PropertyChanged += ClassType_PropertyChanged;
 			}
 			ClassTypes = newClassTypes;
-
-			void AddSession(string[] parts)
-			{
-				SessionEntry sessionEntry = new(parts, TimetablePlanner.DefaultYear);
-				uniClass?.SessionEntries.Add(sessionEntry);
-			}
 		}
 
 		[RelayCommand]
 		internal void Edit()
 		{
-			CourseHeaderEditor courseHeaderEditor = new CourseHeaderEditor(this);
+			CourseHeaderEditor courseHeaderEditor = new(this);
 			courseHeaderEditor.ShowDialog();
 		}
 

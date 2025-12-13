@@ -93,7 +93,7 @@ namespace UniTable.Model
 						foreach (SessionEntry sessionEntry in uniClass.SessionEntries)
 						{
 							TimeSpan duration = sessionEntry.EndTime - sessionEntry.StartTime;
-							bool isOnline = sessionEntry.Location.Contains("Online Class");
+							bool isOnline = sessionEntry.Location.Contains("Online");
 							// Bounds
 							if (sessionEntry.StartDate < SessionsStartDate) SessionsStartDate = sessionEntry.StartDate;
 							if (sessionEntry.EndDate > SessionsEndDate) SessionsEndDate = sessionEntry.EndDate;
@@ -127,7 +127,7 @@ namespace UniTable.Model
 
 			// Prepare Bounds
 			SessionsStartDate = SessionsStartDate.AddDays(-(double)SessionsStartDate.DayOfWeek);
-			int NumberOfWeeks = (int)Math.Ceiling((SessionsEndDate - SessionsStartDate).TotalDays / 7);
+			int NumberOfWeeks = (int)Math.Ceiling((SessionsEndDate - SessionsStartDate).TotalDays / 7) + 1;
 
 			// Initialize each bucket
 
@@ -180,7 +180,12 @@ namespace UniTable.Model
 			{
 				UpdateBuckets();
 			}
-			ComputeStatistics();
+
+			// Check that stat property update does not trigger recursion
+			if (e.PropertyName != nameof(TimetablePlanner.Stats))
+			{
+				ComputeStatistics();
+			}
 		}
 
 		#endregion

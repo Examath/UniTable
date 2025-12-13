@@ -17,5 +17,5 @@ namespace UniTable.Editor
 		{
 			this.DialogResult = true;
 		}
-	}
+    }
 }

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,17 +15,30 @@ namespace UniTable.Model
 	{
 		#region Data
 
-		private int _Year = DateTime.Now.Year;
+		private int _Year = DateTime.Now.AddMonths(6).Year;
 		/// <summary>
 		/// Gets the year this semester is in
 		/// </summary>
+		[Range(2000, 2100, ErrorMessage = "Enter a valid year (YYYY)")]
 		public int Year
 		{
 			get => _Year;
 			set { if (SetProperty(ref _Year, value)) DefaultYear = value; }
 		}
 
-		public static int DefaultYear { get; private set; } = DateTime.Now.Year;
+		public static int DefaultYear { get; private set; } = DateTime.Now.AddMonths(6).Year;
+
+		private string _Semester = "Semester 1";
+		/// <summary>
+		/// Gets or sets the name of the semester
+		/// </summary>
+		public string Semester
+		{
+			get => _Semester;
+			set { if (SetProperty(ref _Semester, value)) DefaultSemester = value; }
+		}
+
+		public static string DefaultSemester { get; private set; } = "Semester 1";
 
 		private ObservableCollection<CourseHeader> _CourseHeaderList = [];
 		/// <summary>
@@ -158,7 +172,7 @@ namespace UniTable.Model
 
 		internal async Task LoadCuacv(string fileName)
 		{
-			CourseHeader? subjectHeader = null;
+			CourseHeader? courseHeader = null;
 			ClassType? classType = null;
 			UniClass? uniClass = null;
 
@@ -195,18 +209,18 @@ namespace UniTable.Model
 						{
 							Year = semCode / 10 + 2000;
 						}
-						else // Subject Header
+						else // Course Header
 						{
-							subjectHeader = new(parts[1]);
-							CourseHeaderList.Add(subjectHeader);
+							courseHeader = new(parts[1]);
+							CourseHeaderList.Add(courseHeader);
 						}
 					}
 
 					// Class Type Description
-					else if (parts[0].Contains(" Class: ") && subjectHeader != null)
+					else if (parts[0].Contains(" Class: ") && courseHeader != null)
 					{
 						classType = new(parts[0]);
-						subjectHeader.ClassTypes.Add(classType);
+						courseHeader.ClassTypes.Add(classType);
 					}
 
 					// Class Entry

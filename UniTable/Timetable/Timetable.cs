@@ -5,7 +5,7 @@ namespace UniTable.Timetable
 {
 	public class Timetable : ObservableObject
 	{
-		private ObservableCollection<WeekBucket> _Buckets = new();
+		private ObservableCollection<WeekBucket> _Buckets = [];
 		/// <summary>
 		/// Gets or sets a list of weeks containing all sessions
 		/// </summary>
