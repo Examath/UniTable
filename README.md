@@ -20,6 +20,8 @@ I have been using UniTable to plan my semester for the last four years. However,
 
 The latest version is **v1.5**
 
+Note only the 'Adelaide City East Campus' is currently supported because I am lazy. Please contact me if you would like to go to Mawson Lakes, or another university.
+
 _Disclaimer: This project is not associated with Adelaide University of the former University of Adelaide in any way._
 
 ## Future Work
